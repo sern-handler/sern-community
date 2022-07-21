@@ -5,7 +5,6 @@ import { commandModule, CommandType } from '@sern/handler';
 import { ApplicationCommandOptionType } from 'discord.js';
 import { publish } from '../plugins/publish';
 
-const DocTrie = new TrieSearch<string>();
 
 
 
