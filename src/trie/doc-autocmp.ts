@@ -1,5 +1,5 @@
 import TrieSearch from "trie-search";
-
+import docs from '../../docs.json'
 
 
 export default class DocHandler { 

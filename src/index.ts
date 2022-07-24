@@ -28,8 +28,8 @@ Sern.init({
 	client,
 	sernEmitter: new SernEmitter(),
 	defaultPrefix: 'sern', 
-	commands: 'dist/commands',
-	events: 'dist/events',
+	commands: 'dist/src/commands',
+	events: 'dist/src/events',
 });
 
 client.once('ready', (client) => {
