@@ -71,7 +71,7 @@ declare module 'trie-search' {
         limit?: number
       ): A | undefined
   
-      search(phrases: string | string[], reducer: null | undefined): T[]
+      search(phrases: string | string[], reducer?: null | undefined): T[]
   
       search<A>(
         phrases: string | string[],

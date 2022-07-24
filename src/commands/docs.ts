@@ -1,13 +1,12 @@
 
-import TrieSearch from 'trie-search'; 
-// https://github.com/joshjung/trie-search/issues/30
 import { commandModule, CommandType } from '@sern/handler';
 import { ApplicationCommandOptionType } from 'discord.js';
 import { publish } from '../plugins/publish';
+import DocHandler from '../trie/doc-autocmp';
 
 
 
-
+new DocHandler().setup()
 export default commandModule({
 	type: CommandType.Slash,
 	description : 'Query documentation',
