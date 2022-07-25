@@ -46,8 +46,8 @@ declare module 'trie-search' {
       clearCache(): void
   
       cleanCache(): void
-  
-      addFromObject(obj: T, valueField: string): void
+      
+      addFromObject(obj: T, valueField?: string): void
   
       map(key: string, value: T): void
   
