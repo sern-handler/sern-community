@@ -39,7 +39,7 @@ declare module 'trie-search' {
   
       expandString(value: string): string[]
   
-      addAll(arr: T[], customKeys?: KeyFields | number): void
+      addAll(arr: I[], customKeys?: KeyFields | number): void
   
       reset(): void
   
@@ -71,7 +71,7 @@ declare module 'trie-search' {
         limit?: number
       ): A | undefined
   
-      search(phrases: string | string[], reducer?: null | undefined): T[]
+      search(phrases: string | string[], reducer?: null | undefined): I[]
   
       search<A>(
         phrases: string | string[],

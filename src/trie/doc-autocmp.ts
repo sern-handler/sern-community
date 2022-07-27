@@ -1,4 +1,4 @@
-import type TrieSearch from "trie-search";
+import TrieSearch from "trie-search";
 import docs from '../../docs.json'
 import type { DocsChild, TentacledKindString } from "../../typings/docs";
 
@@ -6,11 +6,11 @@ import type { DocsChild, TentacledKindString } from "../../typings/docs";
  * Not bothering typing this json file
  */
 export default class DocHandler { 
-    private __DocTries : TrieSearch<unknown, unknown>[] = [];
+    private __DocTrie! : TrieSearch<string, {name : string, node: DocsChild}>;
     private sectionTitleChildPairs : { name : string, node : DocsChild }[] = []
     private sectionsOnly : string[] = []
-    get DocTries() {
-        return this.__DocTries; 
+    get DocTrie() {
+        return this.__DocTrie; 
     }
     
     private transformSections() {
@@ -34,7 +34,14 @@ export default class DocHandler {
     
     setup() {
         this.transformSections();
-        console.log(this.sectionTitleChildPairs)
+        const trie = new TrieSearch<string, { name : string; node : DocsChild}>(
+            ['name',
+             ['node', 'kindString'],
+             ['node', 'id'],
+             ['node', 'name']
+            ])
+        trie.addAll(this.sectionTitleChildPairs);
+        this.__DocTrie = trie;
     }
     
 }
