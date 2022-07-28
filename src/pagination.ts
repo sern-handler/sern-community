@@ -19,13 +19,16 @@ export function Paginate() {
         },
         async next() {
             cur++;
-            if(cur === __embeds.length) {
+            if(cur >= __embeds.length) {
                 cur = 0;
             }
             await message.edit(this.components());
         },
         async back() {
             cur--;
+            if(cur <= -__embeds.length) {
+                cur = 0;
+            }
             await message.edit(this.components());
         },
         at(num : number) {

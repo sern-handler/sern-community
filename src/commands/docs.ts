@@ -4,7 +4,14 @@ import { ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonS
 import { Paginate } from '../pagination';
 import { publish } from '../plugins/publish';
 import DocHandler from '../trie/doc-autocmp';
+import { DeclarationElement, Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs';
 
+function handleComments(sum : PurpleSummary) {
+	switch(sum.kind) {
+		case Kind.Text : case Kind.Code : return { name : sum.kind, value: sum.text };
+		case Kind.InlineTag : return { name : 'Reference', value: `[${docHandler.DocTrie.search(sum.target!.toString())}](${sum.text})`};
+	}
+}
 const docHandler = new DocHandler();
 docHandler.setup();
 export default commandModule({
@@ -31,16 +38,38 @@ export default commandModule({
 	],
 	execute: async (context, options) => {
 		const option = options[1].getString('search', true);   
-    	const result = docHandler.DocTrie.search(option)
+    	const result = docHandler.DocTrie.search(option);
 		const embeds = result.map(res => {
+			const comments = 
+			res.node.kindString === TentacledKindString.Function 
+			? 
+				res.node.signatures?.flatMap(dec => {
+					const summary = dec.comment?.summary as PurpleSummary[] | undefined;
+					return summary?.map(handleComments) ?? []
+				})
+			: res.node.comment?.summary?.map(handleComments);
+			
+			const blockTags = res.node.kindString === TentacledKindString.Function
+			? 
+				res.node.signatures?.flatMap(dec => {
+					const summary = dec.comment as PurpleComment | undefined;
+					return summary?.blockTags?.flatMap(btags => {
+						return btags.content.map(c => ({ name : btags.tag, value: c.text}))
+					}) ?? [];
+				})
+			:  res.node?.comment?.blockTags?.flatMap(btags => {
+				return btags.content.map(c => ({ name : btags.tag, value: c.text}))
+			});
 			return new EmbedBuilder()
 				.addFields(
 					{ name : 'Category', value : res.name },
-					{ name : 'Description', value: 'No description' }
+					...comments ?? [],
+					...blockTags ?? []
 				)
-				.setTitle(res.node.name)
+				.setTitle(`🔖  ${res.node.name}`)
 				.setColor(Colors.DarkVividPink)
-				.setAuthor({ name: 'Source', url: `${res.node.sources[0].url ?? 'External implementation'}` })
+				.setAuthor({ name: 'Community bot', iconURL : context.client.user?.displayAvatarURL() })
+				.setURL(res.node.sources[0].url ?? 'External implementation')
 		});
 		const paginator = Paginate();
 		paginator.add(...embeds);
@@ -53,7 +82,8 @@ export default commandModule({
 		const message = await context.interaction.editReply(paginator.components())
 		paginator.setMessage(message)
 		message.channel.createMessageComponentCollector({
-			componentType: ComponentType.Button
+			componentType: ComponentType.Button,
+			time: 60_000
 		}).on('collect',async i => {
 			if(i.customId === ids[0]) {
 				await i.deferUpdate();

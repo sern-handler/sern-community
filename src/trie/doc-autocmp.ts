@@ -1,6 +1,6 @@
 import TrieSearch from "trie-search";
 import docs from '../../docs.json'
-import type { DocsChild, TentacledKindString } from "../../typings/docs";
+import type { DocsChild } from "../../typings/docs";
 
 /**
  * Not bothering typing this json file
@@ -13,11 +13,20 @@ export default class DocHandler {
         return this.__DocTrie; 
     }
     
+
     private transformSections() {
+        
+        docs.groups.pop()!; //Removes "Functions" from json
         for(const section of docs.groups) {
-            if(section.title === 'Sern') {
+            if(section.title === 'Namespaces') {
+                const first = docs.children.shift()!;
                 //assumed that first element is Sern namespace. This helps speed up processing nodes
-                this.sectionTitleChildPairs.push({ name : "Sern", node : docs.children.shift() as DocsChild  });
+                this.sectionTitleChildPairs.push({ name : "Namespaces", node : first as DocsChild  });
+                while(first?.children?.length ?? 0 !== 0) {
+                    const cur = first.children?.pop()!;
+                    this.sectionTitleChildPairs.push({ name : `Sern.${cur.name}`, node : cur as DocsChild  });
+                }
+                
             } else {
                 const sectionChildNodes = section.children.map(id => {
                     const node = docs.children.find(c => c.id === id)! as DocsChild;
