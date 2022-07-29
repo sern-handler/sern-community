@@ -6,9 +6,8 @@ import {
 } from 'discord.js';
 
 import { Sern, SernEmitter } from '@sern/handler';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
-dotenv.config();
 
 const client = new Client({
 	intents: [
@@ -38,4 +37,4 @@ client.once('ready', (client) => {
 	console.log(`[✅]: Logged in as ${client.user.username}`);
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login();

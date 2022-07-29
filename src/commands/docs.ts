@@ -1,10 +1,9 @@
-
 import { commandModule, CommandType } from '@sern/handler';
-import { ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Colors, ComponentType, EmbedBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, Colors, ComponentType, EmbedBuilder } from 'discord.js';
 import { Paginate } from '../pagination';
 import { publish } from '../plugins/publish';
 import DocHandler from '../trie/doc-autocmp';
-import { DeclarationElement, Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs';
+import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs';
 
 function handleComments(sum : PurpleSummary) {
 	switch(sum.kind) {
@@ -16,7 +15,7 @@ const docHandler = new DocHandler();
 docHandler.setup();
 export default commandModule({
 	type: CommandType.Slash,
-	description : 'Query documentation',
+	description: 'Query documentation',
 	plugins: [
 		publish(['941002690211766332'])
 	],
@@ -25,13 +24,13 @@ export default commandModule({
 			autocomplete: true,
 			name: 'search',
 			required : true,
-			description: 'Search for the sern hander documentation',
+			description: 'Search for the sern handler documentation',
 			type: ApplicationCommandOptionType.String,
 			command: {
 				onEvent: [],
-				async execute(autocomplete) {
+				execute(autocomplete) {
 					const choices = docHandler.DocTrie.search(autocomplete.options.getFocused())
-					await autocomplete.respond(choices.map((res => ({ name : res.node.name, value: res.node.name }))).slice(0,25));
+					return autocomplete.respond(choices.map((res => ({ name : res.node.name, value: res.node.name }))).slice(0,25));
 				}
 			}
 		}
@@ -39,6 +38,11 @@ export default commandModule({
 	execute: async (context, options) => {
 		const option = options[1].getString('search', true);   
     	const result = docHandler.DocTrie.search(option);
+
+		if (!result.length) {
+			return context.reply('No results found');
+		}
+
 		const embeds = result.map(res => {
 			const comments = 
 			res.node.kindString === TentacledKindString.Function 
@@ -48,8 +52,8 @@ export default commandModule({
 					return summary?.map(handleComments) ?? []
 				})
 			: res.node.comment?.summary?.map(handleComments);
-			
-			const blockTags = res.node.kindString === TentacledKindString.Function
+
+			let blockTags = res.node.kindString === TentacledKindString.Function
 			? 
 				res.node.signatures?.flatMap(dec => {
 					const summary = dec.comment as PurpleComment | undefined;
@@ -60,15 +64,23 @@ export default commandModule({
 			:  res.node?.comment?.blockTags?.flatMap(btags => {
 				return btags.content.map(c => ({ name : btags.tag, value: c.text}))
 			});
+
+			blockTags = blockTags?.map(tag => {
+				return {
+					name: tag.name,
+					value: tag.value.replace(/ title=(?:.+)./gm, '')
+				}
+			})
+
 			return new EmbedBuilder()
 				.addFields(
 					{ name : 'Category', value : res.name },
 					...comments ?? [],
 					...blockTags ?? []
 				)
-				.setTitle(`🔖  ${res.node.name}`)
+				.setTitle(`🔖 ${res.node.name}`)
 				.setColor(Colors.DarkVividPink)
-				.setAuthor({ name: 'Community bot', iconURL : context.client.user?.displayAvatarURL() })
+				.setAuthor({ name: 'sern', iconURL : context.client.user?.displayAvatarURL() })
 				.setURL(res.node.sources[0].url ?? 'External implementation')
 		});
 		const paginator = Paginate();
@@ -84,11 +96,11 @@ export default commandModule({
 		message.channel.createMessageComponentCollector({
 			componentType: ComponentType.Button,
 			time: 60_000
-		}).on('collect',async i => {
-			if(i.customId === ids[0]) {
+		}).on('collect', async (i) => {
+			if (i.customId === ids[0]) {
 				await i.deferUpdate();
 				await paginator.back();
-			} else if(i.customId === ids[1]) {
+			} else if (i.customId === ids[1]) {
 				await i.deferUpdate();
 				await paginator.next();
 			}
