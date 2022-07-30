@@ -1,19 +1,3 @@
-// @ts-nocheck
-
-/**
- * @author: @EvolutionX-10
- * @version: 1.0.0
- * @description: This is publish plugin, it allows you to publish your slash commands with ease.
- * @license: MIT
- * @example:
- * ```ts
- * import { publish } from "../path/to/your/plugin/folder";
- * import { sernModule, CommandType } from "@sern/handler";
- * export default sernModule<CommandType.Slash>([publish()], { // put guild id in array for guild commands
- * // your code
- * })
- * ```
- */
 import {
 	CommandPlugin,
 	CommandType,
