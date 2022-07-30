@@ -96,7 +96,7 @@ export default commandModule({
 		message.channel.createMessageComponentCollector({
 			componentType: ComponentType.Button,
 			time: 60_000
-		}).on('collect', async (i) => {
+		}).on('collect', async i => {
 			if (i.customId === ids[0]) {
 				await i.deferUpdate();
 				await paginator.back();
