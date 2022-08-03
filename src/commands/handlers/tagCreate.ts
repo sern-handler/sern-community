@@ -30,7 +30,6 @@ export default commandModule({
 		}
 		return ctx.reply({
 			content: `Tag __${tagName}__ created`,
-			ephemeral: false
 		});
 	},
 })

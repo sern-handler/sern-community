@@ -100,7 +100,7 @@ export default commandModule({
 				.setCustomId('tag-keywords')
 				.setLabel('Tag Keywords')
 				.setPlaceholder('Keywords for Tag, separated by comma')
-				.setMaxLength(64)
+				.setMaxLength(100)
 				.setRequired(false)
 				.setStyle(TextInputStyle.Short)
 
@@ -145,7 +145,7 @@ export default commandModule({
 				.setCustomId('tag-keywords')
 				.setLabel('Tag Keywords')
 				.setPlaceholder('Keywords for Tag, separated by comma')
-				.setMaxLength(64)
+				.setMaxLength(100)
 				.setRequired(false)
 				.setStyle(TextInputStyle.Short)
 				.setValue(tagData.keywords.join(', '));
