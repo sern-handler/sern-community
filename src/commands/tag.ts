@@ -1,11 +1,12 @@
 import { commandModule, CommandType } from '@sern/handler';
 import { ActionRowBuilder, ApplicationCommandOptionType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { existsSync, writeFileSync } from 'fs';
+import { ownerOnly } from '../plugins/ownerOnly';
 import { publish } from '../plugins/publish';
 import type { TagData } from './handlers/tagCreate';
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish(['941002690211766332'])],
+	plugins: [publish(['941002690211766332']), ownerOnly()],
 	options: [
 		{
 			name: 'create',
@@ -21,22 +22,22 @@ export default commandModule({
 					name: 'tag',
 					description: 'The tag to edit',
 					type: ApplicationCommandOptionType.String,
-					autocomplete: false,
+					autocomplete: true,
 					required: true,
-					// command: {
-					// 	onEvent: [],
-					// 	execute(ctx) {
-					// 		return ctx.respond([{ name: 'No tags found', value: '' }])
-					// 		const filePath = `./tags.json`;
-					// 		if (!existsSync(filePath)) {
-					// 			return ctx.respond([{ name: 'No tags found', value: '' }])
-					// 		} else {
-					// 			const file: TagData[] = require(`${process.cwd()}\\tags.json`);
-					// 			const tags = file.map(t => t.name);
-					// 			return ctx.respond(tags.map(t => ({ name: t, value: t })));
-					// 		}
-					// 	},
-					// }
+					command: {
+						onEvent: [],
+						execute(ctx) {
+							const filePath = `./tags.json`;
+							const focus = ctx.options.getFocused();
+							if (!existsSync(filePath)) {
+								return ctx.respond([{ name: 'No tags found', value: '' }])
+							} else {
+								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+								const tags = file.map(t => t.name);
+								return ctx.respond(tags.filter(t => focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true).map(t => ({ name: t, value: t })));
+							}
+						},
+					}
 				}
 			],
 		},
@@ -49,8 +50,22 @@ export default commandModule({
 					name: 'tag',
 					description: 'The tag to delete',
 					type: ApplicationCommandOptionType.String,
-					autocomplete: false,
+					autocomplete: true,
 					required: true,
+					command: {
+						onEvent: [],
+						execute(ctx) {
+							const filePath = `./tags.json`;
+							const focus = ctx.options.getFocused();
+							if (!existsSync(filePath)) {
+								return ctx.respond([{ name: 'No tags found', value: '' }])
+							} else {
+								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+								const tags = file.map(t => t.name);
+								return ctx.respond(tags.filter(t => focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true).map(t => ({ name: t, value: t })));
+							}
+						},
+					}
 				}
 			]
 		}
