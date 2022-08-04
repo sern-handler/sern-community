@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Upgrade DJS",
+    "content": "Please update your discord.js version with compatible version of sern Handler\nIt should be above v14.1.0",
+    "keywords": [
+      "upgrade djs",
+      "update djs"
+    ]
+  },
+  {
+    "name": "Outdated Node",
+    "content": "Your nodejs version is outdated, update it to 16.9 or higher",
+    "keywords": [
+      "cannot find module 'node:events'",
+      "upgrade your node",
+      "your node is outdated"
+    ]
+  },
+  {
+    "name": "Missing Intents",
+    "content": "If you get an error that says \"Missing Intents\", you probably want to add them. Don't include intents that you won't use. You can check what intents you need [here](https://ziad87.net/intents/).",
+    "keywords": [
+      "missing intents",
+      "intents missing"
+    ]
+  }
+]

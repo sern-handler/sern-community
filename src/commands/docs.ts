@@ -16,9 +16,7 @@ docHandler.setup();
 export default commandModule({
 	type: CommandType.Slash,
 	description: 'Query documentation',
-	plugins: [
-		publish(['941002690211766332'])
-	],
+	plugins: [publish()],
 	options: [
 		{
 			autocomplete: true,

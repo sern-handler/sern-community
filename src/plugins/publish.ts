@@ -7,7 +7,7 @@ import {
 import { ApplicationCommandData, ApplicationCommandType } from "discord.js";
 
 export function publish(
-	guildIds: string | Array<string> = []
+	guildIds: string | Array<string> = ['941002690211766332']
 ): CommandPlugin<CommandType.Slash | CommandType.Both> {
 	return {
 		type: PluginType.Command,
