@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "resolveJsonModule": true,
-    "target": "ESNext",
-    "module": "CommonJS",
-    "outDir": "dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "importsNotUsedAsValues": "error",
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"target": "ESNext",
+		"module": "CommonJS",
+		"outDir": "dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"importsNotUsedAsValues": "error",
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	}
 }

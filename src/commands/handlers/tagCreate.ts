@@ -12,7 +12,7 @@ export default commandModule({
 		const tag: TagData = {
 			name: tagName,
 			content: tagContent,
-			keywords: keywords ? keywords.trim().split(',').map(c => c.trim()).filter(c => !!c.length) : [],
+			keywords: keywords ? [...new Set(keywords.trim().split(',').map(c => c.trim()).filter(c => !!c.length))] : [],
 		}
 		const filePath = `./tags.json`;
 		if (!existsSync(filePath)) {
@@ -25,6 +25,10 @@ export default commandModule({
 				return ctx.reply(`Tag __${tagName}__ already exists`);
 			}
 
+			const similarKeywords = file.filter(t => t.keywords.some(k => tag.keywords.includes(k)));
+			if (similarKeywords.length) {
+				return ctx.reply(`Tag __${tagName}__ has similar keywords to __${similarKeywords.map(t => t.name).join(', ')}__`);
+			}
 			file.push(tag)
 			writeFileSync(filePath, JSON.stringify(file, null, 2));
 		}

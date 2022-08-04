@@ -1,26 +1,36 @@
-import { commandModule, CommandType } from '@sern/handler';
-import { ActionRowBuilder, ApplicationCommandOptionType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { existsSync, writeFileSync } from 'fs';
-import { ownerOnly } from '../plugins/ownerOnly';
-import { publish } from '../plugins/publish';
-import type { TagData } from './handlers/tagCreate';
+import { commandModule, CommandType } from "@sern/handler";
+import {
+	ActionRowBuilder,
+	ApplicationCommandOptionType,
+	ButtonBuilder,
+	ButtonStyle,
+	ComponentType,
+	EmbedBuilder,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+} from "discord.js";
+import { existsSync, writeFileSync } from "fs";
+import { Paginate } from "../pagination";
+import { publish } from "../plugins/publish";
+import type { TagData } from "./handlers/tagCreate";
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish(['941002690211766332']), ownerOnly()],
+	plugins: [publish()],
 	options: [
 		{
-			name: 'create',
+			name: "create",
 			type: ApplicationCommandOptionType.Subcommand,
-			description: 'Create a new tag'
+			description: "Create a new tag",
 		},
 		{
-			name: 'edit',
+			name: "edit",
 			type: ApplicationCommandOptionType.Subcommand,
-			description: 'Edit an existing tag',
+			description: "Edit an existing tag",
 			options: [
 				{
-					name: 'tag',
-					description: 'The tag to edit',
+					name: "tag",
+					description: "The tag to edit",
 					type: ApplicationCommandOptionType.String,
 					autocomplete: true,
 					required: true,
@@ -30,25 +40,33 @@ export default commandModule({
 							const filePath = `./tags.json`;
 							const focus = ctx.options.getFocused();
 							if (!existsSync(filePath)) {
-								return ctx.respond([{ name: 'No tags found', value: '' }])
+								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
 								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
-								const tags = file.map(t => t.name);
-								return ctx.respond(tags.filter(t => focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true).map(t => ({ name: t, value: t })));
+								const tags = file.map((t) => t.name);
+								return ctx.respond(
+									tags
+										.filter((t) =>
+											focus.length
+												? t.toLowerCase().includes(focus.toLowerCase())
+												: true
+										)
+										.map((t) => ({ name: t, value: t }))
+								);
 							}
 						},
-					}
-				}
+					},
+				},
 			],
 		},
 		{
-			name: 'delete',
+			name: "delete",
 			type: ApplicationCommandOptionType.Subcommand,
-			description: 'Delete an existing tag',
+			description: "Delete an existing tag",
 			options: [
 				{
-					name: 'tag',
-					description: 'The tag to delete',
+					name: "tag",
+					description: "The tag to delete",
 					type: ApplicationCommandOptionType.String,
 					autocomplete: true,
 					required: true,
@@ -58,119 +76,189 @@ export default commandModule({
 							const filePath = `./tags.json`;
 							const focus = ctx.options.getFocused();
 							if (!existsSync(filePath)) {
-								return ctx.respond([{ name: 'No tags found', value: '' }])
+								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
 								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
-								const tags = file.map(t => t.name);
-								return ctx.respond(tags.filter(t => focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true).map(t => ({ name: t, value: t })));
+								const tags = file.map((t) => t.name);
+								return ctx.respond(
+									tags
+										.filter((t) =>
+											focus.length
+												? t.toLowerCase().includes(focus.toLowerCase())
+												: true
+										)
+										.map((t) => ({ name: t, value: t }))
+								);
 							}
 						},
-					}
-				}
-			]
-		}
+					},
+				},
+			],
+		},
+		{
+			name: "list",
+			type: ApplicationCommandOptionType.Subcommand,
+			description: "List all tags",
+		},
 	],
 	execute: async (context, args) => {
 		const [, options] = args;
 		const subcmd = options.getSubcommand();
-		if (subcmd === 'create') {
+
+		const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+
+		if (subcmd === "create") {
 			const modal = new ModalBuilder()
-				.setTitle('Tag Creation')
-				.setCustomId('@sern/tag/create')
+				.setTitle("Tag Creation")
+				.setCustomId("@sern/tag/create");
 
 			const tagName = new TextInputBuilder()
-				.setCustomId('tag-name')
-				.setLabel('Tag Name')
+				.setCustomId("tag-name")
+				.setLabel("Tag Name")
 				.setRequired()
-				.setPlaceholder('Name of Tag')
+				.setPlaceholder("Name of Tag")
 				.setMinLength(3)
 				.setMaxLength(16)
-				.setStyle(TextInputStyle.Short)
+				.setStyle(TextInputStyle.Short);
 
 			const tagContent = new TextInputBuilder()
-				.setCustomId('tag-content')
-				.setLabel('Tag Content')
+				.setCustomId("tag-content")
+				.setLabel("Tag Content")
 				.setRequired()
-				.setPlaceholder('Content of Tag')
+				.setPlaceholder("Content of Tag")
 				.setMinLength(3)
 				.setMaxLength(512)
-				.setStyle(TextInputStyle.Paragraph)
+				.setStyle(TextInputStyle.Paragraph);
 
 			const keywords = new TextInputBuilder()
-				.setCustomId('tag-keywords')
-				.setLabel('Tag Keywords')
-				.setPlaceholder('Keywords for Tag, separated by comma')
+				.setCustomId("tag-keywords")
+				.setLabel("Tag Keywords")
+				.setPlaceholder("Keywords for Tag, separated by comma")
 				.setMaxLength(100)
 				.setRequired(false)
-				.setStyle(TextInputStyle.Short)
+				.setStyle(TextInputStyle.Short);
 
-			const rows = [tagName, tagContent, keywords].map(r => new ActionRowBuilder<TextInputBuilder>().addComponents(r));
+			const rows = [tagName, tagContent, keywords].map((r) =>
+				new ActionRowBuilder<TextInputBuilder>().addComponents(r)
+			);
 			modal.addComponents(rows);
 
 			return context.interaction.showModal(modal);
 		}
 
-		if (subcmd === 'edit') {
-			const tag = options.getString('tag', true);
-			const file: TagData[] = require(`${process.cwd()}\\tags.json`);
-			const tagData = file.find(t => t.name === tag);
+		if (subcmd === "edit") {
+			const tag = options.getString("tag", true);
+			const tagData = file.find((t) => t.name === tag);
 			if (!tagData) {
 				return context.reply(`No tag found with name __${tag}__`);
 			}
 			const modal = new ModalBuilder()
-				.setTitle('Tag Edit')
-				.setCustomId('@sern/tag/edit')
+				.setTitle("Tag Edit")
+				.setCustomId("@sern/tag/edit");
 
 			const tagName = new TextInputBuilder()
-				.setCustomId('tag-name')
-				.setLabel('Tag Name')
+				.setCustomId("tag-name")
+				.setLabel("Tag Name")
 				.setRequired()
-				.setPlaceholder('Name of Tag')
+				.setPlaceholder("Name of Tag")
 				.setMinLength(3)
 				.setMaxLength(16)
 				.setStyle(TextInputStyle.Short)
 				.setValue(tagData.name);
 
 			const tagContent = new TextInputBuilder()
-				.setCustomId('tag-content')
-				.setLabel('Tag Content')
+				.setCustomId("tag-content")
+				.setLabel("Tag Content")
 				.setRequired()
-				.setPlaceholder('Content of Tag')
+				.setPlaceholder("Content of Tag")
 				.setMinLength(3)
 				.setMaxLength(512)
 				.setStyle(TextInputStyle.Paragraph)
 				.setValue(tagData.content);
 
 			const keywords = new TextInputBuilder()
-				.setCustomId('tag-keywords')
-				.setLabel('Tag Keywords')
-				.setPlaceholder('Keywords for Tag, separated by comma')
+				.setCustomId("tag-keywords")
+				.setLabel("Tag Keywords")
+				.setPlaceholder("Keywords for Tag, separated by comma")
 				.setMaxLength(100)
 				.setRequired(false)
 				.setStyle(TextInputStyle.Short)
-				.setValue(tagData.keywords.join(', '));
+				.setValue(tagData.keywords.join(", "));
 
-			const rows = [tagName, tagContent, keywords].map(r => new ActionRowBuilder<TextInputBuilder>().addComponents(r));
+			const rows = [tagName, tagContent, keywords].map((r) =>
+				new ActionRowBuilder<TextInputBuilder>().addComponents(r)
+			);
 			modal.addComponents(rows);
 			context.user.data = tag;
 			return context.interaction.showModal(modal);
 		}
-		if (subcmd === 'delete') {
-			const tag = options.getString('tag', true);
-			const file: TagData[] = require(`${process.cwd()}\\tags.json`);
-			const tagData = file.find(t => t.name === tag);
+		if (subcmd === "delete") {
+			const tag = options.getString("tag", true);
+			const tagData = file.find((t) => t.name === tag);
 			if (!tagData) {
-				return context.reply('Tag not found');
+				return context.reply("Tag not found");
 			}
 			file.splice(file.indexOf(tagData), 1);
-			writeFileSync(`${process.cwd()}\\tags.json`, JSON.stringify(file, null, 2));
+			writeFileSync(
+				`${process.cwd()}\\tags.json`,
+				JSON.stringify(file, null, 2)
+			);
 
 			return context.reply(`Tag ${tag} deleted`);
+		}
+
+		if (subcmd === "list") {
+			const embeds = file.map((tag) => {
+				const embed = new EmbedBuilder()
+					.setTitle(tag.name)
+					.setDescription(tag.content)
+					.setColor("Random")
+					.addFields({
+						name: "Keywords",
+						value: tag.keywords.join(", "),
+					})
+					.setTimestamp();
+				return embed;
+			});
+			const paginator = Paginate();
+			paginator.add(...embeds);
+			const ids = [`${Date.now()}__left`, `${Date.now()}__right`];
+			paginator.setTraverser([
+				new ButtonBuilder({
+					label: "<",
+					custom_id: ids[0],
+					style: ButtonStyle.Secondary,
+				}),
+				new ButtonBuilder({
+					label: ">",
+					custom_id: ids[1],
+					style: ButtonStyle.Secondary,
+				}),
+			]);
+			await context.interaction.deferReply();
+			const message = await context.interaction.editReply(
+				paginator.components()
+			);
+			paginator.setMessage(message);
+			message.channel
+				.createMessageComponentCollector({
+					componentType: ComponentType.Button,
+					time: 60_000,
+				})
+				.on("collect", async (i) => {
+					if (i.customId === ids[0]) {
+						await i.deferUpdate();
+						await paginator.back();
+					} else if (i.customId === ids[1]) {
+						await i.deferUpdate();
+						await paginator.next();
+					}
+				});
 		}
 	},
 });
 
-declare module 'discord.js' {
+declare module "discord.js" {
 	interface User {
 		data: unknown;
 	}
