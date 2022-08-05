@@ -4,6 +4,7 @@ import { Paginate } from '../pagination';
 import { publish } from '../plugins/publish';
 import DocHandler from '../trie/doc-autocmp';
 import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs';
+import { Paginator } from '../Paginator';
 
 function handleComments(sum : PurpleSummary) {
 	switch(sum.kind) {
@@ -81,27 +82,8 @@ export default commandModule({
 				.setAuthor({ name: 'sern', iconURL : context.client.user?.displayAvatarURL() })
 				.setURL(res.node.sources[0].url ?? 'External implementation')
 		});
-		const paginator = Paginate();
-		paginator.add(...embeds);
-		const ids = [`${Date.now()}__left`, `${Date.now()}__right`]
-		paginator.setTraverser([ 
-			new ButtonBuilder({ label : '<', custom_id : ids[0], style: ButtonStyle.Secondary}),
-			new ButtonBuilder({ label : '>', custom_id : ids[1], style: ButtonStyle.Secondary}) 
-		]);
-		await context.interaction.deferReply();
-		const message = await context.interaction.editReply(paginator.components())
-		paginator.setMessage(message)
-		message.channel.createMessageComponentCollector({
-			componentType: ComponentType.Button,
-			time: 60_000
-		}).on('collect', async i => {
-			if (i.customId === ids[0]) {
-				await i.deferUpdate();
-				await paginator.back();
-			} else if (i.customId === ids[1]) {
-				await i.deferUpdate();
-				await paginator.next();
-			}
-		}) 
+		const paginator = new Paginator({ embeds })
+
+		return paginator.run(context.interaction);
 	}, 
 });
