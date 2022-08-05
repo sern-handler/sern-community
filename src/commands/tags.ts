@@ -12,6 +12,7 @@ import {
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
 import { Paginate } from "../pagination";
+import { Paginator } from "../Paginator";
 import { publish } from "../plugins/publish";
 import type { TagData } from "./handlers/tagCreate";
 export default commandModule({
@@ -220,40 +221,9 @@ export default commandModule({
 					.setTimestamp();
 				return embed;
 			});
-			const paginator = Paginate();
-			paginator.add(...embeds);
-			const ids = [`${Date.now()}__left`, `${Date.now()}__right`];
-			paginator.setTraverser([
-				new ButtonBuilder({
-					label: "<",
-					custom_id: ids[0],
-					style: ButtonStyle.Secondary,
-				}),
-				new ButtonBuilder({
-					label: ">",
-					custom_id: ids[1],
-					style: ButtonStyle.Secondary,
-				}),
-			]);
-			await context.interaction.deferReply();
-			const message = await context.interaction.editReply(
-				paginator.components()
-			);
-			paginator.setMessage(message);
-			message.channel
-				.createMessageComponentCollector({
-					componentType: ComponentType.Button,
-					time: 60_000,
-				})
-				.on("collect", async (i) => {
-					if (i.customId === ids[0]) {
-						await i.deferUpdate();
-						await paginator.back();
-					} else if (i.customId === ids[1]) {
-						await i.deferUpdate();
-						await paginator.next();
-					}
-				});
+			const paginator = new Paginator({ embeds });
+
+			return paginator.run(context.interaction);
 		}
 	},
 });
