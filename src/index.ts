@@ -30,22 +30,3 @@ client.once("ready", (client) => {
 });
 
 client.login();
-// const d = `// @ts-nocheck
-// /**
-//  * This is dmOnly plugin, it allows commands to be run only in DMs.
-//  *
-//  * @author @EvolutionX-10
-//  * @version 1.1.0-beta
-//  * @requires \`partials: [Partials.Channel], intents: [GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent]
-//  * @example
-//  * \`\`\`ts
-//  * import { dmOnly } from "../path/to/your/plugin/folder";
-//  * import { commandModule } from "@sern/handler";
-//  * export default commandModule({
-//  * 		plugins: [dmOnly()],
-//  * 		execute: // your code
-//  * })
-//  * \`\`\`
-//  */`
-
-// console.log(parse(d, ['@license']));
