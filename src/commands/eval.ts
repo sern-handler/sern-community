@@ -1,6 +1,9 @@
-import { Args, CommandType, Context, commandModule } from "@sern/handler";
+import { CommandType, commandModule, Context } from "@sern/handler";
+import { Client, Collection } from "discord.js";
 import { inspect } from "util";
+import { fetch } from "undici";
 import { ownerOnly } from "../plugins/ownerOnly";
+import type { Data } from "./plugin";
 
 export default commandModule({
 	type: CommandType.Text,
@@ -46,3 +49,17 @@ export default commandModule({
 		ctx.channel!.send({ content: result as string });
 	},
 });
+
+export async function cp(client: Client) {
+	const cache: Collection<string, Data> = new Collection();
+	const link = `https://api.github.com/repos/sern-handler/awesome-plugins/contents/TypeScript`;
+	const resp = await fetch(link).catch(() => null);
+	if (!resp) return null;
+	const dataArray = (await resp.json()) as Data[];
+	for (const data of dataArray) {
+		const name = data.name.replace(".ts", "");
+		cache.set(name, data);
+	}
+	client.cache = cache;
+	return cache;
+}
