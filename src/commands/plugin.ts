@@ -50,7 +50,7 @@ export default commandModule({
 	async execute(ctx, [, options]) {
 		const url = options.getString("plugin", true) as string;
 		const name = ctx.client.cache?.findKey((d) => d.download_url === url);
-		let data = await fetch(url, { method: "GET" })
+		let data = await fetch(url)
 			.then((r) => r.text())
 			.catch(() => null);
 		if (!data || !name)
