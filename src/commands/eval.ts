@@ -28,10 +28,11 @@ export default commandModule({
 				.setDescription(
 					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient! <@&981419402283085834> will continue being given out until next week`
 				)
+				.setFooter({ text: "Supports DJS v14.2 and above" })
 				.setTimestamp();
 
 			channel.isTextBased() && channel.send({ embeds: [embed] });
-			return 'Done sir';
+			return "Done sir";
 		}
 
 		if (type !== "text") return;
