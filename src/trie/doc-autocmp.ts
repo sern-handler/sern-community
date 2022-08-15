@@ -1,5 +1,5 @@
 import TrieSearch from "trie-search";
-const docs = require(`${process.cwd()}\\docs.json`);
+const docs = require(`${process.cwd()}/docs.json`);
 import type { DocsChild } from "../../typings/docs";
 
 /**

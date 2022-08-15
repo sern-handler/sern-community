@@ -79,7 +79,7 @@ export default commandModule({
 							if (!existsSync(filePath)) {
 								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
-								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+								const file: TagData[] = require(`${process.cwd()}/tags.json`);
 								const tags = file.map((t) => t.name);
 								return ctx.respond(
 									tags
@@ -106,7 +106,7 @@ export default commandModule({
 		const [, options] = args;
 		const subcmd = options.getSubcommand();
 
-		const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 
 		if (subcmd === "create") {
 			const modal = new ModalBuilder()
