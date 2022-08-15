@@ -1,6 +1,5 @@
-import { SelectMenuBuilder } from "@discordjs/builders";
 import { commandModule, CommandType } from "@sern/handler";
-import { ActionRowBuilder, Collection, Role, TextChannel } from "discord.js";
+import { ActionRowBuilder, Collection, Role, TextChannel, SelectMenuBuilder } from "discord.js";
 import { ownerOnly } from "../plugins/ownerOnly";
 
 export default commandModule({

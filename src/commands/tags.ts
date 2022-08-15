@@ -11,8 +11,6 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
-import { Paginate } from "../pagination";
-import { Paginator } from "../Paginator";
 import { ownerOnly } from "../plugins/ownerOnly";
 import { publish } from "../plugins/publish";
 import type { TagData } from "./handlers/tagCreate";
@@ -97,11 +95,7 @@ export default commandModule({
 				},
 			],
 		},
-		{
-			name: "list",
-			type: ApplicationCommandOptionType.Subcommand,
-			description: "List all tags",
-		},
+		
 	],
 	execute: async (context, args) => {
 		const [, options] = args;
@@ -207,24 +201,6 @@ export default commandModule({
 			);
 
 			return context.reply(`Tag ${tag} deleted`);
-		}
-
-		if (subcmd === "list") {
-			const embeds = file.map((tag) => {
-				const embed = new EmbedBuilder()
-					.setTitle(tag.name)
-					.setDescription(tag.content)
-					.setColor("Random")
-					.addFields({
-						name: "Keywords",
-						value: tag.keywords.join(", "),
-					})
-					.setTimestamp();
-				return embed;
-			});
-			const paginator = new Paginator({ embeds });
-
-			return paginator.run(context.interaction);
 		}
 	},
 });
