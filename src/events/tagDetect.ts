@@ -8,13 +8,13 @@ import {
 } from "discord.js";
 import type { TagData } from "../commands/handlers/tagCreate";
 import { findBestMatch } from "string-similarity";
+const file: TagData[] = require(`${process.cwd()}/tags.json`);
 
 export default eventModule({
 	type: EventType.Discord,
 	name: "messageCreate",
 	async execute(message: Message) {
 		if (message.webhookId || message.author?.bot) return;
-		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 		const keywords = file.flatMap((t) => t.keywords);
 		const matches = findBestMatch(
 			message.cleanContent.toLowerCase() ?? message.content.toLowerCase(),
