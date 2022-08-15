@@ -13,11 +13,12 @@ import {
 import { existsSync, writeFileSync } from "fs";
 import { Paginate } from "../pagination";
 import { Paginator } from "../Paginator";
+import { ownerOnly } from "../plugins/ownerOnly";
 import { publish } from "../plugins/publish";
 import type { TagData } from "./handlers/tagCreate";
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish()],
+	plugins: [publish(), ownerOnly()],
 	options: [
 		{
 			name: "create",
