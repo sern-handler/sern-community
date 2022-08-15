@@ -11,7 +11,7 @@
     "name": "Outdated Node",
     "content": "Your nodejs version is outdated, update it to 16.9 or higher",
     "keywords": [
-      "cannot find module 'node:events'",
+      "'node:events'",
       "upgrade your node",
       "your node is outdated"
     ]

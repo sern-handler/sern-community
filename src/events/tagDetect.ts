@@ -34,7 +34,7 @@ export default eventModule({
 		const embed = new EmbedBuilder()
 			.setDescription(tag.content.trim())
 			.setFooter({
-				text: `Triggered by ${message.author.tag} | Confidence: ${matches.bestMatch.rating}`,
+				text: `${message.author.tag} | Confidence: ${(matches.bestMatch.rating * 100).toFixed(1)}%`,
 				iconURL: message.author.displayAvatarURL(),
 			})
 			.setColor("Random")
