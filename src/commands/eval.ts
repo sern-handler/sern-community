@@ -14,7 +14,7 @@ export default commandModule({
 		const [type, code] = args;
 		const { channel, guild, client, user, member, message: msg } = ctx;
 
-		function send(id: string) {
+		function send(id: string, ping: boolean = false) {
 			const channel = client.channels.cache.get(id);
 			if (!channel) return;
 			const embed = new EmbedBuilder()
@@ -30,8 +30,8 @@ export default commandModule({
 				)
 				.setFooter({ text: "Supports DJS v14.2 and above" })
 				.setTimestamp();
-
-			channel.isTextBased() && channel.send({ embeds: [embed] });
+			const content = ping ? '@everyone' : null;
+			channel.isTextBased() && channel.send({ content, embeds: [embed] });
 			return "Done sir";
 		}
 
