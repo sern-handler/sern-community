@@ -23,7 +23,7 @@ export default commandModule({
 				: [],
 		};
 		const filePath = `./tags.json`;
-		const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 		const oldTag = file.find((t) => t.name === ctx.user.data)!;
 
 		const similarKeywords = file.filter(

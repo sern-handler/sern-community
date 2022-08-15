@@ -43,7 +43,7 @@ export default commandModule({
 							if (!existsSync(filePath)) {
 								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
-								const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+								const file: TagData[] = require(`${process.cwd()}/tags.json`);
 								const tags = file.map((t) => t.name);
 								return ctx.respond(
 									tags
@@ -201,7 +201,7 @@ export default commandModule({
 			}
 			file.splice(file.indexOf(tagData), 1);
 			writeFileSync(
-				`${process.cwd()}\\tags.json`,
+				`${process.cwd()}/tags.json`,
 				JSON.stringify(file, null, 2)
 			);
 

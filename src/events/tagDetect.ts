@@ -14,7 +14,7 @@ export default eventModule({
 	name: "messageCreate",
 	async execute(message: Message) {
 		if (message.webhookId || message.author?.bot) return;
-		const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 		const keywords = file.flatMap((t) => t.keywords);
 		const matches = findBestMatch(
 			message.cleanContent.toLowerCase() ?? message.content.toLowerCase(),

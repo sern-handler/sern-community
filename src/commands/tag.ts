@@ -23,7 +23,7 @@ export default commandModule({
 					if (!existsSync(filePath)) {
 						return ctx.respond([{ name: "No tags found", value: "" }]);
 					} else {
-						const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+						const file: TagData[] = require(`${process.cwd()}/tags.json`);
 						const tags = file.map((t) => t.name);
 						return ctx.respond(
 							tags
@@ -48,9 +48,9 @@ export default commandModule({
 	execute(ctx, args) {
 		const [, options] = args;
 		const user = options.getUser("target");
-		const mention = user ? `**Tag suggestion for:** ${user}\n\n` : '';
+		const mention = user ? `**Tag suggestion for:** ${user}\n\n` : "";
 		const tag = options.getString("tag", true);
-		const file: TagData[] = require(`${process.cwd()}\\tags.json`);
+		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 		const tagData = file.find((t) => t.name === tag);
 		if (!tagData) {
 			return ctx.reply(`No tag found with name __${tag}__`);
