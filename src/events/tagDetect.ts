@@ -21,7 +21,7 @@ export default eventModule({
 			keywords
 		);
 
-		if (matches.bestMatch.rating < 0.7) return;
+		if (matches.bestMatch.rating <= 0.75) return;
 		const tag = file.find((t) => t.keywords.includes(matches.bestMatch.target));
 		if (!tag) return;
 		const mention = message.mentions.users.first();
@@ -34,7 +34,7 @@ export default eventModule({
 		const embed = new EmbedBuilder()
 			.setDescription(tag.content.trim())
 			.setFooter({
-				text: `Triggered by ${message.author.tag}`,
+				text: `Triggered by ${message.author.tag} | Confidence: ${matches.bestMatch.rating}`,
 				iconURL: message.author.displayAvatarURL(),
 			})
 			.setColor("Random")
