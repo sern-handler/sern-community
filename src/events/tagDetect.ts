@@ -21,7 +21,7 @@ export default eventModule({
 			keywords
 		);
 
-		if (matches.bestMatch.rating < 0.5) return;
+		if (matches.bestMatch.rating < 0.7) return;
 		const tag = file.find((t) => t.keywords.includes(matches.bestMatch.target));
 		if (!tag) return;
 		const mention = message.mentions.users.first();
