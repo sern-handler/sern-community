@@ -152,7 +152,7 @@ export class Paginator {
 					this.currentCount++;
 					break;
 				case '@paginator/last':
-					this.currentCount = this.descriptions!.length - 1;
+					this.currentCount = (this.descriptions ?? this.options.embeds)!.length - 1;
 					break;
 				default:
 					this.currentCount = parseInt((i as SelectMenuInteraction).values[0]);
