@@ -1,6 +1,6 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { writeFileSync } from "fs";
-import type { TagData } from "./tagCreate";
+import type { TagData } from "../../types";
 
 export default commandModule({
 	type: CommandType.Modal,

@@ -1,6 +1,6 @@
 import type { Message, User } from "discord.js";
 import { findBestMatch } from "string-similarity";
-import type { TagData } from "./commands/handlers/tagCreate";
+import type { TagData } from "./types";
 
 export class FuzzyMatcher {
 	public constructor(
@@ -23,7 +23,7 @@ export class FuzzyMatcher {
 			.flatMap((t) => t.keywords)
 			.map((k) => k.toLowerCase());
 		const matches = findBestMatch(this.cleanContent.toLowerCase(), keywords);
-		console.log(matches.bestMatch);
+
 		if (matches.bestMatch.rating < 0.4) return null;
 		const words = this.cleanContent.split(" ");
 
