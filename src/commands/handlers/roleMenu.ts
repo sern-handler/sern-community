@@ -1,5 +1,5 @@
 import { commandModule, CommandType } from "@sern/handler";
-import type { GuildMember } from "discord.js";
+import type { APISelectMenuComponent, GuildMember } from "discord.js";
 
 export default commandModule({
 	type: CommandType.MenuSelect,
@@ -10,7 +10,8 @@ export default commandModule({
 		const roles = interaction.values;
 
 		const menuRoles: string[] = (
-			interaction.message.components[0].components[0].data as any
+			interaction.message.components[0].components[0]
+				.data as Readonly<APISelectMenuComponent>
 		).options.map((o: { label: string; value: string }) => o.value);
 
 		const member = interaction.member as GuildMember;
