@@ -23,5 +23,12 @@
       "missing intents",
       "intents missing"
     ]
+  },
+  {
+    "name": "How2Ask",
+    "content": "Often users face issues like commands not loading, message commands not working, slash commands not registering, etc. when they try sern. Please be specific when asking your question and provide all the proper data like code, error, expected behaviour, version, etc.\n\n> Did you use [@sern/cli](<https://www.npmjs.com/@sern/cli>) to generate your project?\n> Did you use templates as a reference and create project?\n> What version of [discord.js](<https://www.npmjs.com/discord.js>) you are on? Is it v13?\n> What version of [@sern/handler](<https://www.npmjs.com/@sern/handler>) you are using?\n> Are you using TypeScript or JavaScript?\n> Are you using CommonJS or ESM?",
+    "keywords": [
+      "how2ask"
+    ]
   }
 ]

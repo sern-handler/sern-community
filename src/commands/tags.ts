@@ -95,7 +95,6 @@ export default commandModule({
 				},
 			],
 		},
-		
 	],
 	execute: async (context, args) => {
 		const [, options] = args;
@@ -114,7 +113,7 @@ export default commandModule({
 				.setRequired()
 				.setPlaceholder("Name of Tag")
 				.setMinLength(3)
-				.setMaxLength(16)
+				.setMaxLength(32)
 				.setStyle(TextInputStyle.Short);
 
 			const tagContent = new TextInputBuilder()
@@ -123,14 +122,14 @@ export default commandModule({
 				.setRequired()
 				.setPlaceholder("Content of Tag")
 				.setMinLength(3)
-				.setMaxLength(512)
+				.setMaxLength(1900)
 				.setStyle(TextInputStyle.Paragraph);
 
 			const keywords = new TextInputBuilder()
 				.setCustomId("tag-keywords")
 				.setLabel("Tag Keywords")
 				.setPlaceholder("Keywords for Tag, separated by comma")
-				.setMaxLength(100)
+				.setMaxLength(200)
 				.setRequired(false)
 				.setStyle(TextInputStyle.Short);
 
@@ -158,7 +157,7 @@ export default commandModule({
 				.setRequired()
 				.setPlaceholder("Name of Tag")
 				.setMinLength(3)
-				.setMaxLength(16)
+				.setMaxLength(32)
 				.setStyle(TextInputStyle.Short)
 				.setValue(tagData.name);
 
@@ -168,7 +167,7 @@ export default commandModule({
 				.setRequired()
 				.setPlaceholder("Content of Tag")
 				.setMinLength(3)
-				.setMaxLength(512)
+				.setMaxLength(1900)
 				.setStyle(TextInputStyle.Paragraph)
 				.setValue(tagData.content);
 
@@ -176,7 +175,7 @@ export default commandModule({
 				.setCustomId("tag-keywords")
 				.setLabel("Tag Keywords")
 				.setPlaceholder("Keywords for Tag, separated by comma")
-				.setMaxLength(100)
+				.setMaxLength(200)
 				.setRequired(false)
 				.setStyle(TextInputStyle.Short)
 				.setValue(tagData.keywords.join(", "));
