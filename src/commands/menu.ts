@@ -1,5 +1,14 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { ActionRowBuilder, Collection, Role, TextChannel, SelectMenuBuilder, ApplicationCommandOptionType, ChannelType } from "discord.js";
+import {
+	ActionRowBuilder,
+	Collection,
+	Role,
+	TextChannel,
+	SelectMenuBuilder,
+	ApplicationCommandOptionType,
+	ChannelType,
+	EmbedBuilder,
+} from "discord.js";
 import { ownerOnly } from "../plugins/ownerOnly";
 import { publish } from "../plugins/publish";
 import { Resolver } from "../Resolver";
@@ -10,24 +19,31 @@ export default commandModule({
 	description: "Select Menu Role",
 	options: [
 		{
-			name: 'channel',
+			name: "channel",
 			type: ApplicationCommandOptionType.Channel,
-			description: 'The channel to send the message to',
+			description: "The channel to send the message to",
 			channelTypes: [ChannelType.GuildText],
-			required: true
+			required: true,
 		},
 		{
-			name: 'role',
+			name: "role",
 			type: ApplicationCommandOptionType.String,
-			description: 'The roles to attach (upto 25)',
+			description: "The roles to attach (upto 25)",
 			required: true,
-		}
+		},
+		{
+			name: "message",
+			type: ApplicationCommandOptionType.String,
+			description: "The message to send",
+			required: true,
+		},
 	],
 	async execute(ctx, [, options]) {
-		const channel = options.getChannel('channel', true) as TextChannel;
-		const role = new Resolver(options.getString('role', true), ctx.interaction).roles;
+		const channel = options.getChannel("channel", true) as TextChannel;
+		const role = new Resolver(options.getString("role", true), ctx.interaction)
+			.roles;
+		const message = options.getString("message", true);
 
-		if (!channel || !role) return ctx.reply("Missing channel or role");
 		if (role.size > 25) return ctx.reply("Too many roles");
 
 		const cdn = role.filter(
@@ -41,10 +57,15 @@ export default commandModule({
 			);
 		}
 		await ctx.interaction.deferReply();
-
 		const row = createMenu(channel, role);
+		const embed = new EmbedBuilder()
+			.setTitle(message)
+			.setDescription(
+				`Please select your roles below\nYou can select multiple roles`
+			)
+			.setColor("White");
 		await channel.send({
-			content: "Role Menu",
+			embeds: [embed],
 			components: [row],
 		});
 		await ctx.interaction.editReply("✅ Done!");
