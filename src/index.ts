@@ -16,7 +16,7 @@ const client = new Client({
 Sern.init({
 	client,
 	sernEmitter: new SernEmitter(),
-	defaultPrefix: "sern",
+	defaultPrefix: "!sern",
 	commands: "dist/src/commands",
 	events: "dist/src/events",
 });
