@@ -25,7 +25,7 @@ export class FuzzyMatcher {
 		const matches = findBestMatch(this.cleanContent.toLowerCase(), keywords);
 
 		if (matches.bestMatch.rating < 0.4) return null;
-		const words = this.cleanContent.split(" ");
+		const words = this.cleanContent.toLowerCase().split(" ");
 
 		const firstMatchedTag = this.tags.find((t) =>
 			t.keywords.includes(matches.bestMatch.target)
@@ -37,7 +37,7 @@ export class FuzzyMatcher {
 		});
 
 		if (!keyword) return null;
-		const splitted = keyword.split(" ");
+		const splitted = keyword.toLowerCase().split(" ");
 
 		const Confidence = this.checkArray(words, splitted);
 
