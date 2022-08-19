@@ -63,7 +63,7 @@ export default commandModule({
 			.setDescription(
 				`Please select your roles below\nYou can select multiple roles`
 			)
-			.setColor("White");
+			.setColor(0xcc5279);
 		await channel.send({
 			embeds: [embed],
 			components: [row],
