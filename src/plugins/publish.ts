@@ -4,16 +4,25 @@ import {
 	PluginType,
 	SernOptionsData,
 } from "@sern/handler";
-import { ApplicationCommandData, ApplicationCommandType } from "discord.js";
+import {
+	ApplicationCommandData,
+	ApplicationCommandType,
+	PermissionResolvable,
+} from "discord.js";
 
 export function publish(
-	guildIds: string | Array<string> = []
+	options: PublishOptions = {
+		guildIds: [],
+		dmPermission: true,
+		defaultMemberPermissions: null,
+	}
 ): CommandPlugin<CommandType.Slash | CommandType.Both> {
 	return {
 		type: PluginType.Command,
 		description: "Manage Slash Commands",
 		name: "slash-auto-publish",
-		async execute({client}, {mod: module}, controller) {
+		async execute({ client }, { mod: module }, controller) {
+			let { defaultMemberPermissions, dmPermission, guildIds } = options;
 			function c(e: unknown) {
 				console.error("publish command didnt work for", module.name!);
 				console.error(e);
@@ -24,19 +33,19 @@ export function publish(
 					name: module.name!,
 					description: module.description,
 					options: optionsTransformer(module.options ?? []),
+					defaultMemberPermissions,
+					dmPermission,
 				};
 				if (!Array.isArray(guildIds)) guildIds = [guildIds];
 
 				if (!guildIds.length) {
-					const cmd = (
-						await client.application!.commands.fetch()
-					).find((c) => c.name === module.name);
+					const cmd = (await client.application!.commands.fetch()).find(
+						(c) => c.name === module.name
+					);
 					if (cmd) {
 						if (!cmd.equals(commandData, true)) {
-							console.log(
-								`Found differences in global command ${module.name}`
-							);
-							await cmd.edit(commandData).then((c) => {
+							console.log(`Found differences in global command ${module.name}`);
+							cmd.edit(commandData).then(() => {
 								console.log(
 									`${module.name} updated with new data successfully!`
 								);
@@ -45,10 +54,8 @@ export function publish(
 						return controller.next();
 					}
 
-					await client
-						.application!.commands.create(commandData)
-						.catch(c);
 					console.log("Command created", module.name!);
+					client.application!.commands.create(commandData).catch(c);
 					return controller.next();
 				}
 
@@ -60,23 +67,15 @@ export function publish(
 					);
 					if (guildcmd) {
 						if (!guildcmd.equals(commandData, true)) {
-							console.log(
-								`Found differences in command ${module.name}`
-							);
-							await guildcmd.edit(commandData).catch(c);
-							console.log(
-								`${module.name} updated with new data successfully!`
-							);
+							console.log(`Found differences in command ${module.name}`);
+							console.log(`${module.name} updated with new data successfully!`);
+							guildcmd.edit(commandData).catch(c);
 							continue;
 						}
 						continue;
 					}
-					await guild.commands.create(commandData).catch(c);
-					console.log(
-						"Guild Command created",
-						module.name!,
-						guild.name
-					);
+					console.log("Guild Command created", module.name!, guild.name);
+					guild.commands.create(commandData).catch(c);
 				}
 				return controller.next();
 			} catch (e) {
@@ -100,3 +99,9 @@ export const CommandTypeRaw = {
 	[CommandType.MenuUser]: ApplicationCommandType.User,
 	[CommandType.Slash]: ApplicationCommandType.ChatInput,
 } as const;
+
+interface PublishOptions {
+	guildIds: string[];
+	defaultMemberPermissions: PermissionResolvable | null;
+	dmPermission: boolean;
+}
