@@ -1,7 +1,7 @@
 import { CommandPlugin, CommandType, PluginType } from "@sern/handler";
 import type { Collection } from "discord.js";
-import { cp } from "../commands/eval";
-import type { Data } from "../commands/plugin";
+import { cp } from "../commands/eval.js";
+import type { Data } from "../commands/plugin.js";
 export function refreshCache(): CommandPlugin<CommandType.Slash> {
 	return {
 		type: PluginType.Command,

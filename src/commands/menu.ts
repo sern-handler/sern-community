@@ -9,9 +9,9 @@ import {
 	ChannelType,
 	EmbedBuilder,
 } from "discord.js";
-import { ownerOnly } from "../plugins/ownerOnly";
-import { publish } from "../plugins/publish";
-import { Resolver } from "../Resolver";
+import { ownerOnly } from "../plugins/ownerOnly.js";
+import { publish } from "../plugins/publish.js";
+import { Resolver } from "../Resolver.js";
 
 export default commandModule({
 	plugins: [ownerOnly(), publish()],

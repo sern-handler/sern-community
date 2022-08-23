@@ -2,8 +2,8 @@ import { CommandType, commandModule, Context } from "@sern/handler";
 import { Client, Collection, EmbedBuilder } from "discord.js";
 import { inspect } from "util";
 import { fetch } from "undici";
-import { ownerOnly } from "../plugins/ownerOnly";
-import type { Data } from "./plugin";
+import { ownerOnly } from "../plugins/ownerOnly.js";
+import type { Data } from "./plugin.js";
 
 export default commandModule({
 	type: CommandType.Text,

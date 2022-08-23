@@ -2,18 +2,17 @@ import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
-	ButtonBuilder,
-	ButtonStyle,
-	ComponentType,
-	EmbedBuilder,
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle,
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
-import { ownerOnly } from "../plugins/ownerOnly";
-import { publish } from "../plugins/publish";
-import type { TagData } from "../types";
+import { ownerOnly } from "../plugins/ownerOnly.js";
+import { publish } from "../plugins/publish.js";
+import type { TagData } from "../types/index.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 export default commandModule({
 	type: CommandType.Slash,
 	plugins: [publish(), ownerOnly()],

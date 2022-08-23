@@ -1,10 +1,10 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { publish } from "../plugins/publish";
+import { publish } from "../plugins/publish.js";
 import { fetch } from "undici";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
-import { cooldown } from "../plugins/cooldown";
+import { cooldown } from "../plugins/cooldown.js";
 import { parse } from "jsdoc-parse-plus";
-import { refreshCache } from "../plugins/refreshCache";
+import { refreshCache } from "../plugins/refreshCache.js";
 export default commandModule({
 	type: CommandType.Slash,
 	description: "View sern plugins",

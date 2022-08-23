@@ -1,9 +1,12 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
-import { Paginator } from "../Paginator";
-import { publish } from "../plugins/publish";
-import type { TagData } from "../types";
+import { Paginator } from "../Paginator.js";
+import { publish } from "../plugins/publish.js";
+
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+import type { TagData } from "../types/index.js";
 
 export default commandModule({
 	type: CommandType.Slash,

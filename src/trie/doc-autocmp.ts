@@ -1,6 +1,10 @@
+import { readFile } from "fs/promises";
 import TrieSearch from "trie-search";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const docs = require(`${process.cwd()}/docs.json`);
-import type { DocsChild } from "../../typings/docs";
+import type { DocsChild } from "../../typings/docs.js";
+
 
 /**
  * Not bothering typing this json file
@@ -32,7 +36,9 @@ export default class DocHandler {
 				}
 			} else {
 				const sectionChildNodes = section.children.map((id: string) => {
-					const node = docs.children.find((c: { id: string }) => c.id === id)! as DocsChild;
+					const node = docs.children.find(
+						(c: { id: string }) => c.id === id
+					)! as DocsChild;
 					return {
 						name: section.title,
 						node,
