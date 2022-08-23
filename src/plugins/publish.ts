@@ -11,18 +11,24 @@ import {
 } from "discord.js";
 
 export function publish(
-	options: PublishOptions = {
-		guildIds: [],
-		dmPermission: true,
-		defaultMemberPermissions: null,
-	}
+	options?: PublishOptions
 ): CommandPlugin<CommandType.Slash | CommandType.Both> {
 	return {
 		type: PluginType.Command,
 		description: "Manage Slash Commands",
 		name: "slash-auto-publish",
 		async execute({ client }, { mod: module }, controller) {
-			let { defaultMemberPermissions, dmPermission, guildIds } = options;
+			const defaultOptions = {
+				guildIds: [],
+				dmPermission: undefined,
+				defaultMemberPermissions: null,
+			};
+
+			options = { ...defaultOptions, ...options } as PublishOptions &
+				ValidPublishOptions;
+			let { defaultMemberPermissions, dmPermission, guildIds } =
+				options as unknown as ValidPublishOptions;
+
 			function c(e: unknown) {
 				console.error("publish command didnt work for", module.name!);
 				console.error(e);
@@ -36,7 +42,6 @@ export function publish(
 					defaultMemberPermissions,
 					dmPermission,
 				};
-				if (!Array.isArray(guildIds)) guildIds = [guildIds];
 
 				if (!guildIds.length) {
 					const cmd = (await client.application!.commands.fetch()).find(
@@ -53,9 +58,12 @@ export function publish(
 						}
 						return controller.next();
 					}
-
-					console.log("Command created", module.name!);
-					client.application!.commands.create(commandData).catch(c);
+					client
+						.application!.commands.create(commandData)
+						.then(() => {
+							console.log("Command created", module.name!);
+						})
+						.catch(c);
 					return controller.next();
 				}
 
@@ -68,14 +76,24 @@ export function publish(
 					if (guildcmd) {
 						if (!guildcmd.equals(commandData, true)) {
 							console.log(`Found differences in command ${module.name}`);
-							console.log(`${module.name} updated with new data successfully!`);
-							guildcmd.edit(commandData).catch(c);
+							guildcmd
+								.edit(commandData)
+								.then(() =>
+									console.log(
+										`${module.name} updated with new data successfully!`
+									)
+								)
+								.catch(c);
 							continue;
 						}
 						continue;
 					}
-					console.log("Guild Command created", module.name!, guild.name);
-					guild.commands.create(commandData).catch(c);
+					guild.commands
+						.create(commandData)
+						.then(() =>
+							console.log("Guild Command created", module.name!, guild.name)
+						)
+						.catch(c);
 				}
 				return controller.next();
 			} catch (e) {
@@ -100,8 +118,31 @@ export const CommandTypeRaw = {
 	[CommandType.Slash]: ApplicationCommandType.ChatInput,
 } as const;
 
-interface PublishOptions {
+type NonEmptyArray<T extends string = string> = [T, ...T[]];
+
+interface ValidPublishOptions {
 	guildIds: string[];
-	defaultMemberPermissions: PermissionResolvable | null;
 	dmPermission: boolean;
+	defaultMemberPermissions: PermissionResolvable;
 }
+interface GuildPublishOptions {
+	guildIds?: NonEmptyArray;
+	defaultMemberPermissions?: PermissionResolvable;
+	dmPermission?: never;
+}
+interface GlobalPublishOptions {
+	defaultMemberPermissions?: PermissionResolvable;
+	dmPermission?: boolean;
+	guildIds?: never;
+}
+
+type BasePublishOptions = GuildPublishOptions | GlobalPublishOptions;
+
+type PublishOptions = BasePublishOptions &
+	(
+		| Required<Pick<BasePublishOptions, "defaultMemberPermissions">>
+		| (
+				| Required<Pick<BasePublishOptions, "dmPermission">>
+				| Required<Pick<BasePublishOptions, "guildIds">>
+		  )
+	);
