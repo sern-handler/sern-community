@@ -2,12 +2,11 @@ import {
 	CommandPlugin,
 	CommandType,
 	PluginType,
-	SernOptionsData,
+	SernOptionsData
 } from "@sern/handler";
 import {
-	ApplicationCommandData,
-	ApplicationCommandType,
-	PermissionResolvable,
+	ApplicationCommandData, ApplicationCommandType,
+	PermissionResolvable
 } from "discord.js";
 
 export function publish(
@@ -34,14 +33,14 @@ export function publish(
 				console.error(e);
 			}
 			try {
-				const commandData: ApplicationCommandData = {
+				const commandData = {
 					type: CommandTypeRaw[module.type],
 					name: module.name!,
 					description: module.description,
 					options: optionsTransformer(module.options ?? []),
 					defaultMemberPermissions,
 					dmPermission,
-				};
+				} as ApplicationCommandData;
 
 				if (!guildIds.length) {
 					const cmd = (await client.application!.commands.fetch()).find(
