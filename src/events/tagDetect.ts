@@ -6,8 +6,10 @@ import {
 	EmbedBuilder,
 	Message,
 } from "discord.js";
-import type { TagData, TagMessage } from "../types";
-import { FuzzyMatcher } from "../FuzzyMatcher";
+import type { TagData, TagMessage } from "../types/index.js";
+import { FuzzyMatcher } from "../FuzzyMatcher.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const file: TagData[] = require(`${process.cwd()}/tags.json`);
 
 export default eventModule({

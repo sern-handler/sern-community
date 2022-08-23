@@ -1,6 +1,8 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { existsSync, writeFileSync } from "fs";
-import type { TagData } from "../../types";
+import type { TagData } from "../../types/index.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
 export default commandModule({
 	type: CommandType.Modal,

@@ -1,10 +1,9 @@
 import { commandModule, CommandType } from '@sern/handler';
-import { ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, Colors, ComponentType, EmbedBuilder } from 'discord.js';
-import { Paginate } from '../pagination';
-import { publish } from '../plugins/publish';
-import DocHandler from '../trie/doc-autocmp';
-import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs';
-import { Paginator } from '../Paginator';
+import { ApplicationCommandOptionType, Colors, EmbedBuilder } from 'discord.js';
+import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs.js';
+import { Paginator } from '../Paginator.js';
+import { publish } from '../plugins/publish.js';
+import DocHandler from '../trie/doc-autocmp.js';
 
 function handleComments(sum : PurpleSummary) {
 	switch(sum.kind) {
