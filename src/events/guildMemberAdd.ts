@@ -7,6 +7,6 @@ export default eventModule({
 	async execute(member: GuildMember) {
 		// TODO: This should be inferred
 		const requiredRoles = ["980118655738212407"];
-		await member.roles.add(requiredroles);
+		await member.roles.add(requiredRoles);
 	},
 });
