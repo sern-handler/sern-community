@@ -31,11 +31,11 @@ export default commandModule({
 		let result: unknown | string;
 
 		try {
-			result = eval(code).catch((e: Error) => new Error(e.message));
+			result = eval(code);
 		} catch (error) {
 			result = error;
 		}
-		if (result instanceof Promise) result = await result;
+		if (result instanceof Promise) result = await result.catch((e: Error) => new Error(e.message));
 		if (typeof result !== "string") {
 			result = inspect(result, {
 				depth: 0,
