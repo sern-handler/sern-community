@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Partials, ActivityType } from "discord.js";
+import { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
 
 import { Sern, SernEmitter } from "@sern/handler";
 import "dotenv/config";
@@ -13,6 +13,7 @@ const client = new Client({
 	partials: [Partials.GuildMember, Partials.GuildMember, Partials.Message],
 });
 
+Sern.addExternal(process);
 Sern.init({
 	client,
 	sernEmitter: new SernEmitter(),
@@ -29,4 +30,4 @@ client.once("ready", (client) => {
 	console.log(`[✅]: Logged in as ${client.user.username}`);
 });
 
-client.login();
+await client.login();

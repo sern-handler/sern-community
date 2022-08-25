@@ -1,7 +1,7 @@
-import { CommandType, commandModule, Context } from "@sern/handler";
+import { commandModule, CommandType } from "@sern/handler";
 import { Client, Collection, EmbedBuilder } from "discord.js";
-import { inspect } from "util";
 import { fetch } from "undici";
+import { inspect } from "util";
 import { ownerOnly } from "../plugins/ownerOnly.js";
 import type { Data } from "./plugin.js";
 
@@ -11,43 +11,27 @@ export default commandModule({
 	plugins: [ownerOnly()],
 	alias: ["ev"],
 	execute: async (ctx, args) => {
-		const [type, code] = args;
-		const { channel, guild, client, user, member, message: msg } = ctx;
+		let code: string[] | string = args[1];
 
-		function send(id: string, ping: boolean = false) {
-			const channel = client.channels.cache.get(id);
-			if (!channel) return;
-			const embed = new EmbedBuilder()
-				.setColor(0xcc5279)
-				.setTitle("v1 is out!")
-				.setThumbnail(client.user?.displayAvatarURL() ?? "")
-				.setImage(
-					"https://raw.githubusercontent.com/sern-handler/.github/main/banner.png"
-				)
-				.setAuthor({ name: "sern", url: "https://sern-handler.js.org/" })
-				.setDescription(
-					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient! <@&981419402283085834> will continue being given out until next week`
-				)
-				.setFooter({ text: "Supports DJS v14.2 and above" })
-				.setTimestamp();
-			const content = ping ? '@everyone' : null;
-			channel.isTextBased() && channel.send({ content, embeds: [embed] });
-			return "Done sir";
+		code = code.join(" ") as string;
+		if (code.includes("await")) {
+			const ar = code.split(";");
+			const last = ar.pop();
+			code = `(async () => {\n${ar.join(";\n")}\nreturn ${
+				last?.trim() ?? " "
+			}\n\n})();`;
 		}
-
-		if (type !== "text") return;
+		const { channel, guild, client, user, member, message: msg } = ctx;
 		if (
-			(code.join(" ").includes("send") || code.join(" ").includes("reply")) &&
+			["TOKEN", "process.env", "token"].some((e) => code.includes(e)) &&
 			ctx.user.id !== "697795666373640213"
 		)
-			return;
+			return ctx.message.react("❌");
 
-		if (code.join(" ").includes("process.env")) return;
-		if (code.join(" ").includes("token")) return;
 		let result: unknown | string;
 
 		try {
-			result = eval(code.join(" "));
+			result = eval(code);
 		} catch (error) {
 			result = error;
 		}
@@ -63,7 +47,29 @@ export default commandModule({
 		if ((result as string).length > 2000) {
 			channel!.send("Result is too long to send");
 		}
+
 		ctx.channel!.send({ content: result as string });
+
+		function send(id: string, ping = false) {
+			const channel = client.channels.cache.get(id);
+			if (!channel) return;
+			const embed = new EmbedBuilder()
+				.setColor(0xcc5279)
+				.setTitle("v1 is out!")
+				.setThumbnail(client.user?.displayAvatarURL() ?? "")
+				.setImage(
+					"https://raw.githubusercontent.com/sern-handler/.github/main/banner.png"
+				)
+				.setAuthor({ name: "sern", url: "https://sern-handler.js.org/" })
+				.setDescription(
+					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient! <@&981419402283085834> will continue being given out until next week`
+				)
+				.setFooter({ text: "Supports DJS v14.2 and above" })
+				.setTimestamp();
+			const content = ping ? "@everyone" : null;
+			channel.isTextBased() && channel.send({ content, embeds: [embed] });
+			return "Done sir";
+		}
 	},
 });
 
