@@ -1,7 +1,7 @@
-import { CommandType, commandModule, Context } from "@sern/handler";
+import { commandModule, CommandType } from "@sern/handler";
 import { Client, Collection, EmbedBuilder } from "discord.js";
-import { inspect } from "util";
 import { fetch } from "undici";
+import { inspect } from "util";
 import { ownerOnly } from "../plugins/ownerOnly.js";
 import type { Data } from "./plugin.js";
 
@@ -11,8 +11,44 @@ export default commandModule({
 	plugins: [ownerOnly()],
 	alias: ["ev"],
 	execute: async (ctx, args) => {
-		const [type, code] = args;
+		let code: string[] | string = args[1];
+
+		code = code.join(" ") as string;
+		if (code.includes("await")) {
+			const ar = code.split(";");
+			const last = ar.pop();
+			code = `(async () => {\n${ar.join(";\n")}\nreturn ${
+				last?.trim() ?? " "
+			}\n\n})();`;
+		}
 		const { channel, guild, client, user, member, message: msg } = ctx;
+		if (
+			["TOKEN", "process.env", "token"].some((e) => code.includes(e)) &&
+			ctx.user.id !== "697795666373640213"
+		)
+			return ctx.message.react("❌");
+
+		let result: unknown | string;
+
+		try {
+			result = eval(code);
+		} catch (error) {
+			result = error;
+		}
+		if (result instanceof Promise) result = await result;
+		if (typeof result !== "string") {
+			result = inspect(result, {
+				depth: 0,
+			});
+		}
+
+		result = "```js\n" + result + "\n```";
+
+		if ((result as string).length > 2000) {
+			channel!.send("Result is too long to send");
+		}
+
+		ctx.channel!.send({ content: result as string });
 
 		function send(id: string, ping: boolean = false) {
 			const channel = client.channels.cache.get(id);
@@ -30,40 +66,10 @@ export default commandModule({
 				)
 				.setFooter({ text: "Supports DJS v14.2 and above" })
 				.setTimestamp();
-			const content = ping ? '@everyone' : null;
+			const content = ping ? "@everyone" : null;
 			channel.isTextBased() && channel.send({ content, embeds: [embed] });
 			return "Done sir";
 		}
-
-		if (type !== "text") return;
-		if (
-			(code.join(" ").includes("send") || code.join(" ").includes("reply")) &&
-			ctx.user.id !== "697795666373640213"
-		)
-			return;
-
-		if (code.join(" ").includes("process.env")) return;
-		if (code.join(" ").includes("token")) return;
-		let result: unknown | string;
-
-		try {
-			result = eval(code.join(" "));
-		} catch (error) {
-			result = error;
-		}
-		if (result instanceof Promise) result = await result;
-		if (typeof result !== "string") {
-			result = inspect(result, {
-				depth: 0,
-			});
-		}
-
-		result = "```js\n" + result + "\n```";
-
-		if ((result as string).length > 2000) {
-			channel!.send("Result is too long to send");
-		}
-		ctx.channel!.send({ content: result as string });
 	},
 });
 
