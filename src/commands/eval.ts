@@ -31,7 +31,7 @@ export default commandModule({
 		let result: unknown | string;
 
 		try {
-			result = eval(code);
+			result = eval(code).catch((e: Error) => new Error(e.message));
 		} catch (error) {
 			result = error;
 		}

@@ -39,5 +39,10 @@
       "don't use ts-node",
       "use ts-node"
     ]
+  },
+  {
+    "name": "Try",
+    "content": "[This video was made especially for you](https://tryitands.ee/)",
+    "keywords": []
   }
 ]
