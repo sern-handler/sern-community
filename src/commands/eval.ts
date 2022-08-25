@@ -50,7 +50,7 @@ export default commandModule({
 
 		ctx.channel!.send({ content: result as string });
 
-		function send(id: string, ping: boolean = false) {
+		function send(id: string, ping = false) {
 			const channel = client.channels.cache.get(id);
 			if (!channel) return;
 			const embed = new EmbedBuilder()
