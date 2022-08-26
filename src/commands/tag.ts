@@ -5,8 +5,8 @@ import { Paginator } from "../Paginator.js";
 import { publish } from "../plugins/publish.js";
 
 import { createRequire } from "module";
-const require = createRequire(import.meta.url);
 import type { TagData } from "../types/index.js";
+const require = createRequire(import.meta.url);
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -19,12 +19,12 @@ export default commandModule({
 			description: "List all tags",
 		},
 		{
-			name: 'send',
+			name: "send",
 			type: ApplicationCommandOptionType.Subcommand,
-			description: 'Send a tag',
+			description: "Send a tag",
 			options: [
 				{
-					name : 'tag',
+					name: "tag",
 					type: ApplicationCommandOptionType.String,
 					description: "Tag you want to send",
 					required: true,
@@ -50,7 +50,7 @@ export default commandModule({
 								);
 							}
 						},
-					}
+					},
 				},
 				{
 					name: "target",
@@ -58,14 +58,14 @@ export default commandModule({
 					required: false,
 					description: "Who should I mention while showing the tag?",
 				},
-			]
+			],
 		},
 	],
 	execute(ctx, args) {
 		const [, options] = args;
 		const subCmd = options.getSubcommand();
-		switch(subCmd) {
-			case 'list' : {
+		switch (subCmd) {
+			case "list": {
 				const file: TagData[] = require(`${process.cwd()}/tags.json`);
 				const embeds = file.map((tag) => {
 					const embed = new EmbedBuilder()
@@ -74,17 +74,25 @@ export default commandModule({
 						.setColor("Random")
 						.addFields({
 							name: "Keywords",
-							value: tag.keywords.join(", "),
+							value: tag.keywords.join(", ") || "No keywords!",
 						})
 						.setTimestamp();
 					return embed;
 				});
-				const paginator = new Paginator({ embeds });
-	
+				const paginator = new Paginator({ embeds }).setSelectMenuOptions(
+					...Array(embeds.length)
+						.fill(null)
+						.map((_, i) => embeds[i])
+						.map((e) => ({
+							label: e.data.title!,
+							value: embeds.indexOf(e).toString(),
+						}))
+				);
+
 				return paginator.run(ctx.interaction);
 			}
-			case 'send' : {
-				const user = options.getUser('target');
+			case "send": {
+				const user = options.getUser("target");
 				const mention = user ? `**Tag suggestion for:** ${user}\n\n` : "";
 				const tag = options.getString("tag", true);
 				const file: TagData[] = require(`${process.cwd()}/tags.json`);
