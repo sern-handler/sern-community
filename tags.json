@@ -1,10 +1,9 @@
 [
   {
     "name": "Upgrade DJS",
-    "content": "Please update your discord.js version with compatible version of sern Handler\nIt should be above v14.2.0",
+    "content": "Please update your discord.js version with compatible version of sern Handler\nIt should be above v14.2.0\n\n> Tip: Don't know how to check? Run `npm ls discord.js` in your terminal!",
     "keywords": [
-      "upgrade djs",
-      "update djs"
+      "upgrade your djs"
     ]
   },
   {
