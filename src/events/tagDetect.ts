@@ -6,9 +6,9 @@ import {
 	EmbedBuilder,
 	Message,
 } from "discord.js";
-import type { TagData, TagMessage } from "../types/index.js";
-import { FuzzyMatcher } from "../FuzzyMatcher.js";
 import { createRequire } from "module";
+import { FuzzyMatcher } from "../FuzzyMatcher.js";
+import type { TagData, TagMessage } from "../types/index.js";
 const require = createRequire(import.meta.url);
 const file: TagData[] = require(`${process.cwd()}/tags.json`);
 
@@ -17,7 +17,11 @@ export default eventModule({
 	name: "messageCreate",
 	async execute(message: Message) {
 		if (message.webhookId || message.author?.bot) return;
-
+		if (
+			message.client.data &&
+			(message.client.data as { inCooldown: boolean }).inCooldown
+		)
+			return;
 		const fuzz = new FuzzyMatcher(message, file);
 		const data = fuzz.fuzzyMatch();
 		if (!data) return;
@@ -49,12 +53,23 @@ export default eventModule({
 			})
 			.setColor("Random")
 			.setTimestamp();
+
+		message.client.data = {
+			inCooldown: true,
+		};
+
 		const msg = await message.channel.send({
 			content: text,
 			embeds: [embed],
 			components: [row],
 		});
+
 		(msg as TagMessage).tagTriggerId = message.author.id;
+
+		setTimeout(() => {
+			message.client.data = {
+				inCooldown: false,
+			};
+		}, 30_000);
 	},
 });
-

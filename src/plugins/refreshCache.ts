@@ -18,5 +18,6 @@ export function refreshCache(): CommandPlugin<CommandType.Slash> {
 declare module "discord.js" {
 	interface Client {
 		cache: Collection<string, Data> | null;
+		data: unknown;
 	}
 }
