@@ -78,10 +78,8 @@ function validAttachment(attachment: Attachment) {
 }
 
 async function validImage(url: URL) {
-	const req = await fetch(url).catch(() => null);
-	if (!req) return false;
-	const buff = await req.blob().catch(() => null);
-	if (!buff) return false;
-	if (buff.type.startsWith("image/")) return true;
-	return false;
+	return fetch(url)
+		.then(req => req.blob())
+		.then(req => req.type.startsWith("image/"))
+		.catch(() => false);
 }
