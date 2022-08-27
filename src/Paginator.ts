@@ -133,8 +133,6 @@ export class Paginator {
 		});
 
 		collector.on('collect', async (i) => {
-			const msg = await i.deferUpdate({ fetchReply: true });
-
 			collector.resetTimer();
 
 			switch (i.customId as ButtonIds) {
@@ -145,14 +143,15 @@ export class Paginator {
 					this.currentCount--;
 					break;
 				case '@paginator/stop':
-					msg.components = [];
+					i.message.components = [];
 					collector.stop();
 					break;
 				case '@paginator/forward':
 					this.currentCount++;
 					break;
 				case '@paginator/last':
-					this.currentCount = (this.descriptions ?? this.options.embeds)!.length - 1;
+					this.currentCount =
+						(this.descriptions ?? this.options.embeds!).length - 1;
 					break;
 				default:
 					this.currentCount = parseInt((i as SelectMenuInteraction).values[0]);
@@ -166,16 +165,16 @@ export class Paginator {
 					(this.descriptions ?? this.options.embeds!).length - 1;
 			}
 
-			await i.editReply({
+			await i.update({
 				embeds: [embeds[this.currentCount]],
-				components: msg.components,
+				components: i.message.components,
 			});
 		});
 
 		collector.on('ignore', async (i) => {
 			await i.reply({
 				content:
-					this.options.wrongInteractionResponse ?? 'You have been ignored',
+					this.options.wrongInteractionResponse ?? "This maze isn't for you",
 				ephemeral: true,
 			});
 		});
@@ -251,8 +250,7 @@ export class Paginator {
 			.map((_, i) => {
 				const embed = new EmbedBuilder(template.data);
 				embed.setDescription(this.descriptions![i]);
-				embed.data.color ? null : embed.setColor('Random');
-
+				!embed.data.color && embed.setColor('Random');
 				embed.setFooter({
 					text: `Page ${i + 1}/${this.descriptions!.length}`,
 				});
