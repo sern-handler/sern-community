@@ -7,10 +7,10 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
+import { createRequire } from "module";
 import { ownerOnly } from "../plugins/ownerOnly.js";
 import { publish } from "../plugins/publish.js";
 import type { TagData } from "../types/index.js";
-import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 export default commandModule({
@@ -183,7 +183,7 @@ export default commandModule({
 				new ActionRowBuilder<TextInputBuilder>().addComponents(r)
 			);
 			modal.addComponents(rows);
-			context.user.data = tag;
+			context.user.data = { tag };
 			return context.interaction.showModal(modal);
 		}
 		if (subcmd === "delete") {

@@ -17,16 +17,19 @@ export default eventModule({
 	name: "messageCreate",
 	async execute(message: Message) {
 		if (message.webhookId || message.author?.bot) return;
-		if (
-			message.client.data &&
-			(message.client.data as { inCooldown: boolean }).inCooldown
-		)
-			return;
+
 		const fuzz = new FuzzyMatcher(message, file);
 		const data = fuzz.fuzzyMatch();
 		if (!data) return;
 		const { tag, confidence } = data;
 		if (confidence <= 0.5) return;
+
+		if (
+			message.author.data &&
+			(message.author.data as { inCooldown: boolean }).inCooldown
+		)
+			return message.react("🌿");
+
 		const mention = fuzz.mentionedUser;
 		const text = mention ? `**Tag suggestion for:** ${mention}\n\n` : ``;
 		const button = new ButtonBuilder()
@@ -54,7 +57,7 @@ export default eventModule({
 			.setColor("Random")
 			.setTimestamp();
 
-		message.client.data = {
+		message.author.data = {
 			inCooldown: true,
 		};
 
@@ -67,9 +70,9 @@ export default eventModule({
 		(msg as TagMessage).tagTriggerId = message.author.id;
 
 		setTimeout(() => {
-			message.client.data = {
+			message.author.data = {
 				inCooldown: false,
 			};
-		}, 30_000);
+		}, 15_000);
 	},
 });
