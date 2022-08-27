@@ -1,3 +1,4 @@
+import type { Snowflake } from "discord-api-types/v10";
 import {
 	Collection,
 	CommandInteraction,
@@ -5,8 +6,7 @@ import {
 	GuildMember,
 	Role,
 	User,
-} from 'discord.js';
-import type { Snowflake } from 'discord-api-types/v10';
+} from "discord.js";
 
 /**
  * It resolves mentions from the content of a command
@@ -28,7 +28,7 @@ export class Resolver {
 		User: /<@!?(?<id>\d{17,20})>/g,
 	};
 
-	private getIds(mentionType: 'Channel' | 'Role' | 'User'): string[] {
+	private getIds(mentionType: "Channel" | "Role" | "User"): string[] {
 		const matches = this.content.matchAll(this.#regex[mentionType]);
 		return Array.from(matches)
 			.map((match) => match.groups?.id)
@@ -40,7 +40,7 @@ export class Resolver {
 	 * @returns The collection of resolved {@link User users}.
 	 */
 	public get users(): Readonly<Collection<Snowflake, User>> {
-		const users = this.getIds('User')
+		const users = this.getIds("User")
 			.map((id) => this.interaction.client.users.cache.get(id))
 			.filter(Boolean)
 			.map((u) => [u!.id, u]) as [Snowflake, User][];
@@ -53,7 +53,7 @@ export class Resolver {
 	 * @returns The collection of resolved {@link GuildMember members}.
 	 */
 	public get members(): Readonly<Collection<Snowflake, GuildMember>> {
-		const members = this.getIds('User')
+		const members = this.getIds("User")
 			.map((id) => this.interaction.guild?.members.cache.get(id))
 			.filter(Boolean)
 			.map((m) => [m!.id, m]) as [Snowflake, GuildMember][];
@@ -66,7 +66,7 @@ export class Resolver {
 	 * @returns The collection of resolved {@link GuildBasedChannel channels}.
 	 */
 	public get channels(): Readonly<Collection<Snowflake, GuildBasedChannel>> {
-		const channels = this.getIds('Channel')
+		const channels = this.getIds("Channel")
 			.map((id) => this.interaction.guild?.channels.cache.get(id))
 			.filter(Boolean)
 			.map((c) => [c!.id, c]) as [Snowflake, GuildBasedChannel][];
@@ -79,11 +79,23 @@ export class Resolver {
 	 * @returns The collection of resolved {@link Role roles}.
 	 */
 	public get roles(): Readonly<Collection<Snowflake, Role>> {
-		const roles = this.getIds('Role')
+		const roles = this.getIds("Role")
 			.map((id) => this.interaction.guild?.roles.cache.get(id))
 			.filter(Boolean)
 			.map((r) => [r!.id, r]) as [Snowflake, Role][];
 
 		return new Collection<Snowflake, Role>(roles);
+	}
+
+	/**
+	 * Resolves a URL from the content
+	 * @retunrns The url
+	 */
+	public get url(): Readonly<URL> | null {
+		try {
+			return new URL(this.content);
+		} catch {
+			return null;
+		}
 	}
 }
