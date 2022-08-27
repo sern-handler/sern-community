@@ -117,9 +117,9 @@ export const CommandTypeRaw = {
 	[CommandType.Slash]: ApplicationCommandType.ChatInput,
 } as const;
 
-type NonEmptyArray<T extends string = string> = [T, ...T[]];
+export type NonEmptyArray<T extends `${number}` = `${number}`> = [T, ...T[]];
 
-interface ValidPublishOptions {
+export interface ValidPublishOptions {
 	guildIds: string[];
 	dmPermission: boolean;
 	defaultMemberPermissions: PermissionResolvable;
@@ -131,13 +131,13 @@ interface GuildPublishOptions {
 }
 interface GlobalPublishOptions {
 	defaultMemberPermissions?: PermissionResolvable;
-	dmPermission?: boolean;
+	dmPermission?: false;
 	guildIds?: never;
 }
 
 type BasePublishOptions = GuildPublishOptions | GlobalPublishOptions;
 
-type PublishOptions = BasePublishOptions &
+export type PublishOptions = BasePublishOptions &
 	(
 		| Required<Pick<BasePublishOptions, "defaultMemberPermissions">>
 		| (
