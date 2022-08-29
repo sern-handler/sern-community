@@ -31,7 +31,7 @@ export default eventModule({
 			return message.react("🌿");
 
 		const mention = fuzz.mentionedUser;
-		const text = mention ? `**Tag suggestion for:** ${mention}\n\n` : ``;
+		const text = mention ? `*Tag suggestion for:* ${mention}\n\n` : ``;
 		const button = new ButtonBuilder()
 			.setLabel("Click here to Jump to message")
 			.setURL(message.url)
@@ -65,6 +65,9 @@ export default eventModule({
 			content: text,
 			embeds: [embed],
 			components: [row],
+			allowedMentions: {
+				parse: [],
+			},
 		});
 
 		(msg as TagMessage).tagTriggerId = message.author.id;
