@@ -1,16 +1,19 @@
-import { commandModule, CommandType, Context } from "@sern/handler";
+import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
 	Attachment,
 	ButtonBuilder,
+	ButtonStyle,
+	EmbedBuilder,
+	GuildMember,
 	Message,
 	Snowflake,
-	TextChannel
+	TextChannel,
 } from "discord.js";
+import { fetch } from "undici";
 import { publish } from "../plugins/publish.js";
 import { Resolver } from "../Resolver.js";
-import { fetch } from "undici";
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -19,12 +22,18 @@ export default commandModule({
 		{
 			name: "submit",
 			type: ApplicationCommandOptionType.Subcommand,
-			description: "submit an emoji",
+			description: "Submit an emoji",
 			options: [
+				{
+					name: "name",
+					type: ApplicationCommandOptionType.String,
+					description: "Name of the emoji",
+					required: true,
+				},
 				{
 					name: "attachment",
 					type: ApplicationCommandOptionType.Attachment,
-					description: "An attachment for submission",
+					description: "An attachment for submission (under 256KB)",
 					required: false,
 				},
 				{
@@ -39,43 +48,52 @@ export default commandModule({
 	async execute(ctx, [, args]) {
 		const command = args.getSubcommand();
 
-		await ctx.interaction.deferReply({ ephemeral: true });
-		const send = sendTo('942873612464050288');
+		await ctx.interaction.deferReply();
 		switch (command) {
 			case "submit": {
 				const attachment = args.getAttachment("attachment");
 				const urlString = args.getString("url");
+				const name = args.getString("name", true);
+				const send = sendTo(
+					"942873612464050288",
+					ctx.member as GuildMember,
+					name
+				);
+
 				if (attachment) {
-					const isValidAttachment = verify(attachment,
+					const isValidAttachment = verify(
+						attachment,
 						(a) => a.size <= 256_000,
-						a => a.contentType?.startsWith('image/') || false,
+						(a) => a.contentType?.startsWith("image/") || false,
 						(a) =>
 							["image/png", "image/jpg", "image/gif"].includes(
 								a.contentType ??
-								"Something that is not png or jpg when contentType is null"
+									"Something that is not png or jpg when contentType is null"
 							)
-						);
+					);
 					if (!isValidAttachment) {
 						return ctx.interaction.editReply({
 							content:
-								"Your attachment is not in valid format. Please submit something else",
+								"Your attachment is not in valid format or the size is over the limits of discord. Please submit something else",
 						});
 					}
-					return ctx.interaction.editReply({
-						 content:
-						 	 "Thanks for submitting. Your attachment will now be reviewed"
-					}).then(m => send(m, attachment));
-				}
-				else if (urlString) {
+					return ctx.interaction
+						.editReply({
+							content: "Thanks for submitting. Your emoji will now be reviewed",
+						})
+						.then((m) => send(m, attachment));
+				} else if (urlString) {
 					const url = new Resolver(urlString, ctx.interaction).url;
 					if (!url || !(await validImage(url)))
 						return ctx.interaction.editReply({
-							content: "This URL is invalid!",
+							content:
+								"This URL is invalid or the size is over the limits of discord. Please submit something else",
 						});
-					return ctx.interaction.editReply({
-						content:
-							"Thanks for submitting. Your url will now be reviewed"
-					});
+					return ctx.interaction
+						.editReply({
+							content: "Thanks for submitting. Your emoji will now be reviewed",
+						})
+						.then((m) => send(m, url));
 				}
 
 				return ctx.interaction.editReply({
@@ -89,35 +107,70 @@ export default commandModule({
 function verify<T>(
 	attachment: T,
 	...conditions: ((attachment: T) => boolean)[]
-){
-	return conditions.reduce(
-		(partial, func) => {
-			return func(attachment) && partial
-		},
-		true
-	);
+) {
+	return conditions.reduce((partial, func) => {
+		return func(attachment) && partial;
+	}, true);
 }
 
 async function validImage(url: URL) {
 	return fetch(url.toString())
-		.then(req => req.blob())
-		.then(req => req.type.startsWith("image/"))
+		.then((req) => req.blob())
+		.then((req) => req.type.startsWith("image/") && req.size < 262144)
 		.catch(() => false);
 }
 
-function sendTo(channelId: Snowflake) {
-	return async function provider(context: Message, attachment: Attachment) {
-		const channel = await context.client.channels.fetch(channelId);
-		await (channel as TextChannel).send({
-			content: 'Bruddas, please review, thank you.',
-			files : [attachment],
-			components : [
-				new ActionRowBuilder<ButtonBuilder>()
-					.addComponents(
-						new ButtonBuilder().setCustomId(channelId + '$' + context.id),
-						new ButtonBuilder().setCustomId(channelId + '$' + context.id),
-					)
-			]
-		})
+function sendTo(channelId: Snowflake, member: GuildMember, name: string) {
+	async function provider(context: Message, payload: Attachment): Promise<void>;
+	async function provider(context: Message, payload: URL): Promise<void>;
+	async function provider(context: Message, payload: Attachment | URL) {
+		const embed = new EmbedBuilder()
+			.setColor("Yellow")
+			.setTitle("Emoji Suggestion")
+			.setAuthor({
+				name: member.user.tag,
+				iconURL: member.displayAvatarURL(),
+				url: context.url,
+			})
+			.addFields(
+				{
+					name: "Suggested Name",
+					value: name,
+				},
+				{
+					name: "Status",
+					value: "Pending Approval",
+				}
+			)
+			.setTimestamp();
+
+		const channel = (await context.client.channels.fetch(
+			channelId
+		)) as TextChannel;
+		if (payload instanceof Attachment) {
+			embed.setImage(`attachment://${payload.name}`);
+		} else embed.setImage(payload.toString());
+
+		await channel.send({
+			content: "Bruddas, please review, thank you.",
+			files: payload instanceof Attachment ? [payload] : [],
+			embeds: [embed],
+			components: [gimmeRow()],
+		});
 	}
+	return provider;
+}
+
+function gimmeRow() {
+	const accept = new ButtonBuilder()
+		.setCustomId("emoji/accept")
+		.setLabel("Accept")
+		.setStyle(ButtonStyle.Success)
+		.setEmoji("✅");
+	const deny = new ButtonBuilder()
+		.setCustomId("emoji/deny")
+		.setLabel("Deny")
+		.setStyle(ButtonStyle.Secondary)
+		.setEmoji("❌");
+	return new ActionRowBuilder<ButtonBuilder>().setComponents(deny, accept);
 }
