@@ -55,7 +55,7 @@ export default commandModule({
 				const urlString = args.getString("url");
 				const name = args.getString("name", true);
 				const send = sendTo(
-					"942873612464050288",
+					"1014582281907753080",
 					ctx.member as GuildMember,
 					name
 				);
