@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsup && node --no-warnings .",
+    "start": "tsup && node .",
     "compile": "tsup"
   },
   "keywords": [
