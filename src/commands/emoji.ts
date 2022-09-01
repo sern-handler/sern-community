@@ -12,12 +12,13 @@ import {
 	TextChannel,
 } from "discord.js";
 import { fetch } from "undici";
+import { cooldown } from "../plugins/cooldown.js";
 import { publish } from "../plugins/publish.js";
 import { Resolver } from "../Resolver.js";
 
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish({ dmPermission: false })],
+	plugins: [publish({ dmPermission: false }), cooldown.add([["user", "1/15"]])],
 	options: [
 		{
 			name: "submit",
