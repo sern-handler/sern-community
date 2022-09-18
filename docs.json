@@ -24,7 +24,7 @@
 							"fileName": "src/handler/sern.ts",
 							"line": 86,
 							"character": 16,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L86"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L86"
 						}
 					],
 					"target": 4
@@ -40,7 +40,7 @@
 							"fileName": "src/handler/sern.ts",
 							"line": 107,
 							"character": 16,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L107"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L107"
 						}
 					],
 					"target": 1
@@ -66,7 +66,7 @@
 							"fileName": "src/handler/sern.ts",
 							"line": 77,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L77"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L77"
 						}
 					],
 					"type": {
@@ -89,7 +89,7 @@
 											"fileName": "src/handler/sern.ts",
 											"line": 78,
 											"character": 4,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L78"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L78"
 										}
 									],
 									"type": {
@@ -105,7 +105,7 @@
 													"fileName": "src/handler/sern.ts",
 													"line": 78,
 													"character": 10,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L78"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L78"
 												}
 											],
 											"signatures": [
@@ -125,7 +125,7 @@
 														],
 														"name": "OkImpl",
 														"qualifiedName": "OkImpl",
-														"package": "ts-results"
+														"package": "ts-results-es"
 													}
 												}
 											]
@@ -144,7 +144,7 @@
 											"fileName": "src/handler/sern.ts",
 											"line": 79,
 											"character": 4,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L79"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L79"
 										}
 									],
 									"type": {
@@ -160,7 +160,7 @@
 													"fileName": "src/handler/sern.ts",
 													"line": 79,
 													"character": 10,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L79"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L79"
 												}
 											],
 											"signatures": [
@@ -180,7 +180,7 @@
 														],
 														"name": "ErrImpl",
 														"qualifiedName": "ErrImpl",
-														"package": "ts-results"
+														"package": "ts-results-es"
 													}
 												}
 											]
@@ -203,7 +203,7 @@
 									"fileName": "src/handler/sern.ts",
 									"line": 77,
 									"character": 26,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L77"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L77"
 								}
 							]
 						}
@@ -221,7 +221,7 @@
 							"fileName": "src/handler/sern.ts",
 							"line": 67,
 							"character": 16,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L67"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L67"
 						}
 					],
 					"signatures": [
@@ -239,7 +239,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts title=\"src/index.ts\"\n//Add this before initiating Sern!\nSern.addExternal(new Level())\n```"
+												"text": "```ts title=\"src/index.ts\"\r\n//Add this before initiating Sern!\r\nSern.addExternal(new Level())\r\n```"
 											}
 										]
 									},
@@ -248,7 +248,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts title=\"events/level.ts\"\n export default eventModule({\n     emitter: 'Level',\n     type : EventType.External,\n     name: 'error',\n     execute(args) {\n         console.log(args)\n     }\n })\n```"
+												"text": "```ts title=\"events/level.ts\"\r\n export default eventModule({\r\n     emitter: 'Level',\r\n     type : EventType.External,\r\n     name: 'error',\r\n     execute(args) {\r\n         console.log(args)\r\n     }\r\n })\r\n```"
 											}
 										]
 									}
@@ -280,7 +280,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Any external event emitter.\nThe object will be stored in a map, and then fetched by the name of the instance's class.\nAs there are infinite possibilities to adding external event emitters,\nMost types aren't provided and are as narrow as possibly can."
+												"text": "Any external event emitter.\r\nThe object will be stored in a map, and then fetched by the name of the instance's class.\r\nAs there are infinite possibilities to adding external event emitters,\r\nMost types aren't provided and are as narrow as possibly can."
 											}
 										]
 									},
@@ -309,7 +309,7 @@
 							"fileName": "src/handler/sern.ts",
 							"line": 34,
 							"character": 16,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L34"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L34"
 						}
 					],
 					"signatures": [
@@ -327,7 +327,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts title=\"src/index.ts\"\nSern.init({\n    client,\n    defaultPrefix: '!',\n    commands: 'dist/commands',\n})\n```"
+												"text": "```ts title=\"src/index.ts\"\r\nSern.init({\r\n    client,\r\n    defaultPrefix: '!',\r\n    commands: 'dist/commands',\r\n})\r\n```"
 											}
 										]
 									}
@@ -344,7 +344,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Options to pass into sern.\nFunction to start the handler up"
+												"text": "Options to pass into sern.\r\nFunction to start the handler up"
 											}
 										]
 									},
@@ -390,7 +390,7 @@
 					"fileName": "src/handler/sern.ts",
 					"line": 1,
 					"character": 0,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L1"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L1"
 				}
 			]
 		},
@@ -408,7 +408,7 @@
 						"content": [
 							{
 								"kind": "code",
-								"text": "```ts\nexport default commandModule({\n    // highlight-next-line\n    type : CommandType.Text,\n    name : 'a text command'\n    execute(message) {\n        console.log(message.content)\n    }\n})\n```"
+								"text": "```ts\r\nexport default commandModule({\r\n    // highlight-next-line\r\n    type : CommandType.Text,\r\n    name : 'a text command'\r\n    execute(message) {\r\n        console.log(message.content)\r\n    }\r\n})\r\n```"
 							}
 						]
 					}
@@ -434,7 +434,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 27,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L27"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L27"
 						}
 					],
 					"type": {
@@ -461,7 +461,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 39,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L39"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L39"
 						}
 					],
 					"type": {
@@ -488,7 +488,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 35,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L35"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L35"
 						}
 					],
 					"type": {
@@ -515,7 +515,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 43,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L43"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L43"
 						}
 					],
 					"type": {
@@ -542,7 +542,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 31,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L31"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L31"
 						}
 					],
 					"type": {
@@ -569,7 +569,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 47,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L47"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L47"
 						}
 					],
 					"type": {
@@ -596,7 +596,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 23,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L23"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L23"
 						}
 					],
 					"type": {
@@ -623,7 +623,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 19,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L19"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L19"
 						}
 					],
 					"type": {
@@ -652,7 +652,7 @@
 					"fileName": "src/handler/structures/enums.ts",
 					"line": 15,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L15"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L15"
 				}
 			]
 		},
@@ -670,7 +670,7 @@
 						"content": [
 							{
 								"kind": "code",
-								"text": "```ts\nexport default eventModule({\n    //highlight-next-line\n    type : EventType.Discord,\n    name : 'guildMemberAdd'\n    execute(member : GuildMember) {\n        console.log(member)\n    }\n})\n```"
+								"text": "```ts\r\nexport default eventModule({\r\n    //highlight-next-line\r\n    type : EventType.Discord,\r\n    name : 'guildMemberAdd'\r\n    execute(member : GuildMember) {\r\n        console.log(member)\r\n    }\r\n})\r\n```"
 							}
 						]
 					}
@@ -696,7 +696,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 68,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L68"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L68"
 						}
 					],
 					"type": {
@@ -714,7 +714,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The EventType for handling external events.\nCould be for example, "
+								"text": "The EventType for handling external events.\r\nCould be for example, "
 							},
 							{
 								"kind": "code",
@@ -731,7 +731,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 77,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L77"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L77"
 						}
 					],
 					"type": {
@@ -758,7 +758,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 72,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L72"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L72"
 						}
 					],
 					"type": {
@@ -782,7 +782,7 @@
 					"fileName": "src/handler/structures/enums.ts",
 					"line": 64,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L64"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L64"
 				}
 			]
 		},
@@ -812,7 +812,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 114,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L114"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L114"
 						}
 					],
 					"type": {
@@ -839,7 +839,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 110,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L110"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L110"
 						}
 					],
 					"type": {
@@ -866,7 +866,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 118,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L118"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L118"
 						}
 					],
 					"type": {
@@ -890,7 +890,7 @@
 					"fileName": "src/handler/structures/enums.ts",
 					"line": 106,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L106"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L106"
 				}
 			]
 		},
@@ -908,7 +908,7 @@
 						"content": [
 							{
 								"kind": "code",
-								"text": "```ts\nexport default function myPlugin() : EventPlugin<CommandType.Text> {\n    //highlight-next-line\n    type : PluginType.Event,\n    execute([ctx, args], controller) {\n        return controller.next();\n    }\n}\n```"
+								"text": "```ts\r\nexport default function myPlugin() : EventPlugin<CommandType.Text> {\r\n    //highlight-next-line\r\n    type : PluginType.Event,\r\n    execute([ctx, args], controller) {\r\n        return controller.next();\r\n    }\r\n}\r\n```"
 							}
 						]
 					}
@@ -934,7 +934,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 97,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L97"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L97"
 						}
 					],
 					"type": {
@@ -961,7 +961,7 @@
 							"fileName": "src/handler/structures/enums.ts",
 							"line": 101,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L101"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L101"
 						}
 					],
 					"type": {
@@ -984,7 +984,7 @@
 					"fileName": "src/handler/structures/enums.ts",
 					"line": 93,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/enums.ts#L93"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/enums.ts#L93"
 				}
 			]
 		},
@@ -1014,9 +1014,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 32,
+							"line": 31,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L32"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L31"
 						}
 					],
 					"signatures": [
@@ -1051,7 +1051,7 @@
 										],
 										"name": "Option",
 										"qualifiedName": "Option",
-										"package": "ts-results"
+										"package": "ts-results-es"
 									},
 									"defaultValue": "None"
 								},
@@ -1081,7 +1081,7 @@
 										],
 										"name": "Option",
 										"qualifiedName": "Option",
-										"package": "ts-results"
+										"package": "ts-results-es"
 									},
 									"defaultValue": "None"
 								}
@@ -1105,9 +1105,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 68,
+							"line": 63,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L68"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L63"
 						}
 					],
 					"getSignature": {
@@ -1142,9 +1142,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 119,
+							"line": 108,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L119"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L108"
 						}
 					],
 					"getSignature": {
@@ -1178,9 +1178,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 84,
+							"line": 77,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L84"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L77"
 						}
 					],
 					"getSignature": {
@@ -1206,9 +1206,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 92,
+							"line": 84,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L92"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L84"
 						}
 					],
 					"getSignature": {
@@ -1236,9 +1236,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 100,
+							"line": 91,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L100"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L91"
 						}
 					],
 					"getSignature": {
@@ -1264,9 +1264,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 60,
+							"line": 56,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L60"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L56"
 						}
 					],
 					"getSignature": {
@@ -1292,9 +1292,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 127,
+							"line": 115,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L127"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L115"
 						}
 					],
 					"getSignature": {
@@ -1320,9 +1320,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 55,
+							"line": 52,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L55"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L52"
 						}
 					],
 					"getSignature": {
@@ -1366,9 +1366,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 111,
+							"line": 101,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L111"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L101"
 						}
 					],
 					"getSignature": {
@@ -1414,9 +1414,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 46,
+							"line": 44,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L46"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L44"
 						}
 					],
 					"getSignature": {
@@ -1458,9 +1458,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 76,
+							"line": 70,
 							"character": 15,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L76"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L70"
 						}
 					],
 					"getSignature": {
@@ -1488,9 +1488,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 142,
+							"line": 129,
 							"character": 11,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L142"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L129"
 						}
 					],
 					"signatures": [
@@ -1518,9 +1518,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 147,
+							"line": 133,
 							"character": 11,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L147"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L133"
 						}
 					],
 					"signatures": [
@@ -1606,9 +1606,9 @@
 					"sources": [
 						{
 							"fileName": "src/handler/structures/context.ts",
-							"line": 134,
+							"line": 122,
 							"character": 11,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L134"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L122"
 						}
 					],
 					"signatures": [
@@ -1702,9 +1702,9 @@
 			"sources": [
 				{
 					"fileName": "src/handler/structures/context.ts",
-					"line": 31,
+					"line": 30,
 					"character": 21,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/context.ts#L31"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/context.ts#L30"
 				}
 			]
 		},
@@ -1786,7 +1786,7 @@
 							"fileName": "src/handler/sernEmitter.ts",
 							"line": 32,
 							"character": 20,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L32"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L32"
 						}
 					],
 					"signatures": [
@@ -1894,7 +1894,7 @@
 							"fileName": "src/handler/sernEmitter.ts",
 							"line": 10,
 							"character": 20,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L10"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L10"
 						}
 					],
 					"signatures": [
@@ -1970,7 +1970,7 @@
 													"fileName": "src/handler/sernEmitter.ts",
 													"line": 12,
 													"character": 18,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L12"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L12"
 												}
 											],
 											"signatures": [
@@ -2046,7 +2046,7 @@
 							"fileName": "src/handler/sernEmitter.ts",
 							"line": 21,
 							"character": 20,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L21"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L21"
 						}
 					],
 					"signatures": [
@@ -2122,7 +2122,7 @@
 													"fileName": "src/handler/sernEmitter.ts",
 													"line": 23,
 													"character": 18,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L23"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L23"
 												}
 											],
 											"signatures": [
@@ -2207,7 +2207,7 @@
 					"fileName": "src/handler/sernEmitter.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sernEmitter.ts#L4"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sernEmitter.ts#L4"
 				}
 			],
 			"extendedTypes": [
@@ -2237,7 +2237,7 @@
 							"fileName": "src/handler/plugins/plugin.ts",
 							"line": 29,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L29"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L29"
 						}
 					],
 					"type": {
@@ -2253,7 +2253,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 29,
 									"character": 10,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L29"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L29"
 								}
 							],
 							"signatures": [
@@ -2273,7 +2273,7 @@
 										],
 										"name": "Ok",
 										"qualifiedName": "Ok",
-										"package": "ts-results"
+										"package": "ts-results-es"
 									}
 								}
 							]
@@ -2291,7 +2291,7 @@
 							"fileName": "src/handler/plugins/plugin.ts",
 							"line": 30,
 							"character": 4,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L30"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L30"
 						}
 					],
 					"type": {
@@ -2307,7 +2307,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 30,
 									"character": 10,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L30"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L30"
 								}
 							],
 							"signatures": [
@@ -2327,7 +2327,7 @@
 										],
 										"name": "Err",
 										"qualifiedName": "Err",
-										"package": "ts-results"
+										"package": "ts-results-es"
 									}
 								}
 							]
@@ -2349,7 +2349,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 28,
 					"character": 17,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L28"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L28"
 				}
 			]
 		},
@@ -2363,7 +2363,7 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "An object to be passed into init function."
+						"text": "An object to be passed into Sern#init() function."
 					}
 				]
 			},
@@ -2381,7 +2381,7 @@
 							"fileName": "src/handler/structures/wrapper.ts",
 							"line": 10,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L10"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L10"
 						}
 					],
 					"type": {
@@ -2410,7 +2410,7 @@
 							"fileName": "src/handler/structures/wrapper.ts",
 							"line": 13,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L13"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L13"
 						}
 					],
 					"type": {
@@ -2432,7 +2432,7 @@
 							"fileName": "src/handler/structures/wrapper.ts",
 							"line": 12,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L12"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L12"
 						}
 					],
 					"type": {
@@ -2454,7 +2454,7 @@
 							"fileName": "src/handler/structures/wrapper.ts",
 							"line": 14,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L14"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L14"
 						}
 					],
 					"type": {
@@ -2486,7 +2486,7 @@
 														"fileName": "src/handler/structures/wrapper.ts",
 														"line": 16,
 														"character": 30,
-														"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L16"
+														"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L16"
 													}
 												],
 												"type": {
@@ -2505,7 +2505,7 @@
 														"fileName": "src/handler/structures/wrapper.ts",
 														"line": 16,
 														"character": 12,
-														"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L16"
+														"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L16"
 													}
 												],
 												"type": {
@@ -2528,7 +2528,7 @@
 												"fileName": "src/handler/structures/wrapper.ts",
 												"line": 16,
 												"character": 10,
-												"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L16"
+												"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L16"
 											}
 										]
 									}
@@ -2547,7 +2547,7 @@
 											"fileName": "src/handler/structures/wrapper.ts",
 											"line": 17,
 											"character": 11,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L17"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L17"
 										}
 									],
 									"signatures": [
@@ -2579,7 +2579,7 @@
 																		"fileName": "src/handler/structures/wrapper.ts",
 																		"line": 17,
 																		"character": 37,
-																		"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L17"
+																		"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L17"
 																	}
 																],
 																"type": {
@@ -2598,7 +2598,7 @@
 																		"fileName": "src/handler/structures/wrapper.ts",
 																		"line": 17,
 																		"character": 19,
-																		"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L17"
+																		"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L17"
 																	}
 																],
 																"type": {
@@ -2621,7 +2621,7 @@
 																"fileName": "src/handler/structures/wrapper.ts",
 																"line": 17,
 																"character": 17,
-																"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L17"
+																"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L17"
 															}
 														]
 													}
@@ -2648,7 +2648,7 @@
 							"fileName": "src/handler/structures/wrapper.ts",
 							"line": 11,
 							"character": 13,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L11"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L11"
 						}
 					],
 					"type": {
@@ -2675,7 +2675,7 @@
 					"fileName": "src/handler/structures/wrapper.ts",
 					"line": 9,
 					"character": 10,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/wrapper.ts#L9"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/wrapper.ts#L9"
 				}
 			]
 		},
@@ -2690,7 +2690,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 11,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L11"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L11"
 				}
 			],
 			"type": {
@@ -2717,7 +2717,7 @@
 											"fileName": "src/types/handler.ts",
 											"line": 11,
 											"character": 47,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L11"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L11"
 										}
 									],
 									"type": {
@@ -2737,7 +2737,7 @@
 											"fileName": "src/types/handler.ts",
 											"line": 11,
 											"character": 31,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L11"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L11"
 										}
 									],
 									"type": {
@@ -2763,7 +2763,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 11,
 									"character": 29,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L11"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L11"
 								}
 							]
 						}
@@ -2783,7 +2783,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 92,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L92"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L92"
 				}
 			],
 			"type": {
@@ -2814,7 +2814,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 96,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L96"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L96"
 										}
 									],
 									"type": {
@@ -2830,7 +2830,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 96,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L96"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L96"
 												}
 											],
 											"signatures": [
@@ -2884,7 +2884,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -2907,7 +2907,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 95,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L95"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L95"
 										}
 									],
 									"type": {
@@ -2931,7 +2931,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 94,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L94"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L94"
 								}
 							]
 						}
@@ -2965,7 +2965,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 181,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L181"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L181"
 				}
 			],
 			"type": {
@@ -3020,7 +3020,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 55,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L55"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L55"
 				}
 			],
 			"type": {
@@ -3053,7 +3053,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 61,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L61"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L61"
 										}
 									],
 									"type": {
@@ -3075,7 +3075,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 63,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L63"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L63"
 										}
 									],
 									"type": {
@@ -3091,7 +3091,7 @@
 													"fileName": "src/handler/structures/module.ts",
 													"line": 63,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L63"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L63"
 												}
 											],
 											"signatures": [
@@ -3164,7 +3164,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 59,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L59"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L59"
 										}
 									],
 									"type": {
@@ -3196,7 +3196,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 62,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L62"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L62"
 										}
 									],
 									"type": {
@@ -3219,7 +3219,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 60,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L60"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L60"
 										}
 									],
 									"type": {
@@ -3242,7 +3242,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 58,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L58"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L58"
 										}
 									],
 									"type": {
@@ -3270,7 +3270,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 57,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L57"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L57"
 								}
 							]
 						}
@@ -3290,7 +3290,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 145,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L145"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L145"
 				}
 			],
 			"type": {
@@ -3346,7 +3346,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 173,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L173"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L173"
 				}
 			],
 			"typeParameters": [
@@ -3404,7 +3404,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 40,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L40"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L40"
 				}
 			],
 			"typeParameters": [
@@ -3475,7 +3475,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 45,
 													"character": 12,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L45"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L45"
 												}
 											],
 											"type": {
@@ -3491,7 +3491,7 @@
 															"fileName": "src/handler/plugins/plugin.ts",
 															"line": 45,
 															"character": 21,
-															"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L45"
+															"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L45"
 														}
 													],
 													"signatures": [
@@ -3540,7 +3540,7 @@
 																							"fileName": "src/handler/plugins/plugin.ts",
 																							"line": 49,
 																							"character": 20,
-																							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L49"
+																							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L49"
 																						}
 																					],
 																					"type": {
@@ -3559,7 +3559,7 @@
 																							"fileName": "src/handler/plugins/plugin.ts",
 																							"line": 48,
 																							"character": 20,
-																							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L48"
+																							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L48"
 																						}
 																					],
 																					"type": {
@@ -3610,7 +3610,7 @@
 																					"fileName": "src/handler/plugins/plugin.ts",
 																					"line": 47,
 																					"character": 25,
-																					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L47"
+																					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L47"
 																				}
 																			]
 																		}
@@ -3646,7 +3646,7 @@
 																		],
 																		"name": "Result",
 																		"qualifiedName": "Result",
-																		"package": "ts-results"
+																		"package": "ts-results-es"
 																	}
 																],
 																"name": "Awaitable",
@@ -3669,7 +3669,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 44,
 													"character": 12,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L44"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L44"
 												}
 											],
 											"type": {
@@ -3693,7 +3693,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 43,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L43"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L43"
 										}
 									]
 								}
@@ -3715,7 +3715,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 48,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L48"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L48"
 				}
 			],
 			"type": {
@@ -3754,7 +3754,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 49,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L49"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L49"
 				}
 			],
 			"type": {
@@ -3801,7 +3801,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 47,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L47"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L47"
 				}
 			],
 			"type": {
@@ -3841,7 +3841,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 18,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L18"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L18"
 				}
 			],
 			"typeParameters": [
@@ -3996,7 +3996,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 57,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L57"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L57"
 				}
 			],
 			"type": {
@@ -4027,7 +4027,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 61,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L61"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L61"
 										}
 									],
 									"type": {
@@ -4043,7 +4043,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 61,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L61"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L61"
 												}
 											],
 											"signatures": [
@@ -4128,7 +4128,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -4151,7 +4151,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 60,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L60"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L60"
 										}
 									],
 									"type": {
@@ -4175,7 +4175,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 59,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L59"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L59"
 								}
 							]
 						}
@@ -4195,7 +4195,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 136,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L136"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L136"
 				}
 			],
 			"typeParameters": [
@@ -4255,7 +4255,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 141,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L141"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L141"
 										}
 									],
 									"type": {
@@ -4271,7 +4271,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 141,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L141"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L141"
 												}
 											],
 											"signatures": [
@@ -4333,7 +4333,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -4358,7 +4358,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 139,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L139"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L139"
 										}
 									],
 									"type": {
@@ -4378,7 +4378,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 140,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L140"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L140"
 										}
 									],
 									"type": {
@@ -4403,7 +4403,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 138,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L138"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L138"
 								}
 							]
 						}
@@ -4423,7 +4423,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 24,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L24"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L24"
 				}
 			],
 			"type": {
@@ -4455,7 +4455,7 @@
 												"fileName": "src/types/handler.ts",
 												"line": 26,
 												"character": 26,
-												"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L26"
+												"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L26"
 											}
 										],
 										"type": {
@@ -4474,7 +4474,7 @@
 												"fileName": "src/types/handler.ts",
 												"line": 26,
 												"character": 8,
-												"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L26"
+												"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L26"
 											}
 										],
 										"type": {
@@ -4497,7 +4497,7 @@
 										"fileName": "src/types/handler.ts",
 										"line": 26,
 										"character": 6,
-										"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L26"
+										"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L26"
 									}
 								]
 							}
@@ -4516,7 +4516,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 27,
 									"character": 7,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L27"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L27"
 								}
 							],
 							"signatures": [
@@ -4548,7 +4548,7 @@
 																"fileName": "src/types/handler.ts",
 																"line": 27,
 																"character": 33,
-																"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L27"
+																"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L27"
 															}
 														],
 														"type": {
@@ -4567,7 +4567,7 @@
 																"fileName": "src/types/handler.ts",
 																"line": 27,
 																"character": 15,
-																"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L27"
+																"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L27"
 															}
 														],
 														"type": {
@@ -4590,7 +4590,7 @@
 														"fileName": "src/types/handler.ts",
 														"line": 27,
 														"character": 13,
-														"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L27"
+														"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L27"
 													}
 												]
 											}
@@ -4622,7 +4622,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 163,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L163"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L163"
 				}
 			],
 			"type": {
@@ -4645,7 +4645,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 164,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L164"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L164"
 								}
 							],
 							"type": {
@@ -4665,7 +4665,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 165,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L165"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L165"
 								}
 							],
 							"type": {
@@ -4685,7 +4685,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 166,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L166"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L166"
 								}
 							],
 							"type": {
@@ -4710,7 +4710,7 @@
 							"fileName": "src/handler/plugins/plugin.ts",
 							"line": 163,
 							"character": 43,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L163"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L163"
 						}
 					]
 				}
@@ -4735,7 +4735,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 154,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L154"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L154"
 				}
 			],
 			"type": {
@@ -4758,7 +4758,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 155,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L155"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L155"
 								}
 							],
 							"type": {
@@ -4778,7 +4778,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 156,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L156"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L156"
 								}
 							],
 							"type": {
@@ -4798,7 +4798,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 157,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L157"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L157"
 								}
 							],
 							"type": {
@@ -4823,7 +4823,7 @@
 							"fileName": "src/handler/plugins/plugin.ts",
 							"line": 154,
 							"character": 41,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L154"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L154"
 						}
 					]
 				}
@@ -4840,7 +4840,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 169,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L169"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L169"
 				}
 			],
 			"typeParameters": [
@@ -4900,7 +4900,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 148,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L148"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L148"
 				}
 			],
 			"type": {
@@ -4956,7 +4956,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 103,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L103"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L103"
 				}
 			],
 			"typeParameters": [
@@ -5027,7 +5027,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 108,
 													"character": 12,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L108"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L108"
 												}
 											],
 											"type": {
@@ -5043,7 +5043,7 @@
 															"fileName": "src/handler/plugins/plugin.ts",
 															"line": 108,
 															"character": 21,
-															"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L108"
+															"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L108"
 														}
 													],
 													"signatures": [
@@ -5117,7 +5117,7 @@
 																		],
 																		"name": "Result",
 																		"qualifiedName": "Result",
-																		"package": "ts-results"
+																		"package": "ts-results-es"
 																	}
 																],
 																"name": "Awaitable",
@@ -5140,7 +5140,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 107,
 													"character": 12,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L107"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L107"
 												}
 											],
 											"type": {
@@ -5164,7 +5164,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 106,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L106"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L106"
 										}
 									]
 								}
@@ -5186,7 +5186,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 68,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L68"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L68"
 				}
 			],
 			"typeParameters": [
@@ -5238,7 +5238,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 72,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L72"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L72"
 										}
 									],
 									"type": {
@@ -5254,7 +5254,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 72,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L72"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L72"
 												}
 											],
 											"signatures": [
@@ -5338,7 +5338,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -5361,7 +5361,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 71,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L71"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L71"
 										}
 									],
 									"type": {
@@ -5385,7 +5385,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 70,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L70"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L70"
 								}
 							]
 						}
@@ -5405,7 +5405,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 128,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L128"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L128"
 				}
 			],
 			"type": {
@@ -5436,7 +5436,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 132,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L132"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L132"
 										}
 									],
 									"type": {
@@ -5452,7 +5452,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 132,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L132"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L132"
 												}
 											],
 											"signatures": [
@@ -5507,7 +5507,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -5530,7 +5530,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 131,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L131"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L131"
 										}
 									],
 									"type": {
@@ -5554,7 +5554,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 130,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L130"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L130"
 								}
 							]
 						}
@@ -5582,7 +5582,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 178,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L178"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L178"
 				}
 			],
 			"type": {
@@ -5637,7 +5637,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 179,
 													"character": 54,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L179"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L179"
 												}
 											],
 											"type": {
@@ -5669,7 +5669,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 179,
 											"character": 52,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L179"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L179"
 										}
 									]
 								}
@@ -5690,7 +5690,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 182,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L182"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L182"
 				}
 			],
 			"type": {
@@ -5745,7 +5745,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 183,
 													"character": 51,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L183"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L183"
 												}
 											],
 											"type": {
@@ -5777,7 +5777,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 183,
 											"character": 49,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L183"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L183"
 										}
 									]
 								}
@@ -5798,7 +5798,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 31,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L31"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L31"
 				}
 			],
 			"typeParameters": [
@@ -5879,7 +5879,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 141,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L141"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L141"
 				}
 			],
 			"type": {
@@ -5907,7 +5907,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 4,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L4"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L4"
 				}
 			],
 			"typeParameters": [
@@ -5949,7 +5949,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 16,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L16"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L16"
 				}
 			],
 			"typeParameters": [
@@ -6012,7 +6012,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 7,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L7"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L7"
 				}
 			],
 			"typeParameters": [
@@ -6115,7 +6115,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 50,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L50"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L50"
 				}
 			],
 			"type": {
@@ -6141,7 +6141,7 @@
 											"fileName": "src/types/handler.ts",
 											"line": 51,
 											"character": 35,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L51"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L51"
 										}
 									],
 									"type": {
@@ -6161,7 +6161,7 @@
 											"fileName": "src/types/handler.ts",
 											"line": 51,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L51"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L51"
 										}
 									],
 									"type": {
@@ -6185,7 +6185,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 51,
 									"character": 6,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L51"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L51"
 								}
 							]
 						}
@@ -6204,28 +6204,21 @@
 									"name": "module",
 									"kind": 1024,
 									"kindString": "Property",
-									"flags": {},
+									"flags": {
+										"isOptional": true
+									},
 									"sources": [
 										{
 											"fileName": "src/types/handler.ts",
 											"line": 52,
 											"character": 35,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L52"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L52"
 										}
 									],
 									"type": {
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"id": 172,
-												"name": "Module"
-											},
-											{
-												"type": "intrinsic",
-												"name": "undefined"
-											}
-										]
+										"type": "reference",
+										"id": 172,
+										"name": "Module"
 									}
 								},
 								{
@@ -6238,8 +6231,8 @@
 										{
 											"fileName": "src/types/handler.ts",
 											"line": 52,
-											"character": 63,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L52"
+											"character": 52,
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L52"
 										}
 									],
 									"type": {
@@ -6269,7 +6262,7 @@
 											"fileName": "src/types/handler.ts",
 											"line": 52,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L52"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L52"
 										}
 									],
 									"type": {
@@ -6294,7 +6287,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 52,
 									"character": 6,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L52"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L52"
 								}
 							]
 						}
@@ -6313,7 +6306,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 29,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L29"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L29"
 				}
 			],
 			"typeParameters": [
@@ -6386,7 +6379,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 166,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L166"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L166"
 				}
 			],
 			"type": {
@@ -6419,7 +6412,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 169,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L169"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L169"
 										}
 									],
 									"type": {
@@ -6438,7 +6431,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 174,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L174"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L174"
 										}
 									],
 									"type": {
@@ -6457,7 +6450,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 170,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L170"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L170"
 										}
 									],
 									"type": {
@@ -6500,7 +6493,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 168,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L168"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L168"
 								}
 							]
 						}
@@ -6520,7 +6513,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 80,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L80"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L80"
 				}
 			],
 			"type": {
@@ -6551,7 +6544,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 84,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L84"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L84"
 										}
 									],
 									"type": {
@@ -6567,7 +6560,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 84,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L84"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L84"
 												}
 											],
 											"signatures": [
@@ -6651,7 +6644,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -6674,7 +6667,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 83,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L83"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L83"
 										}
 									],
 									"type": {
@@ -6698,7 +6691,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 82,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L82"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L82"
 								}
 							]
 						}
@@ -6718,7 +6711,7 @@
 					"fileName": "src/handler/plugins/plugin.ts",
 					"line": 116,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L116"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L116"
 				}
 			],
 			"typeParameters": [
@@ -6776,7 +6769,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 121,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L121"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L121"
 										}
 									],
 									"type": {
@@ -6792,7 +6785,7 @@
 													"fileName": "src/handler/plugins/plugin.ts",
 													"line": 121,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L121"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L121"
 												}
 											],
 											"signatures": [
@@ -6853,7 +6846,7 @@
 																],
 																"name": "Result",
 																"qualifiedName": "Result",
-																"package": "ts-results"
+																"package": "ts-results-es"
 															}
 														],
 														"name": "Awaitable",
@@ -6878,7 +6871,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 119,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L119"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L119"
 										}
 									],
 									"type": {
@@ -6898,7 +6891,7 @@
 											"fileName": "src/handler/plugins/plugin.ts",
 											"line": 120,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L120"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L120"
 										}
 									],
 									"type": {
@@ -6923,7 +6916,7 @@
 									"fileName": "src/handler/plugins/plugin.ts",
 									"line": 118,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/plugins/plugin.ts#L118"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/plugins/plugin.ts#L118"
 								}
 							]
 						}
@@ -6943,7 +6936,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 53,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L53"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L53"
 				}
 			],
 			"type": {
@@ -6966,26 +6959,16 @@
 									"fileName": "src/types/handler.ts",
 									"line": 56,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L56"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L56"
 								}
 							],
 							"type": {
 								"type": "tuple",
 								"elements": [
 									{
-										"type": "union",
-										"types": [
-											{
-												"type": "reference",
-												"name": "Error",
-												"qualifiedName": "Error",
-												"package": "typescript"
-											},
-											{
-												"type": "intrinsic",
-												"name": "string"
-											}
-										]
+										"type": "reference",
+										"id": 89,
+										"name": "Payload"
 									}
 								]
 							}
@@ -7001,7 +6984,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 55,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L55"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L55"
 								}
 							],
 							"type": {
@@ -7026,7 +7009,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 54,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L54"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L54"
 								}
 							],
 							"type": {
@@ -7051,7 +7034,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 57,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L57"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L57"
 								}
 							],
 							"type": {
@@ -7081,7 +7064,7 @@
 							"fileName": "src/types/handler.ts",
 							"line": 53,
 							"character": 32,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L53"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L53"
 						}
 					]
 				}
@@ -7098,7 +7081,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 205,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L205"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L205"
 				}
 			],
 			"typeParameters": [
@@ -7177,7 +7160,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 189,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L189"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L189"
 				}
 			],
 			"type": {
@@ -7224,7 +7207,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 193,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L193"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L193"
 										}
 									],
 									"type": {
@@ -7247,7 +7230,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 192,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L192"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L192"
 										}
 									],
 									"type": {
@@ -7272,7 +7255,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 191,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L191"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L191"
 								}
 							]
 						}
@@ -7292,7 +7275,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 197,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L197"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L197"
 				}
 			],
 			"type": {
@@ -7339,7 +7322,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 201,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L201"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L201"
 										}
 									],
 									"type": {
@@ -7362,7 +7345,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 200,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L200"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L200"
 										}
 									],
 									"type": {
@@ -7387,7 +7370,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 199,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L199"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L199"
 								}
 							]
 						}
@@ -7407,7 +7390,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 44,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L44"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L44"
 				}
 			],
 			"type": {
@@ -7438,7 +7421,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 51,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L51"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L51"
 										}
 									],
 									"type": {
@@ -7454,7 +7437,7 @@
 													"fileName": "src/handler/structures/module.ts",
 													"line": 51,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L51"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L51"
 												}
 											],
 											"signatures": [
@@ -7536,7 +7519,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 48,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L48"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L48"
 										}
 									],
 									"type": {
@@ -7568,7 +7551,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 50,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L50"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L50"
 										}
 									],
 									"type": {
@@ -7591,7 +7574,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 49,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L49"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L49"
 										}
 									],
 									"type": {
@@ -7614,7 +7597,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 47,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L47"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L47"
 										}
 									],
 									"type": {
@@ -7641,7 +7624,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 46,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L46"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L46"
 								}
 							]
 						}
@@ -7661,7 +7644,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 13,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L13"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L13"
 				}
 			],
 			"type": {
@@ -7703,7 +7686,7 @@
 					"fileName": "src/types/handler.ts",
 					"line": 39,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L39"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L39"
 				}
 			],
 			"typeParameters": [
@@ -7726,7 +7709,7 @@
 									"fileName": "src/types/handler.ts",
 									"line": 39,
 									"character": 35,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L39"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L39"
 								}
 							],
 							"signatures": [
@@ -7774,7 +7757,7 @@
 							"fileName": "src/types/handler.ts",
 							"line": 39,
 							"character": 66,
-							"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/types/handler.ts#L39"
+							"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/types/handler.ts#L39"
 						}
 					],
 					"signatures": [
@@ -7841,7 +7824,7 @@
 					"fileName": "src/handler/structures/module.ts",
 					"line": 33,
 					"character": 12,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L33"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L33"
 				}
 			],
 			"type": {
@@ -7874,7 +7857,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 39,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L39"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L39"
 										}
 									],
 									"type": {
@@ -7896,7 +7879,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 40,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L40"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L40"
 										}
 									],
 									"type": {
@@ -7912,7 +7895,7 @@
 													"fileName": "src/handler/structures/module.ts",
 													"line": 40,
 													"character": 17,
-													"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L40"
+													"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L40"
 												}
 											],
 											"signatures": [
@@ -7996,7 +7979,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 37,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L37"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L37"
 										}
 									],
 									"type": {
@@ -8026,7 +8009,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 38,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L38"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L38"
 										}
 									],
 									"type": {
@@ -8049,7 +8032,7 @@
 											"fileName": "src/handler/structures/module.ts",
 											"line": 36,
 											"character": 8,
-											"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L36"
+											"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L36"
 										}
 									],
 									"type": {
@@ -8076,7 +8059,7 @@
 									"fileName": "src/handler/structures/module.ts",
 									"line": 35,
 									"character": 4,
-									"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/structures/module.ts#L35"
+									"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/structures/module.ts#L35"
 								}
 							]
 						}
@@ -8096,7 +8079,7 @@
 					"fileName": "src/handler/sern.ts",
 					"line": 86,
 					"character": 16,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L86"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L86"
 				}
 			],
 			"signatures": [
@@ -8146,7 +8129,7 @@
 					"fileName": "src/handler/sern.ts",
 					"line": 107,
 					"character": 16,
-					"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/handler/sern.ts#L107"
+					"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/handler/sern.ts#L107"
 				}
 			],
 			"signatures": [
@@ -8275,7 +8258,7 @@
 			"fileName": "src/index.ts",
 			"line": 1,
 			"character": 0,
-			"url": "https://github.com/sern-handler/handler/blob/d8eaac7/src/index.ts#L1"
+			"url": "https://github.com/sern-handler/handler/blob/6b8995d/src/index.ts#L1"
 		}
 	]
 }
