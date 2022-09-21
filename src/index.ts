@@ -11,13 +11,12 @@ const client = new Client({
 		GatewayIntentBits.MessageContent,
 	],
 	partials: [Partials.GuildMember, Partials.GuildMember, Partials.Message],
-	sweepers : {
-		messages : {
-			interval : 43200,
-		  lifetime: 21600
-		}
+	sweepers: {
+		messages: {
+			interval: 43200,
+			lifetime: 21600,
+		},
 	},
-
 });
 
 Sern.addExternal(process);
