@@ -111,7 +111,7 @@ export default commandModule({
 
 			if (!opponent.bot && choices.length !== 2) {
 				content = content.replace(
-					RegExp(`.+${i.user.username}`),
+					RegExp(`> Waiting for ${i.user.username}`),
 					`> ${i.user.username} has chosen!`
 				);
 				return void i.update(content);
@@ -128,7 +128,7 @@ export default commandModule({
 			await context.interaction.editReply({
 				content: "Time up!",
 				components: [row.setComponents(buttons)],
-			});
+			}).catch(() => null);
 		});
 	},
 });
