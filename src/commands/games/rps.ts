@@ -111,7 +111,7 @@ export default commandModule({
 
 			if (!opponent.bot && choices.length !== 2) {
 				content = content.replace(
-					RegExp(`> Waiting for ${i.user.username}`),
+					`> Waiting for ${i.user.username}`,
 					`> ${i.user.username} has chosen!`
 				);
 				return void i.update(content);
