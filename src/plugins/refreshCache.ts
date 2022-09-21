@@ -1,6 +1,6 @@
 import { CommandPlugin, CommandType, PluginType } from "@sern/handler";
 import type { Collection } from "discord.js";
-import { cp } from "../commands/eval.js";
+import { cp } from "../commands/refresh.js";
 import type { Data } from "../commands/plugin.js";
 export function refreshCache(): CommandPlugin<CommandType.Slash> {
 	return {
@@ -9,7 +9,7 @@ export function refreshCache(): CommandPlugin<CommandType.Slash> {
 		async execute(wrapper, payload, controller) {
 			const cache = await cp(wrapper.client);
 			wrapper.client.cache = cache;
-			console.log("~ Cached plugins for the first time");
+			console.log("~ cached plugins for the first time");
 			return controller.next();
 		},
 	};

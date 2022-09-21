@@ -66,26 +66,12 @@ export default commandModule({
 				)
 				.setFooter({ text: "Supports DJS v14.2 and above" })
 				.setTimestamp();
-			const content = ping ? "@everyone" : null;
+			const content = ping ? "@everyone" : undefined;
 			channel.isTextBased() && channel.send({ content, embeds: [embed] });
 			return "Done sir";
 		}
 	},
 });
-
-export async function cp(client: Client) {
-	const cache: Collection<string, Data> = new Collection();
-	const link = `https://api.github.com/repos/sern-handler/awesome-plugins/contents/TypeScript`;
-	const resp = await fetch(link).catch(() => null);
-	if (!resp) return null;
-	const dataArray = (await resp.json()) as Data[];
-	for (const data of dataArray) {
-		const name = data.name.replace(".ts", "");
-		cache.set(name, data);
-	}
-	client.cache = cache;
-	return cache;
-}
 
 function text() {
 	const obj = [
