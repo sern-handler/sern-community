@@ -1,6 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { Collection, Client } from "discord.js";
 import { publish } from "../plugins/publish.js";
+import { fetch } from "undici";
 import type { Data } from "./plugin.js";
 
 export default commandModule({

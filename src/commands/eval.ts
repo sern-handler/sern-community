@@ -1,9 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { Client, Collection, EmbedBuilder } from "discord.js";
-import { fetch } from "undici";
+import { EmbedBuilder } from "discord.js";
 import { inspect } from "util";
 import { ownerOnly } from "../plugins/ownerOnly.js";
-import type { Data } from "./plugin.js";
 
 export default commandModule({
 	type: CommandType.Text,
@@ -35,7 +33,8 @@ export default commandModule({
 		} catch (error) {
 			result = error;
 		}
-		if (result instanceof Promise) result = await result.catch((e: Error) => new Error(e.message));
+		if (result instanceof Promise)
+			result = await result.catch((e: Error) => new Error(e.message));
 		if (typeof result !== "string") {
 			result = inspect(result, {
 				depth: 0,
