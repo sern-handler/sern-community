@@ -2,7 +2,8 @@ import {
 	CommandPlugin,
 	CommandType,
 	PluginType,
-	SernOptionsData
+	SernOptionsData,
+	SlashCommand
 } from "@sern/handler";
 import {
 	ApplicationCommandData, ApplicationCommandType,
@@ -11,7 +12,7 @@ import {
 
 export function publish(
 	options?: PublishOptions
-): CommandPlugin<CommandType.Slash | CommandType.Both> {
+): CommandPlugin<CommandType.Slash | CommandType.Both | CommandType.MenuMsg | CommandType.MenuUser> {
 	return {
 		type: PluginType.Command,
 		description: "Manage Slash Commands",
@@ -36,8 +37,8 @@ export function publish(
 				const commandData = {
 					type: CommandTypeRaw[module.type],
 					name: module.name!,
-					description: module.description,
-					options: optionsTransformer(module.options ?? []),
+					description: [CommandType.Slash, CommandType.Both].includes(module.type) ? module.description : undefined,
+					options: [CommandType.Slash, CommandType.Both].includes(module.type) ? optionsTransformer((module as SlashCommand).options ?? []) : [],
 					defaultMemberPermissions,
 					dmPermission,
 				} as ApplicationCommandData;
