@@ -14,7 +14,7 @@ import {
 import { fetch } from "undici";
 import { cooldown } from "../plugins/cooldown.js";
 import { publish } from "../plugins/publish.js";
-import { Resolver } from "../Resolver.js";
+import { Resolver } from "../utils/Resolver.js";
 
 export default commandModule({
 	type: CommandType.Slash,

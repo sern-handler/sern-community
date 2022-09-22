@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from '@sern/handler';
 import { ApplicationCommandOptionType, Colors, EmbedBuilder } from 'discord.js';
 import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from '../../typings/docs.js';
-import { Paginator } from '../Paginator.js';
+import { Paginator } from '../utils/Paginator.js';
 import { publish } from '../plugins/publish.js';
 import DocHandler from '../trie/doc-autocmp.js';
 

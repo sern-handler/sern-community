@@ -2,13 +2,14 @@ import { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
 
 import { Sern, SernEmitter } from "@sern/handler";
 import "dotenv/config";
+import { randomStatus } from "./utils/randomStatus.js";
 
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent
+		GatewayIntentBits.MessageContent,
 	],
 	partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember],
 	sweepers: {
@@ -29,10 +30,7 @@ Sern.init({
 });
 
 client.once("ready", (client) => {
-	client.user.setActivity("the sern Community", {
-		type: ActivityType.Watching,
-	});
-
+	randomStatus(client);
 	console.log(`[✅]: Logged in as ${client.user.username}`);
 });
 

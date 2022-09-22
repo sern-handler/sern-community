@@ -7,7 +7,7 @@ import {
 	Message,
 } from "discord.js";
 import { createRequire } from "module";
-import { FuzzyMatcher } from "../FuzzyMatcher.js";
+import { FuzzyMatcher } from "../utils/FuzzyMatcher.js";
 import type { TagData, TagMessage } from "../types/index.js";
 const require = createRequire(import.meta.url);
 const file: TagData[] = require(`${process.cwd()}/tags.json`);

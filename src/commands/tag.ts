@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
-import { Paginator } from "../Paginator.js";
+import { Paginator } from "../utils/Paginator.js";
 import { publish } from "../plugins/publish.js";
 
 import { createRequire } from "module";
