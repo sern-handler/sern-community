@@ -11,7 +11,7 @@ const statues: [
 	[ActivityType.Watching, "sern bots", "dnd"],
 	[ActivityType.Watching, "github stars go brrr", "online"],
 	[ActivityType.Listening, "Spotify", "dnd"],
-	[ActivityType.Playing, "bofa", "idle"],
+	[ActivityType.Listening, "what's bofa", "idle"],
 ];
 
 export function randomStatus(client: Client) {
