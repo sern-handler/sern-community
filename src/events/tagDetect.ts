@@ -22,7 +22,7 @@ export default eventModule({
 		const data = fuzz.fuzzyMatch();
 		if (!data) return;
 		const { tag, confidence } = data;
-		if (confidence <= 0.5) return;
+		if (confidence <= 0.7) return;
 
 		if (
 			message.author.data &&

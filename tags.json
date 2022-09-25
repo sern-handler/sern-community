@@ -19,8 +19,7 @@
     "name": "Missing Intents",
     "content": "If you get an error that says \"Missing Intents\", you probably want to add them. __Don't include intents that you won't use.__ You can check what intents you need [here](https://ziad87.net/intents/).",
     "keywords": [
-      "missing intents",
-      "you need intents"
+      "missing intents"
     ]
   },
   {
