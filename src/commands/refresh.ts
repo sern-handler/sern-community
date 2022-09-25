@@ -20,9 +20,14 @@ export default commandModule({
 				ephemeral: true,
 			});
 		}
-		await cp(ctx.client);
+		const success = await cp(ctx.client);
+		if (!success)
+			return ctx.reply({
+				content: "Fetch failed!",
+				ephemeral: true,
+			});
 		return ctx.reply({
-			content: `Refreshed plugins!`,
+			content: "Refreshed Plugins!",
 			ephemeral: true,
 		});
 	},
@@ -36,7 +41,9 @@ export async function cp(client: Client) {
 	const dataArray = (await resp.json()) as Data[];
 	for (const data of dataArray) {
 		const name = data.name.replace(".ts", "");
-		data.rawData = await (await fetch(data.download_url)).text().catch(() => '');
+		data.rawData = await (await fetch(data.download_url))
+			.text()
+			.catch(() => "");
 		cache.set(name, data);
 	}
 	client.cache = cache;

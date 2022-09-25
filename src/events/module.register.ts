@@ -5,7 +5,7 @@ export default eventModule({
 	name: "module.register",
 	execute(args: Payload) {
 		if (args.type === PayloadType.Success) {
-			console.log(`~ ${args.module.name} sucessfully registered`);
+			console.log(`[✅]: ${args.module.name} sucessfully registered`);
 		}
 	},
 });

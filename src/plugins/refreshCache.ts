@@ -9,7 +9,7 @@ export function refreshCache(): CommandPlugin<CommandType.Slash> {
 		async execute(wrapper, payload, controller) {
 			const cache = await cp(wrapper.client);
 			wrapper.client.cache = cache;
-			console.log("~ cached plugins for the first time");
+			console.log("[✅]: cached plugins for the first time");
 			return controller.next();
 		},
 	};
