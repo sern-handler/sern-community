@@ -12,6 +12,7 @@ const statues: [
 	[ActivityType.Watching, "github stars go brrr", "online"],
 	[ActivityType.Listening, "Spotify", "dnd"],
 	[ActivityType.Listening, "what's bofa", "idle"],
+	[ActivityType.Listening, "SrIzan.sern-snippets @ VSCode marketplace", "idle"],
 ];
 
 export function randomStatus(client: Client) {
