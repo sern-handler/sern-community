@@ -36,6 +36,7 @@ export async function cp(client: Client) {
 	const dataArray = (await resp.json()) as Data[];
 	for (const data of dataArray) {
 		const name = data.name.replace(".ts", "");
+		data.rawData = await (await fetch(data.download_url)).text().catch(() => '');
 		cache.set(name, data);
 	}
 	client.cache = cache;

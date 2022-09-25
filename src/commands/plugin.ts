@@ -48,15 +48,18 @@ export default commandModule({
 		),
 	],
 	async execute(ctx, [, options]) {
-		const url = options.getString("plugin", true) as string;
-		const name = ctx.client.cache?.findKey((d) => d.download_url === url);
-		let data = await fetch(url)
-			.then((r) => r.text())
-			.catch(() => null);
-		if (!data || !name)
-			return ctx.reply(`No plugin found at this [link](${url})`);
+		if (!ctx.client.cache)
+			return ctx.reply("Plugins are uncached, contact Evo!");
 
-		const JSdoc = parse(data) as A;
+		const url = options.getString("plugin", true);
+		const name = ctx.client.cache.findKey(
+			(d) => d.download_url === url
+		) as string;
+
+		if (!name || !ctx.client.cache.get(name)!.rawData)
+			return ctx.reply(`No plugin found at this [link](<${url}>)`);
+
+		const JSdoc = parse(ctx.client.cache.get(name)!.rawData) as A;
 		const github = `https://github.com/sern-handler/awesome-plugins/blob/main/TypeScript/${name}.ts`;
 
 		const embed = new EmbedBuilder()
@@ -75,7 +78,7 @@ export default commandModule({
 				},
 				{
 					name: "Author",
-					value: JSdoc.author.value,
+					value: parseAuthor(JSdoc.author.value),
 				},
 				{
 					name: "Example",
@@ -89,9 +92,17 @@ export default commandModule({
 	},
 });
 
+function parseAuthor(s: string) {
+	let [ghAuthor, discordAuthor] = s.split(" ");
+	ghAuthor = ghAuthor.replace("@", "");
+	const url = `https://github.com/${ghAuthor}`;
+	return `[${ghAuthor}](${url}) ${discordAuthor}`;
+}
+
 export interface Data {
 	name: string;
 	download_url: string;
+	rawData: string;
 }
 
 interface ParsedData {
