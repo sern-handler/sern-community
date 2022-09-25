@@ -27,7 +27,7 @@ export default commandModule({
 				ephemeral: true,
 			});
 		return ctx.reply({
-			content: "Refreshed Plugins!",
+			content: `Refreshed Plugins! [${success.size} plugins]`,
 			ephemeral: true,
 		});
 	},
