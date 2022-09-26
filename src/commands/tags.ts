@@ -15,7 +15,7 @@ const require = createRequire(import.meta.url);
 
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish(), ownerOnly()],
+	plugins: [publish(), ownerOnly(["697795666373640213"])],
 	options: [
 		{
 			name: "create",
