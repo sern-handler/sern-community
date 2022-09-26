@@ -23,6 +23,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@sern/handler": "1.2.0",
+		"axios": "^0.27.2",
 		"discord.js": "14.5.0",
 		"dotenv": "16.0.2",
 		"jsdoc-parse-plus": "1.3.0",
