@@ -4,9 +4,15 @@
 	"description": "",
 	"main": "dist/src/index.js",
 	"type": "module",
+	"author": {
+		"name": "EvolutionX-10",
+		"url": "https://github.com/EvolutionX-10"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "tsup && node .",
+		"dev": "tsup && node --no-warnings .",
+		"watch": "tsup --watch --onSuccess \"node .\"",
 		"compile": "tsup"
 	},
 	"keywords": [
@@ -28,5 +34,6 @@
 		"@types/node": "18.7.23",
 		"@types/string-similarity": "4.0.0",
 		"tsup": "6.2.3"
-	}
+	},
+	"packageManager": "yarn@3.2.3"
 }

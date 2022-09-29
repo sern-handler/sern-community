@@ -1,5 +1,4 @@
-import { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
-
+import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Sern, SernEmitter } from "@sern/handler";
 import "dotenv/config";
 import { randomStatus } from "./utils/randomStatus.js";
