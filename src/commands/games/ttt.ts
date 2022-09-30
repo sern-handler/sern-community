@@ -20,13 +20,14 @@ export default commandModule({
 		},
 	],
 	description: "Lets play a game of tic tac toe!",
-	async execute(ctx, args) {
+	async execute(ctx) {
 		const { interaction } = ctx;
 
 		const member = interaction.options.getMember("opponent") as GuildMember;
 		if (!member) return interaction.reply("Member not in server!");
 		const { user } = member;
 		if (user.bot) return interaction.reply(`Can't play with bots bruh`);
+		if (user.id === interaction.user.id) return interaction.reply(`Get lost!`);
 		const game = new TicTacToe();
 		let pieces = game.buildRows();
 
