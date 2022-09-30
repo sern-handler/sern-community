@@ -2,14 +2,131 @@ import {
 	ActionRowBuilder,
 	APIButtonComponentWithCustomId,
 	ButtonBuilder,
+	ButtonInteraction,
 	ButtonStyle,
-} from 'discord.js';
+	CacheType,
+	ChatInputCommandInteraction,
+	ComponentType,
+	GuildMember,
+	InteractionCollector,
+	InteractionResponse,
+	User,
+} from "discord.js";
+import { Timestamp } from "./Timestamp.js";
 
 export class TicTacToe {
+	public constructor(public readonly time?: number) {
+		this.time ??= 60_000;
+	}
+
 	readonly #X = `<:TTTX:879637390908620831>`;
 	readonly #O = `<:TTTO:879637486492594217>`;
 	readonly #Empty = `<:thevoid:986649133110685726>`;
-	readonly #Matrix = this.generateMagicSquare(3);
+	readonly #WinConditions: Combination[][] = [
+		["1-1", "1-2", "1-3"],
+		["2-1", "2-2", "2-3"],
+		["3-1", "3-2", "3-3"],
+		["1-1", "2-1", "3-1"],
+		["1-2", "2-2", "3-2"],
+		["1-3", "2-3", "3-3"],
+		["1-1", "2-2", "3-3"],
+		["1-3", "2-2", "3-1"],
+	];
+
+	public sanityChecks(interaction: ChatInputCommandInteraction) {
+		const member = interaction.options.getMember("opponent") as GuildMember;
+		if (!member) return void interaction.reply("Member not in server!");
+		const { user } = member;
+		if (user.bot) return void interaction.reply(`Can't play with bots bruh`);
+		if (user.id === interaction.user.id)
+			return void interaction.reply(`Don't dare to play with yourself idiot`);
+		return user;
+	}
+
+	public createCollector(
+		response: InteractionResponse<boolean>,
+		player: User,
+		opponent: User
+	) {
+		return response.createMessageComponentCollector({
+			componentType: ComponentType.Button,
+			filter: (i) => [player.id, opponent.id].includes(i.user.id),
+			time: this.time,
+		});
+	}
+
+	public HumanGame(
+		interaction: ChatInputCommandInteraction,
+		collector: InteractionCollector<ButtonInteraction<CacheType>>,
+		chance: User,
+		mark: "X" | "O",
+		content: string,
+		pieces: ActionRowBuilder<ButtonBuilder>[],
+		opponent: User
+	) {
+		collector.on("collect", async (i) => {
+			if (chance.id !== i.user.id) {
+				return void (await i.reply({
+					content: "Not your chance mister!",
+					ephemeral: true,
+				}));
+			}
+			const { customId } = i;
+			this.mark(pieces, customId, mark);
+
+			const possibleWinner = this.computeWin(pieces);
+			if (possibleWinner.winner) {
+				this.disableAllButtons(
+					pieces,
+					possibleWinner.winner,
+					possibleWinner.winPieces
+				);
+				collector.stop(`Finished!`);
+
+				return void (await i.update({
+					content: `${chance} won! GG`,
+					components: pieces,
+				}));
+			}
+
+			chance = chance.id === interaction.user.id ? opponent : interaction.user;
+			mark = mark === "X" ? "O" : "X";
+
+			collector.resetTimer();
+
+			const disabled = this.getDisabled(pieces);
+
+			content =
+				disabled === 9
+					? "Game ended in tie, what a shame!"
+					: `Let the game begin!\n${interaction.user} vs ${opponent}\n\n> Current Chance: ${chance} [${mark}]` +
+					  `\nTime ends ${new Timestamp(
+							Date.now() + this.time!
+					  ).getRelativeTime()}`;
+
+			await i.update({
+				content,
+				components: pieces,
+			});
+			if (disabled === 9) collector.stop("Finished!");
+		});
+
+		collector.on("ignore", async (i) => {
+			await i.reply({
+				content: `You ain't playin my man, get rekt`,
+				ephemeral: true,
+			});
+		});
+
+		collector.on("end", async (_, r) => {
+			if (r === "Finished!") return;
+			this.disableAllButtons(pieces);
+			await interaction.editReply({
+				content: `Fine, I ain't playing anymore, won't wait for afk losers`,
+				components: pieces,
+			});
+		});
+	}
 
 	public getDisabled(pieces: ActionRowBuilder<ButtonBuilder>[]) {
 		let disabled = 0;
@@ -26,7 +143,7 @@ export class TicTacToe {
 			.fill(new ButtonBuilder())
 			.map((_, j) =>
 				new ButtonBuilder()
-					.setCustomId(`${this.#Matrix[i][j]}`)
+					.setCustomId(`${i + 1}-${j + 1}`)
 					.setEmoji(this.#Empty)
 					.setStyle(ButtonStyle.Secondary)
 			);
@@ -45,12 +162,12 @@ export class TicTacToe {
 	public mark(
 		rows: ActionRowBuilder<ButtonBuilder>[],
 		id: string,
-		mark: 'X' | 'O'
+		mark: "X" | "O"
 	) {
 		for (const row of rows) {
 			for (const button of row.components) {
 				if ((button.data as APIButtonComponentWithCustomId).custom_id === id) {
-					button.setEmoji(mark === 'O' ? this.#O : this.#X);
+					button.setEmoji(mark === "O" ? this.#O : this.#X);
 					button.setDisabled();
 				}
 			}
@@ -58,12 +175,11 @@ export class TicTacToe {
 		return rows;
 	}
 
-	public computeWin(
-		pieces: ActionRowBuilder<ButtonBuilder>[]
-	): 'X' | 'O' | undefined {
-		const markedX: number[] = [];
-		const markedO: number[] = [];
-		let winner: 'X' | 'O' | undefined;
+	public computeWin(pieces: ActionRowBuilder<ButtonBuilder>[]) {
+		const markedX: Combination[] = [];
+		const markedO: Combination[] = [];
+		let winPieces: Combination[] = [];
+		let winner: "X" | "O" | undefined;
 
 		for (const row of pieces) {
 			for (const piece of row.components) {
@@ -71,68 +187,59 @@ export class TicTacToe {
 				const { emoji } = piece.data;
 				if (!emoji) continue;
 				const emojiString = `<:${emoji.name}:${emoji.id}>`;
-				const id = Number(
-					(piece.data as APIButtonComponentWithCustomId).custom_id
-				);
+				const id = (piece.data as APIButtonComponentWithCustomId)
+					.custom_id as Combination;
 				if (emojiString === this.#X) markedX.push(id);
 				else markedO.push(id);
 			}
 		}
-		const sum = (array: number[]) => array.reduce((a, b) => a + b, 0);
-		if (sum(markedX) === 15) winner = 'X';
-		if (sum(markedO) === 15) winner = 'O';
-		return winner;
+		if (
+			this.#WinConditions.every((win) => markedX.some((r) => win.includes(r)))
+		) {
+			winPieces = this.#WinConditions.find((win) =>
+				win.every((r) => markedX.includes(r))
+			)!;
+			winner = "X";
+		}
+		if (
+			this.#WinConditions.every((win) => markedO.some((r) => win.includes(r)))
+		) {
+			winPieces = this.#WinConditions.find((win) =>
+				win.every((r) => markedO.includes(r))
+			)!;
+			winner = "O";
+		}
+		return { winner, winPieces };
 	}
 
 	public disableAllButtons(
 		pieces: ActionRowBuilder<ButtonBuilder>[],
-		winner?: 'X' | 'O'
+		winner?: "X" | "O",
+		winPieces?: Combination[]
 	) {
 		for (const row of pieces) {
 			for (const piece of row.components) {
-				if (winner) {
+				if (winner && winPieces) {
 					const { emoji } = piece.data;
 					if (!emoji) continue;
 					const emojiString = `<:${emoji.name}:${emoji.id}>`;
-					const win = winner === 'X' ? this.#X : this.#O;
-					if (win === emojiString) piece.setStyle(ButtonStyle.Success);
+					const win = winner === "X" ? this.#X : this.#O;
+					if (
+						win === emojiString &&
+						winPieces.some((w) =>
+							w.includes(
+								(piece.data as APIButtonComponentWithCustomId).custom_id
+							)
+						)
+					)
+						piece.setStyle(ButtonStyle.Success);
 				}
 				piece.setDisabled();
 			}
 		}
 		return pieces;
 	}
-
-	public generateMagicSquare(n: number) {
-		let i: number, j: number;
-		i = Math.floor(n / 2);
-		j = n - 1;
-		let baseMatrix = new Array<number[]>(n)
-			.fill([])
-			.map((_) => new Array<number>(n));
-
-		baseMatrix[i][j] = 1;
-
-		for (let k = 2; k <= n * n; k++) {
-			i -= 1;
-			j += 1;
-
-			if (i < 0 && j === n) {
-				i = 0;
-				j = n - 2;
-			} else if (i < 0) {
-				i = n - 1;
-			} else if (j === n) {
-				j = 0;
-			}
-
-			if (typeof baseMatrix[i][j] === 'number') {
-				i += 1;
-				j -= 2;
-			}
-
-			baseMatrix[i][j] = k;
-		}
-		return baseMatrix;
-	}
 }
+
+type Side = 1 | 2 | 3;
+export type Combination = `${Side}-${Side}`;
