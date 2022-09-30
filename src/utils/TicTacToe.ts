@@ -194,7 +194,7 @@ export class TicTacToe {
 			}
 		}
 		if (
-			this.#WinConditions.every((win) => markedX.some((r) => win.includes(r)))
+			this.#WinConditions.find((win) => win.every((r) => markedX.includes(r)))
 		) {
 			winPieces = this.#WinConditions.find((win) =>
 				win.every((r) => markedX.includes(r))
@@ -202,7 +202,7 @@ export class TicTacToe {
 			winner = "X";
 		}
 		if (
-			this.#WinConditions.every((win) => markedO.some((r) => win.includes(r)))
+			this.#WinConditions.find((win) => win.every((r) => markedO.includes(r)))
 		) {
 			winPieces = this.#WinConditions.find((win) =>
 				win.every((r) => markedO.includes(r))
