@@ -3,6 +3,8 @@ import { Collection, Client } from "discord.js";
 import { publish } from "../plugins/publish.js";
 import { fetch } from "undici";
 import type { Data } from "./plugin.js";
+import { ownerOnly } from "../plugins/ownerOnly.js";
+import { Evo } from "../constants.js";
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -11,15 +13,10 @@ export default commandModule({
 			dmPermission: false,
 			defaultMemberPermissions: ["Administrator"],
 		}),
+		ownerOnly([Evo]),
 	],
 	description: "refresh plugins cache",
 	async execute(ctx) {
-		if (ctx.user.id !== "697795666373640213") {
-			return ctx.reply({
-				content: `Only <@!697795666373640213> can use this!`,
-				ephemeral: true,
-			});
-		}
 		const success = await cp(ctx.client);
 		if (!success)
 			return ctx.reply({

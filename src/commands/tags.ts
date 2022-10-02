@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
 import { createRequire } from "module";
+import { Evo } from "../constants.js";
 import { ownerOnly } from "../plugins/ownerOnly.js";
 import { publish } from "../plugins/publish.js";
 import type { TagData } from "../types/index.js";
@@ -15,7 +16,7 @@ const require = createRequire(import.meta.url);
 
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish(), ownerOnly()],
+	plugins: [publish(), ownerOnly([Evo])],
 	options: [
 		{
 			name: "create",
