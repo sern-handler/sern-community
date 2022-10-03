@@ -1,14 +1,14 @@
 import { eventModule, EventType } from "@sern/handler";
-import { ChannelType, EmbedBuilder, ThreadChannel } from "discord.js";
+import { AnyThreadChannel, ChannelType, EmbedBuilder, ThreadChannel } from "discord.js";
 import { createRequire } from "module";
 import type { TagData } from "../types";
 const require = createRequire(import.meta.url);
 const file: TagData[] = require(`${process.cwd()}/tags.json`);
-// @ts-ignore
+
 export default eventModule({
 	type: EventType.Discord,
 	name: "threadCreate",
-	async execute(thread: ThreadChannel, newlyMade: boolean) {
+	async execute(thread: AnyThreadChannel, newlyMade: boolean) {
 		if (!thread.parent) return;
 		if (thread.parentId !== "1019807803935825922") return;
 		if (thread.parent.type !== ChannelType.GuildForum) return;
