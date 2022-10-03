@@ -1,46 +1,32 @@
 [
-  {
-    "name": "Upgrade DJS",
-    "content": "Please update your discord.js version with compatible version of sern Handler\nIt should be above v14.2.0\n\n> Tip: Don't know how to check? Run `npm ls discord.js` in your terminal!",
-    "keywords": [
-      "upgrade your djs"
-    ]
-  },
-  {
-    "name": "Outdated Node",
-    "content": "Your nodejs version is outdated, update it to 16.9 or higher",
-    "keywords": [
-      "'node:events'",
-      "upgrade your node",
-      "your node is outdated"
-    ]
-  },
-  {
-    "name": "Missing Intents",
-    "content": "If you get an error that says \"Missing Intents\", you probably want to add them. __Don't include intents that you won't use.__ You can check what intents you need [here](https://ziad87.net/intents/).",
-    "keywords": [
-      "missing intents"
-    ]
-  },
-  {
-    "name": "How2Ask",
-    "content": "Often users face issues like commands not loading, message commands not working, slash commands not registering, etc. when they try sern. Please be specific when asking your question and provide all the proper data like code, error, expected behaviour, version, etc.\n\n> Did you use [@sern/cli](<https://www.npmjs.com/@sern/cli>) to generate your project?\n> Did you use templates as a reference and create project?\n> What version of [discord.js](<https://www.npmjs.com/discord.js>) you are on? Is it v13?\n> What version of [@sern/handler](<https://www.npmjs.com/@sern/handler>) you are using?\n> Are you using TypeScript or JavaScript?\n> Are you using CommonJS or ESM?",
-    "keywords": [
-      "how 2 ask",
-      "how2ask"
-    ]
-  },
-  {
-    "name": "ts-node",
-    "content": "_TL;DR: Do not use [`ts-node`](<https://github.com/TypeStrong/ts-node>), use [`tsc-watch`](<https://www.npmjs.com/package/tsc-watch>) instead._\n\nWe very strongly discourage using [`ts-node`](<https://github.com/TypeStrong/ts-node>) because it was never meant to be used for bots.\n[`ts-node`](<https://github.com/TypeStrong/ts-node>) is designed for [`REPL`](<https://en.wikipedia.org/wiki/Read-eval-print_loop>) purposes. That's short for `Read Eval Print Loop`.\nWhich means to read some code, dump it in an `eval()` statement, print the result, and loop.\n\n**_A discord bot is not that._**\nA Discord bot sets up a permanent websocket connection to the discord server and connects to the rest gateway.\nThere is read yes, but **no eval**, **no print**, and **no loop**.\n\n**So what should you use instead?**\nThe most ideal way is to just use the `watch` flag of `tsc` (`tsc --watch`) and run `node dist/index.js` to run your bot, then cancel that process and restart it when you have changes that require restarting.\nYou would open 2 terminal tabs, 1 in which you run `tsc --watch` and another in which you run the bot.\nThis is in particular the most ideal way, because Discord has a limit to the amount of times you can login with your bot, or register commands, per day.\nConstantly logging in over and over again due to an auto-restarting process will get you close to that limit very quickly and once you exceed it, your development will be halted entirely for the current day.\n\nHowever, this can be quite tedious so a great package to use instead is [`tsc-watch`](<https://www.npmjs.com/package/tsc-watch>).",
-    "keywords": [
-      "don't use ts-node",
-      "use ts-node"
-    ]
-  },
-  {
-    "name": "Try",
-    "content": "[This video was made especially for you](https://tryitands.ee/)",
-    "keywords": []
-  }
+	{
+		"name": "Upgrade DJS",
+		"content": "Please update your discord.js version with compatible version of sern Handler\nIt should be above v14.2.0\n\n> Tip: Don't know how to check? Run `npm ls discord.js` in your terminal!",
+		"keywords": ["upgrade your djs"]
+	},
+	{
+		"name": "Outdated Node",
+		"content": "Your nodejs version is outdated, update it to 16.9 or higher",
+		"keywords": ["'node:events'", "upgrade your node", "your node is outdated"]
+	},
+	{
+		"name": "Missing Intents",
+		"content": "If you get an error that says \"Missing Intents\", you probably want to add them. __Don't include intents that you won't use.__ You can check what intents you need [here](https://ziad87.net/intents/).",
+		"keywords": ["missing intents"]
+	},
+	{
+		"name": "How2Ask",
+		"content": "Often users face issues like commands not loading, message commands not working, slash commands not registering, etc. when they try sern. Please be specific when asking your question and provide all the proper data like code, error, expected behaviour, version, etc. Below are some more questions you can answer that will help us to guide you without wasting time!\n\n> Did you use [`@sern/cli`](<https://www.npmjs.com/@sern/cli>) to generate your project?\n> Did you use templates as a reference and create project?\n> What version of [`discord.js`](<https://www.npmjs.com/discord.js>) you are on? Is it v13? ||(`npm ls discord.js`)||\n> What version of [`@sern/handler`](<https://www.npmjs.com/@sern/handler>) you are using?\n> Are you using TypeScript or JavaScript?\n> Are you using CommonJS or ESM? ||(Do you have `\"type\": \"module\"` in your package.json?)||",
+		"keywords": ["how 2 ask", "how2ask"]
+	},
+	{
+		"name": "ts-node",
+		"content": "_TL;DR: Do not use [`ts-node`](<https://github.com/TypeStrong/ts-node>), use [`tsc-watch`](<https://www.npmjs.com/package/tsc-watch>) instead._\n\nWe very strongly discourage using [`ts-node`](<https://github.com/TypeStrong/ts-node>) because it was never meant to be used for bots.\n[`ts-node`](<https://github.com/TypeStrong/ts-node>) is designed for [`REPL`](<https://en.wikipedia.org/wiki/Read-eval-print_loop>) purposes. That's short for `Read Eval Print Loop`.\nWhich means to read some code, dump it in an `eval()` statement, print the result, and loop.\n\n**_A discord bot is not that._**\nA Discord bot sets up a permanent websocket connection to the discord server and connects to the rest gateway.\nThere is read yes, but **no eval**, **no print**, and **no loop**.\n\n**So what should you use instead?**\nThe most ideal way is to just use the `watch` flag of `tsc` (`tsc --watch`) and run `node dist/index.js` to run your bot, then cancel that process and restart it when you have changes that require restarting.\nYou would open 2 terminal tabs, 1 in which you run `tsc --watch` and another in which you run the bot.\nThis is in particular the most ideal way, because Discord has a limit to the amount of times you can login with your bot, or register commands, per day.\nConstantly logging in over and over again due to an auto-restarting process will get you close to that limit very quickly and once you exceed it, your development will be halted entirely for the current day.\n\nHowever, this can be quite tedious so a great package to use instead is [`tsc-watch`](<https://www.npmjs.com/package/tsc-watch>).",
+		"keywords": ["don't use ts-node", "use ts-node"]
+	},
+	{
+		"name": "Try",
+		"content": "[This video was made especially for you](https://tryitands.ee/)",
+		"keywords": []
+	}
 ]
