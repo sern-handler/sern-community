@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { EmbedBuilder } from "discord.js";
 import { inspect } from "util";
-import { ownerOnly } from "../plugins/ownerOnly.js";
+import { ownerOnly } from "#plugins";
 
 export default commandModule({
 	type: CommandType.Text,

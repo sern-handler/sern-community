@@ -1,8 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ChannelType } from "discord.js";
-import { channelOnly } from "../plugins/channelOnly.js";
-import { ownerIDs } from "../plugins/ownerOnly.js";
-import { publish } from "../plugins/publish.js";
+import { publish, channelOnly } from "#plugins";
+import { ownerIDs } from "#constants";
 
 export default commandModule({
 	type: CommandType.Slash,
