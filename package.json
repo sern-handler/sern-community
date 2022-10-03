@@ -8,6 +8,11 @@
 		"name": "EvolutionX-10",
 		"url": "https://github.com/EvolutionX-10"
 	},
+	"imports": {
+		"#plugins": "./dist/src/plugins/index.js",
+		"#utils": "./dist/src/utils/index.js",
+		"#constants": "./dist/src/constants.js"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "tsup && node .",

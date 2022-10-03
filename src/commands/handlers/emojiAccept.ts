@@ -1,3 +1,4 @@
+import { ownerIDs } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
@@ -5,7 +6,6 @@ import {
 	TextInputBuilder,
 	TextInputStyle,
 } from "discord.js";
-import { ownerIDs } from "../../plugins/ownerOnly.js";
 
 export default commandModule({
 	type: CommandType.Button,
