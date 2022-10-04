@@ -10,6 +10,9 @@ export default eventModule({
 		if (thread.parent.type !== ChannelType.GuildForum) return;
 		if (!newlyMade) return;
 
+		if (thread.appliedTags.length > 3)
+			await thread.setAppliedTags(thread.appliedTags.slice(0, 3));
+
 		const msg = await thread.fetchStarterMessage().catch(() => null);
 		if (!msg) return thread.setLocked(true);
 
