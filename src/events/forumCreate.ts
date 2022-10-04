@@ -13,7 +13,7 @@ export default eventModule({
 		const msg = await thread.fetchStarterMessage().catch(() => null);
 		if (!msg) return thread.setLocked(true);
 
-		const list = `• What is your discord.js version?\n• What is your [\`@sern/handler\`](https://sern-handler.js.org) version?\n• If any error is occuring, what error?`;
+		const list = `• What is your [\`discord.js\`](https://discord.js.org/) version?\n• What is your [\`@sern/handler\`](https://sern-handler.js.org) version?\n• If any error is occuring, what error?`;
 
 		const embed = new EmbedBuilder()
 			.setDescription(
