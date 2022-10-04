@@ -1,9 +1,5 @@
 import { eventModule, EventType } from "@sern/handler";
-import { AnyThreadChannel, ChannelType, EmbedBuilder, ThreadChannel } from "discord.js";
-import { createRequire } from "module";
-import type { TagData } from "../types";
-const require = createRequire(import.meta.url);
-const file: TagData[] = require(`${process.cwd()}/tags.json`);
+import { AnyThreadChannel, ChannelType, EmbedBuilder } from "discord.js";
 
 export default eventModule({
 	type: EventType.Discord,
@@ -17,26 +13,22 @@ export default eventModule({
 		const msg = await thread.fetchStarterMessage().catch(() => null);
 		if (!msg) return thread.setLocked(true);
 
-		const how2ask = file.find((t) => t.name === "How2Ask");
-		if (!how2ask) return;
+		const list = `• What is your discord.js version?\n• What is your [\`@sern/handler\`](https://sern-handler.js.org) version?\n• If any error is occuring, what error?`;
 
 		const embed = new EmbedBuilder()
 			.setDescription(
-				how2ask.content.concat(
-					`\n\n\nIssue Solved? Run </solved:1026499792194510939>`
-				)
+				`Hello ${msg.author}! Thank you for creating a dedicated post for your issue\n` +
+					`Please make sure you've read the **__Post Guidelines__**!\n` +
+					`In the meanwhile you wait for your answer, It is recommended to provide details as much as possible\n`
+						.concat(list)
+						.concat(`\n\n\nIssue Solved? Run </solved:1026499792194510939>`)
 			)
 			.setColor("Random")
 			.setTimestamp()
-			.setTitle("Things you should know!");
+			.setThumbnail(msg.client.user!.displayAvatarURL({ size: 2048 }))
+			.setTitle("Things you should know");
 
 		await msg.reply({
-			content:
-				`Hello ${msg.author.username}! Thank you for creating a dedicated post for your issue\n` +
-				`Please make sure you've read the **__Post Guidelines__**!\n` +
-				`Any attempt in breaking rules will be punishable event\n` +
-				`In the meanwhile you wait for your answer, It is recommended to provide details as much as possible\n` +
-				`Below is the possible list you should cross check and provide info if necessary`,
 			embeds: [embed],
 		});
 	},

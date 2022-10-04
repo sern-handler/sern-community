@@ -2,6 +2,7 @@ import { commandModule, CommandType } from "@sern/handler";
 import { ChannelType } from "discord.js";
 import { publish, channelOnly } from "#plugins";
 import { ownerIDs } from "#constants";
+import { Timestamp } from "#utils";
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -26,8 +27,28 @@ export default commandModule({
 				ephemeral: true,
 			});
 
+		const memberCount = `• \`${ctx.channel.memberCount}\` member(s) participated in this post!`;
+		const msgCount = `• \`${
+			(ctx.channel.messageCount ?? 0) + 1
+		}\` message(s) are present here`;
+		const msgSent = `• \`${
+			(ctx.channel.totalMessageSent ?? 0) + 1
+		}\` message(s) were sent in total here`;
+		const createdAt = `• This post was created ${new Timestamp(
+			ctx.channel.createdTimestamp!
+		).getRelativeTime()}`;
+		const solvedAt = `• This post was solved ${new Timestamp(
+			Date.now()
+		).getRelativeTime()}`;
+
+		const funstats = `${ctx.channel.memberCount ? memberCount : ""}\n${
+			ctx.channel.messageCount ? msgCount : ""
+		}\n${
+			ctx.channel.totalMessageSent ? msgSent : ""
+		}\n${createdAt}\n${solvedAt}`;
+
 		await ctx.reply({
-			content: `This post is now closed, glad the issue got solved!`,
+			content: `This post is now closed, glad the issue got solved!\n\n\n${funstats}`,
 			ephemeral: false,
 		});
 
