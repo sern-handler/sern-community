@@ -44,7 +44,9 @@ export default commandModule({
 			);
 		}
 
-		file[file.findIndex((t) => t.name === ctx.user.data)] = tag;
+		file[file.findIndex((t) => t.name === (ctx.user.data as UserTag).tag)] =
+			tag;
+
 		writeFileSync(filePath, JSON.stringify(file, null, 2));
 
 		return ctx.reply({
@@ -53,3 +55,7 @@ export default commandModule({
 		});
 	},
 });
+
+interface UserTag {
+	tag: string;
+}
