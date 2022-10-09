@@ -57,5 +57,18 @@
     "name": "hello",
     "content": "[Seriously?](https://nohello.net/)",
     "keywords": []
+  },
+  {
+    "name": "blog",
+    "content": "Try reading this quick blog post & watch the videos, if you want to learn the basics of sern.",
+    "keywords": []
+  },
+  {
+    "name": "plugins",
+    "content": "Plugins are a great way of adding custom functionality in sern!\nYou can utilize the [community made plugins](<https://github.com/sern-handler/awesome-plugins/>) with [*`@sern/cli`*](<https://github.com/sern-handler/cli>)\n\n> To get the list of plugins, type\n```bash\nsern plugins\n```\nAfter that you can browse the list of plugins and even PR one!\n\n> If you are having issues with JavaScript plugins, kindly refer [this](https://canary.discord.com/channels/889026545715400705/989982308633280522/1028149325395660810)",
+    "keywords": [
+      "what are sern plugins",
+      "how to use plugins"
+    ]
   }
 ]
