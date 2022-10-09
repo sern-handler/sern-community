@@ -3,16 +3,22 @@ import {
 	CommandType,
 	PluginType,
 	SernOptionsData,
-	SlashCommand
+	SlashCommand,
 } from "@sern/handler";
 import {
-	ApplicationCommandData, ApplicationCommandType,
-	PermissionResolvable
+	ApplicationCommandData,
+	ApplicationCommandType,
+	PermissionResolvable,
 } from "discord.js";
 
 export function publish(
 	options?: PublishOptions
-): CommandPlugin<CommandType.Slash | CommandType.Both | CommandType.MenuMsg | CommandType.MenuUser> {
+): CommandPlugin<
+	| CommandType.Slash
+	| CommandType.Both
+	| CommandType.MenuMsg
+	| CommandType.MenuUser
+> {
 	return {
 		type: PluginType.Command,
 		description: "Manage Slash Commands",
@@ -37,15 +43,22 @@ export function publish(
 				const commandData = {
 					type: CommandTypeRaw[module.type],
 					name: module.name!,
-					description: [CommandType.Slash, CommandType.Both].includes(module.type) ? module.description : undefined,
-					options: [CommandType.Slash, CommandType.Both].includes(module.type) ? optionsTransformer((module as SlashCommand).options ?? []) : [],
+					description: [CommandType.Slash, CommandType.Both].includes(
+						module.type
+					)
+						? module.description
+						: undefined,
+					options: [CommandType.Slash, CommandType.Both].includes(module.type)
+						? optionsTransformer((module as SlashCommand).options ?? [])
+						: [],
 					defaultMemberPermissions,
 					dmPermission,
 				} as ApplicationCommandData;
 
 				if (!guildIds.length) {
 					const cmd = (await client.application!.commands.fetch()).find(
-						(c) => c.name === module.name && c.type === CommandTypeRaw[module.type]
+						(c) =>
+							c.name === module.name && c.type === CommandTypeRaw[module.type]
 					);
 					if (cmd) {
 						if (!cmd.equals(commandData, true)) {
@@ -71,7 +84,8 @@ export function publish(
 					const guild = await client.guilds.fetch(id).catch(c);
 					if (!guild) continue;
 					const guildcmd = (await guild.commands.fetch()).find(
-						(c) => c.name === module.name && c.type === CommandTypeRaw[module.type]
+						(c) =>
+							c.name === module.name && c.type === CommandTypeRaw[module.type]
 					);
 					if (guildcmd) {
 						if (!guildcmd.equals(commandData, true)) {

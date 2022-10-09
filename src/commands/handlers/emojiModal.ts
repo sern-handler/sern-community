@@ -57,6 +57,11 @@ export default commandModule({
 			})
 			.setTimestamp();
 
-		await ctx.message?.edit({ content: null, embeds: [embed], components, files: [] });
+		await ctx.message?.edit({
+			content: null,
+			embeds: [embed],
+			components,
+			files: [],
+		});
 	},
 });

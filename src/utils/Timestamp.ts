@@ -5,7 +5,8 @@ export class Timestamp {
 	 * @requires [UNIX](https://en.wikipedia.org/wiki/Unix_time) timestamp in `milliseconds`
 	 */
 	public constructor(public readonly timestamp: number) {
-		if (this.timestamp < 0) throw new Error('Timestamp must be a positive number');
+		if (this.timestamp < 0)
+			throw new Error("Timestamp must be a positive number");
 	}
 
 	/**

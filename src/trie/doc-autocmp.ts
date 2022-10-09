@@ -5,7 +5,6 @@ const require = createRequire(import.meta.url);
 const docs = require(`${process.cwd()}/docs.json`);
 import type { DocsChild } from "../../typings/docs.js";
 
-
 /**
  * Not bothering typing this json file
  */

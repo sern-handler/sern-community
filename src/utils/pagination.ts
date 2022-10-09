@@ -1,4 +1,9 @@
-import { ActionRowBuilder, ButtonBuilder, Message, EmbedBuilder } from "discord.js";
+import {
+	ActionRowBuilder,
+	ButtonBuilder,
+	Message,
+	EmbedBuilder,
+} from "discord.js";
 
 export function Paginate() {
 	const __embeds = [] as EmbedBuilder[];

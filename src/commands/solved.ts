@@ -52,8 +52,14 @@ export default commandModule({
 			ephemeral: false,
 		});
 
-		await ctx.channel.setAppliedTags([...ctx.channel.appliedTags.slice(0, 4), tag.id]).catch(() => null);
-		await ctx.channel.setLocked(true, `Closed by ${ctx.user.tag}`).catch(() => null);
-		await ctx.channel.setArchived(true, `Closed by ${ctx.user.tag}`).catch(() => null);
+		await ctx.channel
+			.setAppliedTags([...ctx.channel.appliedTags.slice(0, 4), tag.id])
+			.catch(() => null);
+		await ctx.channel
+			.setLocked(true, `Closed by ${ctx.user.tag}`)
+			.catch(() => null);
+		await ctx.channel
+			.setArchived(true, `Closed by ${ctx.user.tag}`)
+			.catch(() => null);
 	},
 });

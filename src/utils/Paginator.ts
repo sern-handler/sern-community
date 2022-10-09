@@ -13,7 +13,7 @@ import {
 	SelectMenuInteraction,
 	SelectMenuOptionBuilder,
 	User,
-} from 'discord.js';
+} from "discord.js";
 
 export class Paginator {
 	private currentCount: number = 0;
@@ -23,14 +23,19 @@ export class Paginator {
 		| SelectMenuComponentOptionData
 	>;
 	private descriptions?: string[];
+
+	public get pages() {
+		return (this.options.embeds?.length ?? this.descriptions?.length)!;
+	}
+
 	public constructor(private readonly options: PaginatorOptions = {}) {
-		if (!this.options.emojis) this.options.emojis = ['⏮', '◀', '⏹', '▶', '⏭'];
-		if (this.options.embeds)
-			this.options.embeds = this.options.embeds.map((embed, i) =>
-				new EmbedBuilder(embed.data).setFooter({
-					text: `Page ${i + 1}/${this.options.embeds!.length}`,
-				})
-			);
+		this.options.emojis ??= ["⏮", "◀", "⏹", "▶", "⏭"];
+		this.options.embeds &&= this.options.embeds.map((embed, i) =>
+			new EmbedBuilder(embed.data).setFooter({
+				text: `Page ${i + 1}/${this.options.embeds!.length}`,
+			})
+		);
+		if (this.pages > 25) this.options.includeSelectMenu = false;
 	}
 
 	public setEmbeds(embeds: EmbedBuilder[]): this {
@@ -112,12 +117,12 @@ export class Paginator {
 		let msg: Message<boolean>;
 		if (interaction.replied) {
 			msg = await interaction.editReply({
-				embeds: [embeds![this.currentCount]],
+				embeds: [embeds[this.currentCount]],
 				components: rows,
 			});
 		} else
 			msg = await interaction.reply({
-				embeds: [embeds![this.currentCount]],
+				embeds: [embeds[this.currentCount]],
 				components: rows,
 				fetchReply: true,
 				ephemeral: Boolean(this.options.ephemeral),
@@ -132,24 +137,22 @@ export class Paginator {
 			filter: (i) => i.user.id === user.id,
 		});
 
-		collector.on('collect', async (i) => {
+		collector.on("collect", async (i) => {
 			collector.resetTimer();
 
 			switch (i.customId as ButtonIds) {
-				case '@paginator/first':
+				case "@paginator/first":
 					this.currentCount = 0;
 					break;
-				case '@paginator/back':
+				case "@paginator/back":
 					this.currentCount--;
 					break;
-				case '@paginator/stop':
-					i.message.components = [];
-					collector.stop();
-					break;
-				case '@paginator/forward':
+				case "@paginator/stop":
+					return collector.stop();
+				case "@paginator/forward":
 					this.currentCount++;
 					break;
-				case '@paginator/last':
+				case "@paginator/last":
 					this.currentCount =
 						(this.descriptions ?? this.options.embeds!).length - 1;
 					break;
@@ -171,7 +174,7 @@ export class Paginator {
 			});
 		});
 
-		collector.on('ignore', async (i) => {
+		collector.on("ignore", async (i) => {
 			await i.reply({
 				content:
 					this.options.wrongInteractionResponse ?? "This maze isn't for you",
@@ -179,34 +182,15 @@ export class Paginator {
 			});
 		});
 
-		collector.on('end', async () => {
-			if (message.components.length !== 0) {
-				const components = message.components.map((c) =>
-					new ActionRowBuilder<
-						SelectMenuBuilder | ButtonBuilder
-					>().setComponents(
-						c.components.map((c) => {
-							if (c.type === ComponentType.Button) {
-								return new ButtonBuilder(c.data).setDisabled();
-							} else return new SelectMenuBuilder(c.data).setDisabled();
-						})
-					)
-				);
-
-				await message
-					.edit({
-						embeds: message.embeds,
-						components,
-					})
-					.catch(() => null);
-			}
+		collector.on("end", async () => {
+			await message.edit({ components: [] }).catch(() => null);
 		});
 	}
 
 	private buildButtons() {
 		const embeds = (this.options.embeds ?? this.descriptions)!;
 		const buttons = [];
-		const ids = ['first', 'back', 'stop', 'forward', 'last'];
+		const ids = ["first", "back", "stop", "forward", "last"];
 		for (let i = 0; i < 5; i++) {
 			const button = new ButtonBuilder()
 				.setCustomId(`@paginator/${ids[i]}`)
@@ -220,17 +204,16 @@ export class Paginator {
 	}
 
 	private buildSelect() {
-		const pages = (this.options.embeds?.length ?? this.descriptions?.length)!;
 		if (this.options.includeSelectMenu === false) return;
 		const select = new SelectMenuBuilder()
-			.setCustomId('@paginator/select')
+			.setCustomId("@paginator/select")
 			.setMaxValues(1)
 			.setMinValues(1)
-			.setDisabled(pages === 1)
+			.setDisabled(this.pages === 1)
 			.setPlaceholder(`Navigate to page`)
 			.setOptions(
 				...(this.selectMenuOptions ??
-					Array(pages)
+					Array(this.pages)
 						.fill(null)
 						.map((_, i) => ({
 							label: `Page ${i + 1}`,
@@ -250,7 +233,7 @@ export class Paginator {
 			.map((_, i) => {
 				const embed = new EmbedBuilder(template.data);
 				embed.setDescription(this.descriptions![i]);
-				!embed.data.color && embed.setColor('Random');
+				!embed.data.color && embed.setColor("Random");
 				embed.setFooter({
 					text: `Page ${i + 1}/${this.descriptions!.length}`,
 				});
@@ -261,25 +244,25 @@ export class Paginator {
 
 	private sanityChecks() {
 		if (!this.options.embeds && !this.descriptions) {
-			throw new Error('No embeds or descriptions provided');
+			throw new Error("No embeds or descriptions provided");
 		}
 		if (this.options.embeds && this.options.template) {
-			throw new Error('Cannot provide both embeds and template');
+			throw new Error("Cannot provide both embeds and template");
 		}
 		if (this.options.embeds && !this.options.embeds.length) {
-			throw new Error('No embeds provided');
+			throw new Error("No embeds provided");
 		}
 		if (this.descriptions && !this.descriptions.length) {
-			throw new Error('No descriptions provided');
+			throw new Error("No descriptions provided");
 		}
 		if (this.options.template && !this.descriptions?.length) {
-			throw new Error('No descriptions provided');
+			throw new Error("No descriptions provided");
 		}
 		if (
 			this.options.includeSelectMenu &&
 			(this.options.embeds?.length! > 25 || this.descriptions?.length! > 25)
 		) {
-			throw new Error('Too many pages to include select menu');
+			throw new Error("Too many pages to include select menu");
 		}
 	}
 }
@@ -295,8 +278,8 @@ interface PaginatorOptions {
 }
 
 type ButtonIds =
-	| '@paginator/first'
-	| '@paginator/back'
-	| '@paginator/stop'
-	| '@paginator/forward'
-	| '@paginator/last';
+	| "@paginator/first"
+	| "@paginator/back"
+	| "@paginator/stop"
+	| "@paginator/forward"
+	| "@paginator/last";
