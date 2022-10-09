@@ -6,7 +6,7 @@ import { Timestamp } from "../../utils/Timestamp.js";
 
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish()],
+	plugins: [publish({ dmPermission: false })],
 	options: [
 		{
 			name: "opponent",

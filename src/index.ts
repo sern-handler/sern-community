@@ -10,7 +10,12 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 	],
-	partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember],
+	partials: [
+		Partials.GuildMember,
+		Partials.Message,
+		Partials.ThreadMember,
+		Partials.Channel,
+	],
 	sweepers: {
 		messages: {
 			interval: 43200,

@@ -24,7 +24,7 @@
   },
   {
     "name": "How2Ask",
-    "content": "Often users face issues like commands not loading, message commands not working, slash commands not registering, etc. when they try sern. Please be specific when asking your question and provide all the proper data like code, error, expected behaviour, version, etc.\n\n> Did you use [@sern/cli](<https://www.npmjs.com/@sern/cli>) to generate your project?\n> Did you use templates as a reference and create project?\n> What version of [discord.js](<https://www.npmjs.com/discord.js>) you are on? Is it v13?\n> What version of [@sern/handler](<https://www.npmjs.com/@sern/handler>) you are using?\n> Are you using TypeScript or JavaScript?\n> Are you using CommonJS or ESM?",
+    "content": "Often users face issues like commands not loading, message commands not working, slash commands not registering, etc. when they try sern. Please be specific when asking your question and provide all the proper data like code, error, expected behaviour, version, etc. Below are some more questions you can answer that will help us to guide you without wasting time!\n\n> Did you use [`@sern/cli`](<https://www.npmjs.com/@sern/cli>) to generate your project?\n> Did you use templates as a reference and create project?\n> What version of [`discord.js`](<https://www.npmjs.com/discord.js>) you are on? Is it v13? ||(`npm ls discord.js`)||\n> What version of [`@sern/handler`](<https://www.npmjs.com/@sern/handler>) you are using?\n> Are you using TypeScript or JavaScript?\n> Are you using CommonJS or ESM? ||(Do you have `\"type\": \"module\"` in your package.json?)||",
     "keywords": [
       "how 2 ask",
       "how2ask"
@@ -41,6 +41,21 @@
   {
     "name": "Try",
     "content": "[This video was made especially for you](https://tryitands.ee/)",
+    "keywords": []
+  },
+  {
+    "name": "docs",
+    "content": "Please read the documentation of sern [*here*](<https://sern-handler.js.org/docs/intro>)",
+    "keywords": []
+  },
+  {
+    "name": "ask",
+    "content": "[Don't act like a small kid, the embed is for you](https://dontasktoask.com/)",
+    "keywords": []
+  },
+  {
+    "name": "hello",
+    "content": "[Seriously?](https://nohello.net/)",
     "keywords": []
   }
 ]

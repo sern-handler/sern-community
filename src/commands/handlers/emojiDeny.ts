@@ -1,6 +1,6 @@
+import { ownerIDs } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
-import { ownerIDs } from "../../plugins/ownerOnly.js";
 
 export default commandModule({
 	type: CommandType.Button,
@@ -32,6 +32,11 @@ export default commandModule({
 			.setColor("Red")
 			.setTimestamp();
 
-		await ctx.message?.edit({ content: null, embeds: [embed], components, files: [] });
+		await ctx.message?.edit({
+			content: null,
+			embeds: [embed],
+			components,
+			files: [],
+		});
 	},
 });

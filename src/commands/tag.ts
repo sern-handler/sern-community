@@ -1,8 +1,8 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
-import { Paginator } from "../utils/Paginator.js";
-import { publish } from "../plugins/publish.js";
+import { publish } from "#plugins";
+import { Paginator } from "#utils";
 
 import { createRequire } from "module";
 import type { TagData } from "../types/index.js";

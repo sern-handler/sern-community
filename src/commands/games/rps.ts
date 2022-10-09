@@ -8,10 +8,11 @@ import {
 	ComponentType,
 	User,
 } from "discord.js";
-import { publish } from "../../plugins/publish.js";
+import { publish } from "#plugins";
+
 export default commandModule({
 	type: CommandType.Slash,
-	plugins: [publish()],
+	plugins: [publish({ dmPermission: false })],
 	description: "wanna win in rps?",
 	options: [
 		{
@@ -125,10 +126,12 @@ export default commandModule({
 
 		collector.on("end", async (_, r) => {
 			if (r === "finished") return;
-			await context.interaction.editReply({
-				content: "Time up!",
-				components: [row.setComponents(buttons)],
-			}).catch(() => null);
+			await context.interaction
+				.editReply({
+					content: "Time up!",
+					components: [row.setComponents(buttons)],
+				})
+				.catch(() => null);
 		});
 	},
 });
