@@ -79,6 +79,11 @@
     "ts-pattern" "^4.0.2"
     "ts-results-es" "^3.5.0"
 
+"@sourcebin/linguist@^0.0.3":
+  "integrity" "sha512-VVkb/34pISdK+1tyqmwBac6crn8UhviKCRV5w/wc8iZyTCOoTrOu0Cgbqfh0bfMGxNlQuhaRy6cMmEmHxa5R3g=="
+  "resolved" "https://registry.npmjs.org/@sourcebin/linguist/-/linguist-0.0.3.tgz"
+  "version" "0.0.3"
+
 "@tokenizer/token@^0.3.0":
   "integrity" "sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A=="
   "resolved" "https://registry.npmjs.org/@tokenizer/token/-/token-0.3.0.tgz"
@@ -131,6 +136,15 @@
   dependencies:
     "follow-redirects" "^1.14.9"
     "form-data" "^4.0.0"
+
+"axios@^1.1.2":
+  "integrity" "sha512-bznQyETwElsXl2RK7HLLwb5GPpOLlycxHCtrpDR/4RqqBzjARaOTo3jz4IgtntWUYee7Ne4S8UHd92VCuzPaWA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-1.1.2.tgz"
+  "version" "1.1.2"
+  dependencies:
+    "follow-redirects" "^1.15.0"
+    "form-data" "^4.0.0"
+    "proxy-from-env" "^1.1.0"
 
 "balanced-match@^1.0.0":
   "integrity" "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
@@ -343,7 +357,7 @@
   dependencies:
     "to-regex-range" "^5.0.1"
 
-"follow-redirects@^1.14.9":
+"follow-redirects@^1.14.9", "follow-redirects@^1.15.0":
   "integrity" "sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
   "version" "1.15.2"
@@ -637,6 +651,11 @@
     "lilconfig" "^2.0.5"
     "yaml" "^1.10.2"
 
+"proxy-from-env@^1.1.0":
+  "integrity" "sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg=="
+  "resolved" "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.1.0.tgz"
+  "version" "1.1.0"
+
 "punycode@^2.1.0":
   "integrity" "sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A=="
   "resolved" "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"
@@ -734,6 +753,14 @@
   "version" "0.8.0-beta.0"
   dependencies:
     "whatwg-url" "^7.0.0"
+
+"sourcebin@^5.0.0":
+  "integrity" "sha512-UWlYVRTa2RN0iSlmYnzhOkfVstv7hs245OWOVqHCaJ3Cy6fBAX4HcZ5a7KRe0CooVv0GAjJZ1nqJly0CN9yjnA=="
+  "resolved" "https://registry.npmjs.org/sourcebin/-/sourcebin-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "@sourcebin/linguist" "^0.0.3"
+    "axios" "^0.27.2"
 
 "string_decoder@^1.1.1":
   "integrity" "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA=="

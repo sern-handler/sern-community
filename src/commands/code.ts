@@ -1,5 +1,5 @@
 import { commandModule, CommandType, Context } from "@sern/handler";
-import axios from "axios";
+import * as sourcebin from 'sourcebin';
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -11,7 +11,7 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import { publish } from "../plugins/publish.js";
-import { codebinrequest, codebinrequestmodal } from "../utils/codebin.js";
+import axios from "axios";
 export default commandModule({
 	type: CommandType.Slash,
 	plugins: [publish()],
@@ -44,32 +44,32 @@ export default commandModule({
 			modal.addComponents(firstActionRow);
 			ctx.interaction.showModal(modal);
 		} else {
+			await ctx.interaction.deferReply({ephemeral: true})
 			const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
 				new ButtonBuilder()
 					.setCustomId("sendMessage")
 					.setLabel("Send messsage with URL")
 					.setStyle(ButtonStyle.Primary)
 			);
-			const request = await codebinrequest(
-				`${process.env.PASTE_EE}`,
-				file,
-				ctx
-			);
-			const message = ctx.reply({
-				content: `Your code has been uploaded correctly!\n Link: <${request.link}>`,
-				ephemeral: true,
-				fetchReply: true,
+			const getURL = await axios.get(`${file.url}`).then((res) => res.data);
+			const request = await sourcebin.create({title: `Bin by ${ctx.user.username}`, files: [
+				{
+					content: getURL
+				}
+			]})
+			const message = await ctx.interaction.editReply({
+				content: `Your code has been uploaded correctly!\n Link: <https://srcb.in/${request.key}>`,
 				components: [row],
 			});
-			const collector = (await message).createMessageComponentCollector({
+			const collector = message.createMessageComponentCollector({
 				time: 20000,
 				max: 1,
 			});
 			collector.on("collect", async (i) => {
 				await i.deferReply();
 				if (i.customId === "sendMessage") {
-					i.editReply({
-						content: `Here's the link to a code <@${ctx.member?.user?.id}> has uploaded:\n${request.link}`,
+					await i.editReply({
+						content: `Here's the link to a code <@${ctx.member?.user?.id}> has uploaded:\n<https://srcb.in/${request.key}>`,
 					});
 				}
 			});
