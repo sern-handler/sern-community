@@ -82,10 +82,9 @@ export default commandModule({
 				const paginator = new Paginator({ embeds }).setSelectMenuOptions(
 					...Array(embeds.length)
 						.fill(null)
-						.map((_, i) => embeds[i])
-						.map((e) => ({
-							label: e.data.title!,
-							value: embeds.indexOf(e).toString(),
+						.map((_, i) => ({
+							label: embeds[i].data.title!,
+							value: `${i}`,
 						}))
 				);
 

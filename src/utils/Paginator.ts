@@ -1,16 +1,15 @@
 import {
 	ActionRowBuilder,
+	APISelectMenuComponent,
 	APISelectMenuOption,
 	ButtonBuilder,
 	ButtonStyle,
 	CommandInteraction,
-	ComponentType,
 	EmbedBuilder,
 	Message,
 	RestOrArray,
 	SelectMenuBuilder,
 	SelectMenuComponentOptionData,
-	SelectMenuInteraction,
 	SelectMenuOptionBuilder,
 	User,
 } from "discord.js";
@@ -35,6 +34,7 @@ export class Paginator {
 				text: `Page ${i + 1}/${this.options.embeds!.length}`,
 			})
 		);
+
 		if (this.pages > 25) this.options.includeSelectMenu = false;
 	}
 
@@ -115,7 +115,7 @@ export class Paginator {
 		)[]
 	) {
 		let msg: Message<boolean>;
-		if (interaction.replied) {
+		if (interaction.replied || interaction.deferred) {
 			msg = await interaction.editReply({
 				embeds: [embeds[this.currentCount]],
 				components: rows,
@@ -157,16 +157,21 @@ export class Paginator {
 						(this.descriptions ?? this.options.embeds!).length - 1;
 					break;
 				default:
-					this.currentCount = parseInt((i as SelectMenuInteraction).values[0]);
+					if (!i.isSelectMenu()) return;
+					this.currentCount = parseInt(i.values[0]);
+			}
+
+			const selectMenuOption = (
+				i.message.components[1].components[0].data as APISelectMenuComponent
+			).options;
+
+			for (const option of selectMenuOption) {
+				if (option.value === `${this.currentCount}`) option.default = true;
+				else option.default = false;
 			}
 
 			if (this.currentCount < 0) this.currentCount = 0;
-			if (
-				this.currentCount >= (this.descriptions ?? this.options.embeds!).length
-			) {
-				this.currentCount =
-					(this.descriptions ?? this.options.embeds!).length - 1;
-			}
+			if (this.currentCount >= this.pages) this.currentCount = this.pages - 1;
 
 			await i.update({
 				embeds: [embeds[this.currentCount]],
@@ -175,9 +180,23 @@ export class Paginator {
 		});
 
 		collector.on("ignore", async (i) => {
+			if (!this.options.wrongInteractionResponse) {
+				const embeds = this.options.embeds ?? this.buildEmbeds()!;
+				const components = Boolean(this.buildSelect())
+					? [this.buildButtons(), this.buildSelect()!]
+					: [this.buildButtons()];
+
+				const msg = await i.reply({
+					embeds: [embeds[this.currentCount]],
+					components,
+					ephemeral: true,
+					fetchReply: true,
+				});
+
+				return this.handleCollector(msg, i.user);
+			}
 			await i.reply({
-				content:
-					this.options.wrongInteractionResponse ?? "This maze isn't for you",
+				content: this.options.wrongInteractionResponse,
 				ephemeral: true,
 			});
 		});
