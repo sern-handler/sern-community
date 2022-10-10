@@ -85,6 +85,7 @@ export default commandModule({
 						.map((_, i) => ({
 							label: embeds[i].data.title!,
 							value: `${i}`,
+							default: i === 0,
 						}))
 				);
 
