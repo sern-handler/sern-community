@@ -6,9 +6,18 @@ export default eventModule({
 	type: EventType.Discord,
 	name: "messageCreate",
 	async execute(message: Message) {
-		if (!message.guild || message.webhookId || message?.author?.bot) return;
+		if (
+			!message.guild ||
+			message.webhookId ||
+			message?.author?.bot ||
+			!message.channel.isTextBased() ||
+			message.channel.isDMBased() ||
+			!message.channel.parent
+		)
+			return;
 		// ! 2 cases, 1 -> normal msg (common), 2 -> uploaded file (rare [free PR])
 
+		if (message.channel.parentId !== "989982180837060729") return; //* ONLY WORK IN SUPPORT CATEGORY!
 		const { content } = message;
 		if (!content.includes("```")) return;
 		const code = content.split(/```.*/gi)[1].split("```")[0].trim();
