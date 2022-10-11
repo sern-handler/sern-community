@@ -5,3 +5,4 @@ export * from "./TicTacToe.js";
 export * from "./Timestamp.js";
 export * from "./pagination.js";
 export * from "./randomStatus.js";
+export * from "./codeUpload.js";
