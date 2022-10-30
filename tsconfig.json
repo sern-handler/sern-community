@@ -11,6 +11,11 @@
 		"strictNullChecks": true,
 		"importsNotUsedAsValues": "error",
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"#plugins": ["./src/plugins/index.js"],
+			"#utils": ["./src/utils/index.js"],
+			"#constants": ["./src/constants.js"]
+		}
 	}
 }

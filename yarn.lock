@@ -132,16 +132,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sern/handler@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@sern/handler@npm:1.2.0"
+"@sern/handler@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@sern/handler@npm:1.2.1"
   dependencies:
     rxjs: ^7.5.6
     ts-pattern: ^4.0.2
     ts-results-es: ^3.5.0
   peerDependencies:
     discord.js: ^14.5.x
-  checksum: c446ccf8d762c8cf27c353e2f0a74fbf73a04d7cee00fa77750f0077a179d7bae8623972274e3b1d649b12ab389cc7efbf056fe617b33ec7b32de2f327f754be
+  checksum: ec194ec682144f6bd5ecf6b990bacd4e6ffcb4ff9425ef142bf048c8f549704ef0bd284ed2ea0a2e3cc83acef390381f32e5b4ca108745149cba4682cb1896aa
   languageName: node
   linkType: hard
 
@@ -1694,7 +1694,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sern-community@workspace:."
   dependencies:
-    "@sern/handler": 1.2.0
+    "@sern/handler": 1.2.1
     "@types/node": 18.7.23
     "@types/string-similarity": 4.0.0
     discord.js: 14.5.0

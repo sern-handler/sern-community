@@ -1,8 +1,8 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
-import { Paginator } from "../utils/Paginator.js";
-import { publish } from "../plugins/publish.js";
+import { publish } from "#plugins";
+import { Paginator } from "#utils";
 
 import { createRequire } from "module";
 import type { TagData } from "../types/index.js";
@@ -82,10 +82,10 @@ export default commandModule({
 				const paginator = new Paginator({ embeds }).setSelectMenuOptions(
 					...Array(embeds.length)
 						.fill(null)
-						.map((_, i) => embeds[i])
-						.map((e) => ({
-							label: e.data.title!,
-							value: embeds.indexOf(e).toString(),
+						.map((_, i) => ({
+							label: embeds[i].data.title!,
+							value: `${i}`,
+							default: i === 0,
 						}))
 				);
 

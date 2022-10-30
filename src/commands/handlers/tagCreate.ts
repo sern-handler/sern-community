@@ -1,6 +1,6 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { existsSync, writeFileSync } from "fs";
-import type { TagData } from "../../types/index.js";
+import type { TagData } from "../../types";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
@@ -56,4 +56,3 @@ export default commandModule({
 		});
 	},
 });
-

@@ -12,9 +12,8 @@ import {
 	TextChannel,
 } from "discord.js";
 import { fetch } from "undici";
-import { cooldown } from "../plugins/cooldown.js";
-import { publish } from "../plugins/publish.js";
-import { Resolver } from "../utils/Resolver.js";
+import { cooldown, publish } from "#plugins";
+import { Resolver } from "#utils";
 
 export default commandModule({
 	type: CommandType.Slash,

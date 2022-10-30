@@ -1,10 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { publish } from "../plugins/publish.js";
-import { fetch } from "undici";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
-import { cooldown } from "../plugins/cooldown.js";
+import { cooldown, publish } from "#plugins";
 import { parse } from "jsdoc-parse-plus";
-import { refreshCache } from "../plugins/refreshCache.js";
 export default commandModule({
 	type: CommandType.Slash,
 	description: "View sern plugins",
@@ -38,7 +35,6 @@ export default commandModule({
 		},
 	],
 	plugins: [
-		refreshCache(),
 		publish(),
 		cooldown.add([["user", "1/10"]], ({ seconds, context }) =>
 			context.reply({

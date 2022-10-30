@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { writeFileSync } from "fs";
 import { createRequire } from "module";
-import type { TagData } from "../../types/index.js";
+import type { TagData } from "../../types";
 const require = createRequire(import.meta.url);
 
 export default commandModule({
@@ -44,7 +44,9 @@ export default commandModule({
 			);
 		}
 
-		file[file.findIndex((t) => t.name === ctx.user.data)] = tag;
+		file[file.findIndex((t) => t.name === (ctx.user.data as UserTag).tag)] =
+			tag;
+
 		writeFileSync(filePath, JSON.stringify(file, null, 2));
 
 		return ctx.reply({
@@ -53,3 +55,7 @@ export default commandModule({
 		});
 	},
 });
+
+interface UserTag {
+	tag: string;
+}
