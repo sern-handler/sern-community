@@ -1,5 +1,5 @@
 import { commandModule, CommandType, Context } from "@sern/handler";
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { publish } from "../plugins/publish.js";
 import { fetch } from "undici";
 import { readFileSync } from "fs";
@@ -23,7 +23,7 @@ export default commandModule({
 						onEvent: [],
 						execute: async (autocomplete) => {
 							const focusedValue = autocomplete.options.getFocused()
-							let choices = JSON.parse(String(readFileSync('./timezone.txt'))) as Array<string>
+							let choices = JSON.parse(String(readFileSync('./time/timezone.txt'))) as Array<string>
 							choices = choices.filter(choice => choice.toString().toLowerCase().split("/").join("-").startsWith(focusedValue))
 							choices = choices.slice(0,25)
 							await autocomplete.respond(
@@ -33,23 +33,71 @@ export default commandModule({
 					}
 				}
 			]
+		},
+		{
+			name: 'get',
+			description: 'Get the time of a user',
+			type: ApplicationCommandOptionType.Subcommand,
+			options: [
+				{
+					name: 'locale',
+					description: 'The locale code to format the date',
+					type: ApplicationCommandOptionType.String,
+					required: true,
+					autocomplete: true,
+					command: {
+						onEvent: [],
+						execute: async (autocomplete) => {
+							const focusedValue = autocomplete.options.getFocused()
+							let choices = JSON.parse(String(readFileSync('./time/countrylocalecodes.txt'))) as Array<string>
+							choices = choices.filter(choice => choice.toString().startsWith(focusedValue))
+							choices = choices.slice(0,25)
+							await autocomplete.respond(
+								choices.map(choice => ({ name: choice, value: choice })),
+							);
+						}
+					}
+
+				},
+				{
+					name: 'user',
+					description: 'The user',
+					type: ApplicationCommandOptionType.User,
+					required: true,
+				}
+			]			
 		}
 	],
 	execute: async (ctx: Context, [, options]) => {
-		
 		switch(options.getSubcommand()) {
 			case 'create': {
-				const data = {
+				let responseHasError
+				const reqData = {
 					name: ctx.user.username,
-					timezone: options.getString('timezone', true),
-					key: process.env.TIME_KEY,
+					timezone: options.getString('timezone', true) as string,
+					key: process.env.TIME_KEY as string,
 					userid: ctx.user.id
 				}
-				const req = (await fetch('https://api.srizan.ml/sern/newTime', {
-					method: 'POST',
-					body: JSON.stringify(data)
-				})).body
-				await ctx.reply({content: `Your timezone was created succesfully!\nResponse from api.srizan.ml: ${JSON.stringify(req)}`, ephemeral: true})
+				const request = await fetch('https://api.srizan.ml/sern/newTime', {
+					method: "POST",
+					body: JSON.stringify(reqData),
+					headers: {
+						"Content-Type": "application/json",
+					}
+				}).catch(error => responseHasError = true)
+				const data = await (request as unknown as Response).json()
+				if (responseHasError) return await ctx.reply({content: `Oops, the response errored out for some reason, you could try again...`, ephemeral: true})
+				await ctx.reply({content: `Your timezone was created succesfully!\nResponse from api.srizan.ml: ` + "`" + JSON.stringify(await data) + "`", ephemeral: true})
+			} break;
+			case 'get': {
+				let responseHasError
+				const option = options.getMember('user') as GuildMember
+				const request = await fetch(`https://api.srizan.ml/sern/getTime?userid=${option.id}`).catch(error => responseHasError = true)
+				const data = await (request as unknown as Response).json()
+				const dateConvert = new Date().toLocaleString('bs-Cyrl-BA', { timeZone: data.timezone })
+				if (data.error === "you don't exist in the database") return await ctx.reply({content: `${option} doesn't exist in the database!`, ephemeral: true})
+				if (responseHasError) return await ctx.reply({content: `Oopsies, I tried to connect to the API, but something went wrong. Try again, it should work`, ephemeral: true})
+				await ctx.reply({content: `Current time of ${option}:\n${dateConvert}`, ephemeral: true})
 			}
 		}
 	},
