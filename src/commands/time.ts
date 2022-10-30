@@ -71,33 +71,41 @@ export default commandModule({
 	execute: async (ctx: Context, [, options]) => {
 		switch(options.getSubcommand()) {
 			case 'create': {
-				let responseHasError
-				const reqData = {
-					name: ctx.user.username,
-					timezone: options.getString('timezone', true) as string,
-					key: process.env.TIME_KEY as string,
-					userid: ctx.user.id
-				}
-				const request = await fetch('https://api.srizan.ml/sern/newTime', {
-					method: "POST",
-					body: JSON.stringify(reqData),
-					headers: {
-						"Content-Type": "application/json",
+				try {
+					let responseHasError
+					const reqData = {
+						name: ctx.user.username,
+						timezone: options.getString('timezone', true) as string,
+						key: process.env.TIME_KEY as string,
+						userid: ctx.user.id
 					}
-				}).catch(error => responseHasError = true)
-				const data = await (request as unknown as Response).json()
-				if (responseHasError) return await ctx.reply({content: `Oops, the response errored out for some reason, you could try again...`, ephemeral: true})
-				await ctx.reply({content: `Your timezone was created succesfully!\nResponse from api.srizan.ml: ` + "`" + JSON.stringify(await data) + "`", ephemeral: true})
+					const request = await fetch('https://api.srizan.ml/sern/newTime', {
+						method: "POST",
+						body: JSON.stringify(reqData),
+						headers: {
+							"Content-Type": "application/json",
+						}
+					}).catch(error => responseHasError = true)
+					const data = await (request as unknown as Response).json()
+					if (responseHasError) return await ctx.reply({content: `Oops, the response errored out for some reason, you could try again...`, ephemeral: true})
+					await ctx.reply({content: `Your timezone was created succesfully!\nResponse from api.srizan.ml: ` + "`" + JSON.stringify(await data) + "`", ephemeral: true})
+				} catch (error) {
+					await ctx.reply({content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`, ephemeral: true})
+				}
 			} break;
 			case 'get': {
-				let responseHasError
-				const option = options.getMember('user') as GuildMember
-				const request = await fetch(`https://api.srizan.ml/sern/getTime?userid=${option.id}`).catch(error => responseHasError = true)
-				const data = await (request as unknown as Response).json()
-				const dateConvert = new Date().toLocaleString('bs-Cyrl-BA', { timeZone: data.timezone })
-				if (data.error === "you don't exist in the database") return await ctx.reply({content: `${option} doesn't exist in the database!`, ephemeral: true})
-				if (responseHasError) return await ctx.reply({content: `Oopsies, I tried to connect to the API, but something went wrong. Try again, it should work`, ephemeral: true})
-				await ctx.reply({content: `Current time of ${option}:\n${dateConvert}`, ephemeral: true})
+				try {
+					let responseHasError
+					const option = options.getMember('user') as GuildMember
+					const request = await fetch(`https://api.srizan.ml/sern/getTime?userid=${option.id}`).catch(error => responseHasError = true)
+					const data = await (request as unknown as Response).json()
+					const dateConvert = new Date().toLocaleString('bs-Cyrl-BA', { timeZone: data.timezone })
+					if (data.error === "you don't exist in the database") return await ctx.reply({content: `${option} doesn't exist in the database!`, ephemeral: true})
+					if (responseHasError) return await ctx.reply({content: `Oopsies, I tried to connect to the API, but something went wrong. Try again, it should work`, ephemeral: true})
+					await ctx.reply({content: `Current time of ${option}:\n${dateConvert}`, ephemeral: true})
+				} catch (error) {
+					await ctx.reply({content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`, ephemeral: true})
+				}
 			}
 		}
 	},
