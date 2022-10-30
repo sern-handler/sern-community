@@ -1,7 +1,7 @@
 import { commandModule, CommandType, Context } from "@sern/handler";
-import { ApplicationCommandOptionType, AutocompleteInteraction, GuildMember } from "discord.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import { publish } from "../plugins/publish.js";
-import axios from "axios";
+import { fetch } from "undici";
 import { readFileSync } from "fs";
 export default commandModule({
 	type: CommandType.Slash,
@@ -39,14 +39,17 @@ export default commandModule({
 		
 		switch(options.getSubcommand()) {
 			case 'create': {
-				try {const request = await axios.post(`https://api.srizan.ml/sern/newTime`, {
+				const data = {
 					name: ctx.user.username,
 					timezone: options.getString('timezone', true),
 					key: process.env.TIME_KEY,
 					userid: ctx.user.id
-				}).then(res => res.data)} catch(err) {
-					
 				}
+				const req = (await fetch('https://api.srizan.ml/sern/newTime', {
+					method: 'POST',
+					body: JSON.stringify(data)
+				})).body
+				await ctx.reply({content: `Your timezone was created succesfully!\nResponse from api.srizan.ml: ${JSON.stringify(req)}`, ephemeral: true})
 			}
 		}
 	},
