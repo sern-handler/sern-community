@@ -110,7 +110,7 @@ export default commandModule({
 							});
 						await ctx.reply({
 							content:
-								`Your timezone was created succesfully!\nResponse from api.srizan.ml: ` +
+								`Response from api.srizan.ml: ` +
 								"`" +
 								JSON.stringify(await data) +
 								"`",
