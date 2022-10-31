@@ -38,4 +38,4 @@ client.once("ready", (client) => {
 	console.log(`[✅]: Logged in as ${client.user.username}`);
 });
 
-await client.login(process.env.TOKEN);
+await client.login();
