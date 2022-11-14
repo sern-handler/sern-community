@@ -25,21 +25,17 @@ export default commandModule({
 							const focusedValue = autocomplete.options.getFocused();
 							let choices = JSON.parse(
 								String(readFileSync("./time/timezone.txt"))
-							) as Array<string>;
-							choices = choices.filter((choice) =>
-								choice
-									.toString()
-									.toLowerCase()
-									.split("/")
-									.join("-")
-									.startsWith(focusedValue)
-							);
+							) as string[];
+							choices = choices
+								.map((choice) =>
+									choice.toString().toLowerCase().split("/").join("-")
+								)
+								.filter((choice) => choice.startsWith(focusedValue));
+
 							choices = choices.slice(0, 25);
+
 							await autocomplete.respond(
-								choices.map((choice) => ({
-									name: choice.toString().toLowerCase().split("/").join("-"),
-									value: choice,
-								}))
+								choices.map((choice) => ({ name: choice, value: choice }))
 							);
 						},
 					},
@@ -91,7 +87,7 @@ export default commandModule({
 						let responseHasError;
 						const reqData = {
 							name: ctx.user.username,
-							timezone: options.getString("timezone", true) as string,
+							timezone: options.getString("timezone", true),
 							key: process.env.TIME_KEY as string,
 							userid: ctx.user.id,
 						};
@@ -101,13 +97,15 @@ export default commandModule({
 							headers: {
 								"Content-Type": "application/json",
 							},
-						}).catch((error) => (responseHasError = true));
+						}).catch(() => (responseHasError = true));
 						const data = await (request as unknown as Response).json();
+
 						if (responseHasError)
 							return await ctx.reply({
 								content: `Oops, the response errored out for some reason, you could try again...`,
 								ephemeral: true,
 							});
+
 						await ctx.reply({
 							content:
 								`Response from api.srizan.ml: ` +
@@ -130,15 +128,18 @@ export default commandModule({
 					const option = options.getMember("user") as GuildMember;
 					const request = await fetch(
 						`https://api.srizan.ml/sern/getTime?userid=${option.id}`
-					).catch((error) => (responseHasError = true));
+					).catch(() => (responseHasError = true));
+
 					const data = await (request as unknown as Response).json();
 					const dateConvert = new Date().toLocaleString("bs-Cyrl-BA", {
 						timeZone: data.timezone,
 					});
+
 					if (data.error === "you don't exist in the database")
 						return await ctx.reply({
 							content: `${option} doesn't exist in the database!`,
 							ephemeral: true,
+							allowedMentions: { parse: [] },
 						});
 					if (responseHasError)
 						return await ctx.reply({
@@ -146,8 +147,9 @@ export default commandModule({
 							ephemeral: true,
 						});
 					await ctx.reply({
-						content: `Current time of ${option}:\n${dateConvert}`,
+						content: `Current time for ${option}\n${dateConvert}`,
 						ephemeral: true,
+						allowedMentions: { parse: [] },
 					});
 				} catch (error) {
 					await ctx.reply({
