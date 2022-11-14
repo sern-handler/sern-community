@@ -26,12 +26,9 @@ export default commandModule({
 							let choices = JSON.parse(
 								String(readFileSync("./time/timezone.txt"))
 							) as string[];
-							choices = choices
-								.map((choice) =>
-									choice.toString().toLowerCase().split("/").join("-")
-								)
-								.filter((choice) => choice.startsWith(focusedValue));
-
+							choices = choices.filter((choice) =>
+								choice.startsWith(focusedValue)
+							);
 							choices = choices.slice(0, 25);
 
 							await autocomplete.respond(
@@ -78,6 +75,11 @@ export default commandModule({
 				},
 			],
 		},
+		{
+			name: "delete",
+			description: "Delete your entry in the database",
+			type: ApplicationCommandOptionType.Subcommand,
+		},
 	],
 	execute: async (ctx: Context, [, options]) => {
 		switch (options.getSubcommand()) {
@@ -86,9 +88,8 @@ export default commandModule({
 					try {
 						let responseHasError;
 						const reqData = {
-							name: ctx.user.username,
 							timezone: options.getString("timezone", true),
-							key: process.env.TIME_KEY as string,
+							key: process.env.TIME_KEY!,
 							userid: ctx.user.id,
 						};
 						const request = await fetch("https://api.srizan.ml/sern/newTime", {
@@ -150,6 +151,38 @@ export default commandModule({
 						content: `Current time for ${option}\n${dateConvert}`,
 						ephemeral: true,
 						allowedMentions: { parse: [] },
+					});
+				} catch (error) {
+					await ctx.reply({
+						content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`,
+						ephemeral: true,
+					});
+				}
+			}
+			case "delete": {
+				try {
+					let responseHasError;
+					const request = await fetch(
+						`https://api.srizan.ml/sern/deleteTime?userid=${ctx.user.id}&key=${process.env.TIME_KEY}`,
+						{
+							method: "DELETE",
+						}
+					).catch(() => (responseHasError = true));
+					const data = await (request as unknown as Response).json();
+
+					if (responseHasError)
+						return await ctx.reply({
+							content: `Oops, the response errored out for some reason, you could try again...`,
+							ephemeral: true,
+						});
+
+					await ctx.reply({
+						content:
+							`Response from api.srizan.ml: ` +
+							"`" +
+							JSON.stringify(await data) +
+							"`",
+						ephemeral: true,
 					});
 				} catch (error) {
 					await ctx.reply({
