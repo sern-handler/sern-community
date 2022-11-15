@@ -1,8 +1,9 @@
-import { commandModule, CommandType, Context } from "@sern/handler";
+import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { publish } from "../plugins/publish.js";
 import { fetch } from "undici";
 import { readFileSync } from "fs";
+
 export default commandModule({
 	type: CommandType.Slash,
 	plugins: [publish()],
@@ -21,19 +22,10 @@ export default commandModule({
 					autocomplete: true,
 					command: {
 						onEvent: [],
-						execute: async (autocomplete) => {
-							const focusedValue = autocomplete.options.getFocused();
-							let choices = JSON.parse(
-								String(readFileSync("./time/timezone.txt"))
-							) as string[];
-							choices = choices.filter((choice) =>
-								choice.startsWith(focusedValue)
-							);
-							choices = choices.slice(0, 25);
+						execute: (autocomplete) => {
+							const input = autocomplete.options.getFocused();
 
-							await autocomplete.respond(
-								choices.map((choice) => ({ name: choice, value: choice }))
-							);
+							return autocomplete.respond(fuzz(input)).catch(() => null);
 						},
 					},
 				},
@@ -52,18 +44,10 @@ export default commandModule({
 					autocomplete: true,
 					command: {
 						onEvent: [],
-						execute: async (autocomplete) => {
-							const focusedValue = autocomplete.options.getFocused();
-							let choices = JSON.parse(
-								String(readFileSync("./time/countrylocalecodes.txt"))
-							) as Array<string>;
-							choices = choices.filter((choice) =>
-								choice.toString().startsWith(focusedValue)
-							);
-							choices = choices.slice(0, 25);
-							await autocomplete.respond(
-								choices.map((choice) => ({ name: choice, value: choice }))
-							);
+						execute: (autocomplete) => {
+							const input = autocomplete.options.getFocused();
+
+							return autocomplete.respond(fuzz(input, true));
 						},
 					},
 				},
@@ -81,116 +65,103 @@ export default commandModule({
 			type: ApplicationCommandOptionType.Subcommand,
 		},
 	],
-	execute: async (ctx: Context, [, options]) => {
+	execute: async (ctx, [, options]) => {
 		switch (options.getSubcommand()) {
-			case "create":
-				{
-					try {
-						let responseHasError;
-						const reqData = {
-							timezone: options.getString("timezone", true),
-							key: process.env.TIME_KEY!,
-							userid: ctx.user.id,
-						};
-						const request = await fetch("https://api.srizan.ml/sern/newTime", {
-							method: "POST",
-							body: JSON.stringify(reqData),
-							headers: {
-								"Content-Type": "application/json",
-							},
-						}).catch(() => (responseHasError = true));
-						const data = await (request as unknown as Response).json();
+			case "create": {
+				const reqData = {
+					timezone: options.getString("timezone", true),
+					key: process.env.TIME_KEY!,
+					userid: ctx.user.id,
+				};
+				const request = await fetch("https://api.srizan.ml/sern/newTime", {
+					method: "POST",
+					body: JSON.stringify(reqData),
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}).catch(() => null);
 
-						if (responseHasError)
-							return await ctx.reply({
-								content: `Oops, the response errored out for some reason, you could try again...`,
-								ephemeral: true,
-							});
+				const data = (await request?.json()) as Record<string, string>;
 
-						await ctx.reply({
-							content:
-								`Response from api.srizan.ml: ` +
-								"`" +
-								JSON.stringify(await data) +
-								"`",
-							ephemeral: true,
-						});
-					} catch (error) {
-						await ctx.reply({
-							content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`,
-							ephemeral: true,
-						});
-					}
-				}
-				break;
+				if (!data)
+					return ctx.reply({
+						content: `Oops, the response errored out for some reason, you could try again...`,
+						ephemeral: true,
+					});
+
+				return ctx.reply({
+					content:
+						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
+					ephemeral: !data.ok,
+				});
+			}
 			case "get": {
-				try {
-					let responseHasError;
-					const option = options.getMember("user") as GuildMember;
-					const request = await fetch(
-						`https://api.srizan.ml/sern/getTime?userid=${option.id}`
-					).catch(() => (responseHasError = true));
+				const option = options.getMember("user") as GuildMember;
+				const request = await fetch(
+					`https://api.srizan.ml/sern/getTime?userid=${option.id}`
+				).catch(() => null);
 
-					const data = await (request as unknown as Response).json();
-					const dateConvert = new Date().toLocaleString("bs-Cyrl-BA", {
-						timeZone: data.timezone,
-					});
+				const data = (await request?.json()) as APIResponse;
 
-					if (data.error === "you don't exist in the database")
-						return await ctx.reply({
-							content: `${option} doesn't exist in the database!`,
-							ephemeral: true,
-							allowedMentions: { parse: [] },
-						});
-					if (responseHasError)
-						return await ctx.reply({
-							content: `Oopsies, I tried to connect to the API, but something went wrong. Try again, it should work`,
-							ephemeral: true,
-						});
-					await ctx.reply({
-						content: `Current time for ${option}\n${dateConvert}`,
-						ephemeral: true,
-						allowedMentions: { parse: [] },
-					});
-				} catch (error) {
-					await ctx.reply({
-						content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`,
+				if (!data)
+					return ctx.reply({
+						content: `Oopsies, I tried to connect to the API, but something went wrong. Try again, it should work`,
 						ephemeral: true,
 					});
-				}
+
+				if (data.error)
+					return ctx.reply({
+						content: `${option}'s timezone data doesn't exist in the database!`,
+						ephemeral: true,
+					});
+
+				const dateConvert = new Date().toLocaleString("en-GB", {
+					timeZone: data.timezone,
+					timeStyle: "full",
+					dateStyle: "medium",
+				});
+
+				return ctx.reply({
+					content: `Current time for ${option} is \`${dateConvert}\``,
+					allowedMentions: { parse: [] },
+				});
 			}
 			case "delete": {
-				try {
-					let responseHasError;
-					const request = await fetch(
-						`https://api.srizan.ml/sern/deleteTime?userid=${ctx.user.id}&key=${process.env.TIME_KEY}`,
-						{
-							method: "DELETE",
-						}
-					).catch(() => (responseHasError = true));
-					const data = await (request as unknown as Response).json();
+				const request = await fetch(
+					`https://api.srizan.ml/sern/deleteTime?userid=${ctx.user.id}&key=${process.env.TIME_KEY}`,
+					{
+						method: "DELETE",
+					}
+				).catch(() => null);
+				const data = (await request?.json()) as Record<string, string>;
 
-					if (responseHasError)
-						return await ctx.reply({
-							content: `Oops, the response errored out for some reason, you could try again...`,
-							ephemeral: true,
-						});
-
-					await ctx.reply({
-						content:
-							`Response from api.srizan.ml: ` +
-							"`" +
-							JSON.stringify(await data) +
-							"`",
+				if (!data)
+					return ctx.reply({
+						content: `Oops, the response errored out for some reason, you could try again...`,
 						ephemeral: true,
 					});
-				} catch (error) {
-					await ctx.reply({
-						content: `Something went wrong!\nTry again, Cloudflare Tunnels is sometimes buggy...`,
-						ephemeral: true,
-					});
-				}
+
+				return ctx.reply({
+					content:
+						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
+					ephemeral: !data.ok,
+				});
 			}
 		}
 	},
 });
+
+function fuzz(s: string, locale = false) {
+	const path = `./time/${locale ? "countrylocalecodes" : "timezone"}.txt`;
+
+	let zones: string[] = JSON.parse(`${readFileSync(path)}`);
+	zones = zones.filter((choice) =>
+		choice.toLowerCase().includes(s.toLowerCase())
+	);
+	return zones.slice(0, 25).map((z) => ({ name: z, value: z }));
+}
+
+interface APIResponse {
+	error?: string;
+	timezone?: string;
+}
