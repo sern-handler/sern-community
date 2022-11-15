@@ -1,6 +1,6 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, GuildMember } from "discord.js";
-import { publish } from "../plugins/publish.js";
+import { publish } from "#plugins";
 import { fetch } from "undici";
 import { readFileSync } from "fs";
 
@@ -22,7 +22,7 @@ export default commandModule({
 					autocomplete: true,
 					command: {
 						onEvent: [],
-						execute: (autocomplete) => {
+						execute: async (autocomplete) => {
 							const input = autocomplete.options.getFocused();
 
 							return autocomplete.respond(fuzz(input)).catch(() => null);
@@ -44,10 +44,10 @@ export default commandModule({
 					autocomplete: true,
 					command: {
 						onEvent: [],
-						execute: (autocomplete) => {
+						execute: async (autocomplete) => {
 							const input = autocomplete.options.getFocused();
 
-							return autocomplete.respond(fuzz(input, true));
+							return autocomplete.respond(fuzz(input, true)).catch(() => null);
 						},
 					},
 				},

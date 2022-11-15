@@ -6,6 +6,7 @@
 		"module": "ESNext",
 		"outDir": "dist",
 		"strict": true,
+		"baseUrl": ".",
 		"esModuleInterop": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
@@ -13,9 +14,9 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
-			"#plugins": ["./src/plugins/index.js"],
-			"#utils": ["./src/utils/index.js"],
-			"#constants": ["./src/constants.js"]
+			"#plugins": ["src/plugins/index.js"],
+			"#utils": ["src/utils/index.js"],
+			"#constants": ["src/constants.js"]
 		}
 	}
 }
