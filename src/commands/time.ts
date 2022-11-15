@@ -92,7 +92,7 @@ export default commandModule({
 				return ctx.reply({
 					content:
 						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
-					ephemeral: !data.ok,
+					ephemeral: true,
 				});
 			}
 			case "get": {
@@ -114,8 +114,17 @@ export default commandModule({
 						content: `${option}'s timezone data doesn't exist in the database!`,
 						ephemeral: true,
 					});
-
-				const dateConvert = new Date().toLocaleString("en-GB", {
+				let locale;
+				if (
+					JSON.parse(
+						`${readFileSync("./time/countrylocalecodes.txt")}`
+					).indexOf(options.getString("locale")) > -1
+				) {
+					locale = options.getString("locale")!;
+				} else {
+					locale = "en-GB";
+				}
+				const dateConvert = new Date().toLocaleString(locale, {
 					timeZone: data.timezone,
 					timeStyle: "full",
 					dateStyle: "medium",
@@ -144,7 +153,7 @@ export default commandModule({
 				return ctx.reply({
 					content:
 						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
-					ephemeral: !data.ok,
+					ephemeral: true,
 				});
 			}
 		}
