@@ -114,17 +114,8 @@ export default commandModule({
 						content: `${option}'s timezone data doesn't exist in the database!`,
 						ephemeral: true,
 					});
-				let locale;
-				if (
-					JSON.parse(
-						`${readFileSync("./time/countrylocalecodes.txt")}`
-					).indexOf(options.getString("locale")) > -1
-				) {
-					locale = options.getString("locale")!;
-				} else {
-					locale = "en-GB";
-				}
-				const dateConvert = new Date().toLocaleString(locale, {
+
+				const dateConvert = new Date().toLocaleString("en-GB", {
 					timeZone: data.timezone,
 					timeStyle: "full",
 					dateStyle: "medium",
