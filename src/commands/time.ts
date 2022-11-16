@@ -37,21 +37,6 @@ export default commandModule({
 			type: ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
-					name: "locale",
-					description: "The locale code to format the date",
-					type: ApplicationCommandOptionType.String,
-					required: true,
-					autocomplete: true,
-					command: {
-						onEvent: [],
-						execute: async (autocomplete) => {
-							const input = autocomplete.options.getFocused();
-
-							return autocomplete.respond(fuzz(input, true)).catch(() => null);
-						},
-					},
-				},
-				{
 					name: "user",
 					description: "The user",
 					type: ApplicationCommandOptionType.User,
