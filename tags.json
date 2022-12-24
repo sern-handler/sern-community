@@ -45,7 +45,7 @@
   },
   {
     "name": "docs",
-    "content": "Please read the documentation of sern [*here*](<https://sern-handler.js.org/docs/intro>)",
+    "content": "Please read the documentation of sern [*here*](<https://sern.dev/docs/intro>)",
     "keywords": []
   },
   {
@@ -60,7 +60,7 @@
   },
   {
     "name": "blog",
-    "content": "Try reading this quick [blog](<https://sern-handler.js.org/blog>) post & watch the videos, if you want to learn the basics of sern.",
+    "content": "Try reading this quick [blog](<https://sern.dev/blog>) post & watch the videos, if you want to learn the basics of sern.",
     "keywords": []
   },
   {
