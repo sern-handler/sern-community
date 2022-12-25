@@ -14,6 +14,7 @@ export function ownerOnly(override?: string[]): EventPlugin<CommandType.Both> {
 					override ?? ownerIDs
 				)}`,
 				ephemeral: true,
+				allowedMentions: { repliedUser: false },
 			});
 			return controller.stop();
 
