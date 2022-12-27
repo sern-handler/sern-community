@@ -1,14 +1,15 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { EmbedBuilder } from "discord.js";
 import { inspect } from "util";
-import { ownerOnly } from "#plugins";
+import { Evo, Seren, Ropox } from "#constants";
 
 export default commandModule({
 	type: CommandType.Text,
 	description: "Eval something",
-	plugins: [ownerOnly()],
 	alias: ["ev"],
 	execute: async (ctx, args) => {
+		if (![Evo, Seren, Ropox].includes(ctx.user.id)) return;
+
 		let code: string[] | string = args[1];
 
 		code = code.join(" ") as string;
