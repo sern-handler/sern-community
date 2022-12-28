@@ -55,16 +55,16 @@ export default commandModule({
 			if (!channel) return;
 			const embed = new EmbedBuilder()
 				.setColor(0xcc5279)
-				.setTitle("v1 is out!")
+				.setTitle("v2 is out!")
 				.setThumbnail(client.user?.displayAvatarURL() ?? "")
 				.setImage(
 					"https://raw.githubusercontent.com/sern-handler/.github/main/banner.png"
 				)
-				.setAuthor({ name: "sern", url: "https://sern-handler.js.org/" })
+				.setAuthor({ name: "sern", url: "https://sern.dev/" })
 				.setDescription(
-					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient! <@&981419402283085834> will continue being given out until next week`
+					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient!`
 				)
-				.setFooter({ text: "Supports DJS v14.2 and above" })
+				.setFooter({ text: "Supports DJS v14.7 and above" })
 				.setTimestamp();
 			const content = ping ? "@everyone" : undefined;
 			channel.isTextBased() && channel.send({ content, embeds: [embed] });
@@ -77,20 +77,20 @@ function text() {
 	const obj = [
 		{
 			name: `[CLI](https://github.com/sern-handler/cli):`,
-			value: `\` - \` Added JavaScript-ESM Template`,
+			value: `\` - \` Updated templates for v2`,
 		},
 		{
 			name: `[@sern/handler](https://www.npmjs.com/package/@sern/handler):`,
-			value: `\` - \` ESM support\n\` - \` More secure module system\n\` - \` Can be tree shaken (smaller project size)\n\` - \` Reduced package size by **9 MBs**`,
+			value: `\` - \` Read blog https://sern.dev/blog\n`,
 		},
 		{
-			name: `[Website](https://sern-handler.js.org/)`,
-			value: `\` - \` Fully revamped website\n\` - \` API documentation\n\` - \` A guide to get you started\n\` - \` New homepage!`,
+			name: `[Website](https://sern.dev)`,
+			value: `\` - \` Blog 2.0\n`,
 		},
-		{
-			name: `[Community bot](https://github.com/sern-handler/sern-community)`,
-			value: `\` - \` Documentation at your hands in this server!\n\` - \` Autocompletes\n\` - \` Tag System\n\` - \` Features all the plugins in [this repository](https://github.com/sern-handler/awesome-plugins)`,
-		},
+		// {
+		// 	name: `[Community bot](https://github.com/sern-handler/sern-community)`,
+		// 	value: `\` - \` Documentation at your hands in this server!\n\` - \` Autocompletes\n\` - \` Tag System\n\` - \` Features all the plugins in [this repository](https://github.com/sern-handler/awesome-plugins)`,
+		// },
 	];
 	return obj.map(({ name, value }) => `**${name}**\n${value}`).join("\n\n");
 }
