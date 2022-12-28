@@ -81,11 +81,11 @@ function text() {
 		},
 		{
 			name: `[@sern/handler](https://www.npmjs.com/package/@sern/handler):`,
-			value: `\` - \` Read blog https://sern.dev/blog\n`,
+			value: `\` - \` Read blog (I wrote everything here) https://sern.dev/blog`,
 		},
 		{
 			name: `[Website](https://sern.dev)`,
-			value: `\` - \` Blog 2.0\n`,
+			value: `\` - \` Blog 2.0`,
 		},
 		// {
 		// 	name: `[Community bot](https://github.com/sern-handler/sern-community)`,
