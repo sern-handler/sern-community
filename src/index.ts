@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Dependencies, Sern, SernEmitter, single, Singleton } from "@sern/handler";
 import "dotenv/config";
 import { randomStatus } from "./utils/randomStatus.js";
+import { SernLogger } from "./utils/logger.js";
 
 const client = new Client({
 	intents: [
@@ -26,13 +27,15 @@ const client = new Client({
 
 
 export interface BotDependencies extends Dependencies {
-	'@sern/client' : Singleton<Client>
+	'@sern/client' : Singleton<Client>;
+	'@sern/logger' : Singleton<SernLogger>
 }
 
 export const useContainer = Sern.makeDependencies<BotDependencies>({
 	build : root =>
 		root
 			.add({'@sern/client' : single(client) })
+			.add({'@sern/logger': single(new SernLogger('info'))})
 			.add({'process' : single(process) })
 })
 Sern.init({

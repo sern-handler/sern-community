@@ -33,7 +33,8 @@
 		"jsdoc-parse-plus": "1.3.0",
 		"string-similarity": "4.0.4",
 		"trie-search": "1.3.6",
-		"undici": "5.14.0"
+		"undici": "5.14.0",
+		"winston": "^3.8.2"
 	},
 	"devDependencies": {
 		"@types/node": "18.11.18",
