@@ -101,6 +101,9 @@ function add(
 		async execute([context], controller) {
 			for (const { location, actions, seconds } of raw) {
 				const id = getPropertyForLocation(context, location);
+				if(id == undefined) {
+					throw Error("cooldown with option CooldownLocation.guild not called in a guild")
+				}
 				const cooldown = map.get(id);
 
 				if (!cooldown) {
