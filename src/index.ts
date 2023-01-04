@@ -1,8 +1,7 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Dependencies, Sern, SernEmitter, single, Singleton } from "@sern/handler";
+import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
-import { randomStatus } from "./utils/randomStatus.js";
-import { SernLogger } from "./utils/logger.js";
+import { randomStatus, SernLogger } from "#utils";
 
 const client = new Client({
 	intents: [
