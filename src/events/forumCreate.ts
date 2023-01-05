@@ -1,15 +1,12 @@
 import { eventModule, EventType } from "@sern/handler";
 import { AnyThreadChannel, ChannelType, EmbedBuilder } from "discord.js";
+import { onCorrectThread } from "../plugins/onCorrectThread";
 
 export default eventModule({
 	type: EventType.Discord,
+	plugins : [onCorrectThread("1019807803935825922")],
 	name: "threadCreate",
-	async execute(thread: AnyThreadChannel, newlyMade: boolean) {
-		if (!thread.parent) return;
-		if (thread.parentId !== "1019807803935825922") return;
-		if (thread.parent.type !== ChannelType.GuildForum) return;
-		if (!newlyMade) return;
-
+	async execute(thread: AnyThreadChannel, _: boolean) {
 		if (thread.appliedTags.length > 3)
 			await thread.setAppliedTags(thread.appliedTags.slice(0, 3));
 

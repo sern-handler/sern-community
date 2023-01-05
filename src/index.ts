@@ -48,7 +48,8 @@ Sern.init({
 
 client.once("ready", (client) => {
 	randomStatus(client);
-	console.log(`[✅]: Logged in as ${client.user.username}`);
+	const [ logger ] = useContainer('@sern/logger')
+   logger.info({ message:`[✅]: Logged in as ${client.user.username}`});
 });
 
 await client.login();
