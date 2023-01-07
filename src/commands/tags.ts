@@ -11,10 +11,10 @@ import { createRequire } from "module";
 import { Evo, Seren } from "#constants";
 import { ownerOnly, publish } from "#plugins";
 import type { TagData } from "../types";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 const require = createRequire(import.meta.url);
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish(), ownerOnly([Evo, Seren])],
 	options: [
 		{

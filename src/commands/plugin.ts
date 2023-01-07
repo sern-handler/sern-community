@@ -2,8 +2,8 @@ import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { cooldown, publish } from "#plugins";
 import { parse } from "jsdoc-parse-plus";
-export default commandModule({
-	type: CommandType.Slash,
+import { slashCommand } from "../utils/composable/slashCommand.js";
+export default slashCommand({
 	description: "View sern plugins",
 	options: [
 		{

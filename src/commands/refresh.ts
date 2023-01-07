@@ -4,9 +4,9 @@ import { fetch } from "undici";
 import type { Data } from "./plugin.js";
 import { ownerOnly, publish, refreshCache } from "#plugins";
 import { Evo } from "#constants";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [
 		refreshCache(),
 		publish({

@@ -11,10 +11,10 @@ import {
 } from "discord.js";
 import { ownerOnly, publish } from "#plugins";
 import { Resolver } from "#utils";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 
-export default commandModule({
+export default slashCommand({
 	plugins: [ownerOnly(), publish()],
-	type: CommandType.Slash,
 	description: "Select Menu Role",
 	options: [
 		{

@@ -54,7 +54,6 @@ export function publish(
 				dmPermission: undefined,
 				defaultMemberPermissions: null,
 			};
-
 			options = { ...defaultOptions, ...options } as PublishOptions &
 				ValidPublishOptions;
 			let { defaultMemberPermissions, dmPermission, guildIds } =

@@ -1,15 +1,15 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ChannelType } from "discord.js";
 import { publish, channelOnly } from "#plugins";
-import { ownerIDs } from "#constants";
+import { forumID, ownerIDs } from "#constants";
 import { Timestamp } from "#utils";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	description: "Solved the issue? Close the post!",
 	plugins: [
 		publish({ guildIds: ["889026545715400705"] }),
-		channelOnly(["1019807803935825922"]),
+		channelOnly([forumID]),
 	],
 	async execute(ctx) {
 		if (!ctx.channel) return;

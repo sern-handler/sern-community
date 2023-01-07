@@ -14,11 +14,11 @@ import {
 import { fetch } from "undici";
 import { cooldown, publish } from "#plugins";
 import { Resolver } from "#utils";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish({ dmPermission: false }), cooldown.add([["user", "1/15"]])],
-	options: [
+	options : [
 		{
 			name: "submit",
 			type: ApplicationCommandOptionType.Subcommand,
@@ -45,7 +45,7 @@ export default commandModule({
 			],
 		},
 	],
-	async execute(ctx, [, args]) {
+	execute: async (ctx, [, args]) => {
 		const command = args.getSubcommand();
 
 		await ctx.interaction.deferReply();
@@ -68,7 +68,7 @@ export default commandModule({
 						(a) =>
 							["image/png", "image/jpg", "image/gif"].includes(
 								a.contentType ??
-									"Something that is not png or jpg when contentType is null"
+								"Something that is not png or jpg when contentType is null"
 							)
 					);
 					if (!isValidAttachment) {

@@ -3,9 +3,9 @@ import { ApplicationCommandOptionType } from "discord.js";
 import { publish } from "../../plugins/publish.js";
 import { TicTacToe } from "../../utils/TicTacToe.js";
 import { Timestamp } from "../../utils/Timestamp.js";
+import { slashCommand } from "../../utils/composable/slashCommand.js";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish({ dmPermission: false })],
 	options: [
 		{
