@@ -6,7 +6,7 @@ export class SernLogger implements Logging {
 
 	public constructor(level: string, isProd = false) {
 		this._winston = winston.createLogger({
-			level,
+			level: isProd ? 'warning' : level,
 			format: winston.format.json(),
 		});
 		if (!isProd) {
@@ -17,24 +17,24 @@ export class SernLogger implements Logging {
 			);
 		} else {
 			this._winston.add(
-				new winston.transports.File({ filename: "combined.log" })
+				new winston.transports.File({ filename: "error.log" })
 			);
 		}
 	}
 
-	public error(payload: LogPayload<unknown>): void {
+	public error(payload: LogPayload): void {
 		this._winston.error(payload.message);
 	}
 
-	public warning(payload: LogPayload<unknown>): void {
+	public warning(payload: LogPayload): void {
 		this._winston.warn(util.format(payload.message));
 	}
 
-	public info(payload: LogPayload<unknown>): void {
+	public info(payload: LogPayload): void {
 		this._winston.info(payload.message);
 	}
 
-	public debug(payload: LogPayload<unknown>): void {
+	public debug(payload: LogPayload): void {
 		this._winston.debug(payload.message);
 	}
 }
