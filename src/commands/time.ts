@@ -3,9 +3,9 @@ import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { publish } from "#plugins";
 import { fetch } from "undici";
 import { readFileSync } from "fs";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish()],
 	description: "Get the time of a person.",
 	options: [

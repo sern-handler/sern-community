@@ -6,10 +6,10 @@ import { Paginator } from "#utils";
 
 import { createRequire } from "module";
 import type { TagData } from "../types/index.js";
+import { slashCommand } from "../utils/composable/slashCommand.js";
 const require = createRequire(import.meta.url);
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	description: "Send a tag",
 	plugins: [publish()],
 	options: [
