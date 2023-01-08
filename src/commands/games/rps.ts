@@ -1,4 +1,3 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -9,7 +8,7 @@ import {
 	User,
 } from "discord.js";
 import { publish } from "#plugins";
-import { slashCommand } from "../../utils/composable/slashCommand.js";
+import { slashCommand } from "#utils";
 
 export default slashCommand({
 	plugins: [publish({ dmPermission: false })],

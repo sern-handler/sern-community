@@ -7,3 +7,4 @@ export * from "./pagination.js";
 export * from "./randomStatus.js";
 export * from "./codeUpload.js";
 export * from "./Logger.js";
+export * from "./composable/slashCommand.js";

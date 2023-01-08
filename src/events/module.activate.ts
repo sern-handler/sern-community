@@ -1,26 +1,34 @@
-import { eventModule, EventType, Payload, PayloadType, PluginType, SernEventPlugin } from "@sern/handler";
+import {
+	eventModule,
+	EventType,
+	Payload,
+	PayloadType,
+	PluginType,
+	SernEventPlugin,
+} from "@sern/handler";
 import { useContainer } from "../index.js";
 
-
-export default eventModule( {
-	name: 'module.activate',
+export default eventModule({
+	name: "module.activate",
 	type: EventType.Sern,
 	plugins: [filterFailedActivation()],
-	execute(payload: Payload & { type : PayloadType.Failure }) {
-		const [ logger ] = useContainer('@sern/logger')
-		logger.warn({ message : `A module (${payload.module?.name} failed to execute: ${payload.reason}` })
-	}
-})
+	execute(payload: Payload & { type: PayloadType.Failure }) {
+		const [logger] = useContainer("@sern/logger");
+		logger.warn({
+			message: `A module (${payload.module?.name} failed to execute: ${payload.reason}`,
+		});
+	},
+});
 
-function filterFailedActivation() : SernEventPlugin {
+function filterFailedActivation(): SernEventPlugin {
 	return {
 		type: PluginType.Event,
 		execute: ([payload], controller) => {
-			if(payload.type == PayloadType.Failure) {
-				return controller.next()
+			if (payload.type == PayloadType.Failure) {
+				return controller.next();
 			} else {
-			return controller.stop()
+				return controller.stop();
 			}
-		}
-	}
+		},
+	};
 }

@@ -1,10 +1,9 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { Collection, Client } from "discord.js";
 import { fetch } from "undici";
 import type { Data } from "./plugin.js";
 import { ownerOnly, publish, refreshCache } from "#plugins";
 import { Evo } from "#constants";
-import { slashCommand } from "../utils/composable/slashCommand.js";
+import { slashCommand } from "#utils";
 
 export default slashCommand({
 	plugins: [

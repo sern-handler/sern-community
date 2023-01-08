@@ -25,33 +25,32 @@ const client = new Client({
 	},
 });
 
-
 export interface BotDependencies extends Dependencies {
-	'@sern/client' : Singleton<Client>;
-	'@sern/logger' : Singleton<SernLogger>
+	"@sern/client": Singleton<Client>;
+	"@sern/logger": Singleton<SernLogger>;
 }
 
 export const useContainer = Sern.makeDependencies<BotDependencies>({
-	build : root =>
+	build: (root) =>
 		root
-			.add({'@sern/client' : single(client) })
-			.add({'@sern/logger': single(new SernLogger('info'))})
-			.add({'process' : single(process) })
-			//.add(ctx => ({'sync' : single(new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ctx['@sern/store']))})) for another day
-})
+			.add({ "@sern/client": single(client) })
+			.add({ "@sern/logger": single(new SernLogger("info")) })
+			.add({ process: single(process) }),
+	//.add(ctx => ({'sync' : single(new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ctx['@sern/store']))})) for another day
+});
 Sern.init({
 	defaultPrefix: "sern",
 	commands: "dist/src/commands",
 	events: "dist/src/events",
-	containerConfig : {
-		get: useContainer
-	}
+	containerConfig: {
+		get: useContainer,
+	},
 });
 
 client.once("ready", (client) => {
 	randomStatus(client);
-	const [ logger ] = useContainer('@sern/logger')
-   logger.info({ message:`[✅]: Logged in as ${client.user.username}`});
+	const [logger] = useContainer("@sern/logger");
+	logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
 });
 
 await client.login();
