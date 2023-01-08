@@ -1,5 +1,5 @@
 import { eventModule, EventType, Payload, PayloadType, PluginType, SernEventPlugin } from "@sern/handler";
-import { useContainer } from "../index";
+import { useContainer } from "../index.js";
 
 
 export default eventModule( {
@@ -8,7 +8,7 @@ export default eventModule( {
 	plugins: [filterFailedActivation()],
 	execute(payload: Payload & { type : PayloadType.Failure }) {
 		const [ logger ] = useContainer('@sern/logger')
-		logger.warning({ message : `A module (${payload.module?.name} failed to execute: ${payload.reason}` })
+		logger.warn({ message : `A module (${payload.module?.name} failed to execute: ${payload.reason}` })
 	}
 })
 
