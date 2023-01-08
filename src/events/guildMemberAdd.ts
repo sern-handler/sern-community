@@ -8,8 +8,8 @@ export default eventModule({
 	async execute(member: GuildMember) {
 		// TODO: This should be inferred
 		if (member.pending) return;
-		const [logger] = useContainer('@sern/logger')
-		logger.info({ message: `${member.user.username} joined`})
+		const [logger] = useContainer("@sern/logger");
+		logger.info({ message: `${member.user.username} joined` });
 		const requiredRoles = ["980118655738212407"];
 		await member.roles.add(requiredRoles);
 	},

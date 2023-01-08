@@ -1,11 +1,11 @@
 import { eventModule, EventType } from "@sern/handler";
-import { AnyThreadChannel, ChannelType, EmbedBuilder } from "discord.js";
+import { AnyThreadChannel, EmbedBuilder } from "discord.js";
 import { onCorrectThread } from "../plugins/onCorrectThread.js";
 import { forumID } from "#constants";
 
 export default eventModule({
 	type: EventType.Discord,
-	plugins : [onCorrectThread(forumID)],
+	plugins: [onCorrectThread(forumID)],
 	name: "threadCreate",
 	async execute(thread: AnyThreadChannel, _: boolean) {
 		if (thread.appliedTags.length > 3)

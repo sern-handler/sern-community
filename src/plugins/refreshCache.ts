@@ -8,7 +8,7 @@ export function refreshCache(): CommandPlugin<CommandType.Slash> {
 		type: PluginType.Command,
 		description: "refreshes cache",
 		async execute(payload, controller) {
-			const [client] = useContainer('@sern/client')
+			const [client] = useContainer("@sern/client");
 			const cache = await cp(client);
 			client.cache = cache;
 			return controller.next();

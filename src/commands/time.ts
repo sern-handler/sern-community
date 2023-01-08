@@ -1,9 +1,8 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { publish } from "#plugins";
 import { fetch } from "undici";
 import { readFileSync } from "fs";
-import { slashCommand } from "../utils/composable/slashCommand.js";
+import { slashCommand } from "#utils";
 
 export default slashCommand({
 	plugins: [publish()],

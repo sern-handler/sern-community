@@ -1,7 +1,5 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { publish } from "#plugins";
-import { Timestamp } from "#utils";
-import { slashCommand } from "../utils/composable/slashCommand.js";
+import { Timestamp, slashCommand } from "#utils";
 
 export default slashCommand({
 	plugins: [publish()],

@@ -1,4 +1,3 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -11,7 +10,7 @@ import { createRequire } from "module";
 import { Evo, Seren } from "#constants";
 import { ownerOnly, publish } from "#plugins";
 import type { TagData } from "../types";
-import { slashCommand } from "../utils/composable/slashCommand.js";
+import { slashCommand } from "#utils";
 const require = createRequire(import.meta.url);
 
 export default slashCommand({

@@ -77,8 +77,7 @@ export function publish(
 			 * @returns S | T
 			 */
 			const appCmd = <V extends CommandType, S, T>(t: V) => {
-				return (is: S, els: T) =>
-					(t & CommandType.Both) !== 0 ? is : els;
+				return (is: S, els: T) => ((t & CommandType.Both) !== 0 ? is : els);
 			};
 			const curAppType = CommandTypeRaw[module.type];
 			const createCommandData = () => {
@@ -88,9 +87,7 @@ export function publish(
 					type: curAppType,
 					description: cmd(module.description, ""),
 					options: cmd(
-						optionsTransformer(
-							(module as SlashCommand).options ?? []
-						),
+						optionsTransformer((module as SlashCommand).options ?? []),
 						[]
 					),
 					defaultMemberPermissions,
@@ -102,21 +99,17 @@ export function publish(
 				const commandData = createCommandData();
 
 				if (!guildIds.length) {
-					const cmd = (
-						await client.application!.commands.fetch()
-					).find(
+					const cmd = (await client.application!.commands.fetch()).find(
 						(c) => c.name === module.name && c.type === curAppType
 					);
 					if (cmd) {
 						if (!cmd.equals(commandData, true)) {
-							logged(
-								`Found differences in global command ${module.name}`
-							);
-							cmd.edit(commandData).then(
-								log(
-									`${module.name} updated with new data successfully!`
-								)
-							);
+							logged(`Found differences in global command ${module.name}`);
+							cmd
+								.edit(commandData)
+								.then(
+									log(`${module.name} updated with new data successfully!`)
+								);
 						}
 						return controller.next();
 					}
@@ -135,16 +128,10 @@ export function publish(
 					);
 					if (guildCmd) {
 						if (!guildCmd.equals(commandData, true)) {
-							logged(
-								`Found differences in command ${module.name}`
-							);
+							logged(`Found differences in command ${module.name}`);
 							guildCmd
 								.edit(commandData)
-								.then(
-									log(
-										`${module.name} updated with new data successfully!`
-									)
-								)
+								.then(log(`${module.name} updated with new data successfully!`))
 								.catch(c);
 							continue;
 						}
@@ -152,13 +139,7 @@ export function publish(
 					}
 					guild.commands
 						.create(commandData)
-						.then(
-							log(
-								"Guild Command created",
-								module.name,
-								guild.name
-							)
-						)
+						.then(log("Guild Command created", module.name, guild.name))
 						.catch(c);
 				}
 				return controller.next();

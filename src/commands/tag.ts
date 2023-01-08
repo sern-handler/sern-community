@@ -1,12 +1,10 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
 import { publish } from "#plugins";
-import { Paginator } from "#utils";
+import { Paginator, slashCommand } from "#utils";
 
 import { createRequire } from "module";
 import type { TagData } from "../types/index.js";
-import { slashCommand } from "../utils/composable/slashCommand.js";
 const require = createRequire(import.meta.url);
 
 export default slashCommand({

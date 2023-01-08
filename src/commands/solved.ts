@@ -1,9 +1,7 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { ChannelType } from "discord.js";
 import { publish, channelOnly } from "#plugins";
 import { forumID, ownerIDs } from "#constants";
-import { Timestamp } from "#utils";
-import { slashCommand } from "../utils/composable/slashCommand.js";
+import { Timestamp, slashCommand } from "#utils";
 
 export default slashCommand({
 	description: "Solved the issue? Close the post!",
