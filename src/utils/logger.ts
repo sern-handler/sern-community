@@ -26,7 +26,7 @@ export class SernLogger implements Logging {
 		this._winston.error(payload.message);
 	}
 
-	public warn(payload: LogPayload<unknown>): void {
+	public warning(payload: LogPayload<unknown>): void {
 		this._winston.warn(util.format(payload.message));
 	}
 
