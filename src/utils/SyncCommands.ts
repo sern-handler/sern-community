@@ -3,7 +3,6 @@ import type {
 	CommandModule,
 	ContextMenuMsg,
 	ContextMenuUser,
-	SernOptionsData,
 	SlashCommand,
 } from "@sern/handler";
 import { CommandType } from "@sern/handler";
@@ -62,8 +61,8 @@ export class CommandSyncer {
 	}
 
 	/** Handles a slash command module. */
-	private async handleSlashCommand(
-		module: SlashCommand | BothCommand,
+	private async handleCommand(
+		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg,
 		resolvedName: string
 	) {
 		this.debug(`Checking if ${resolvedName} is already registered`);
@@ -75,7 +74,7 @@ export class CommandSyncer {
 
 	private async handleGlobalCommand(
 		resolvedName: string,
-		module: SlashCommand | BothCommand
+		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
 	) {
 		this.debug(
 			`Fetching (or retrieving from cache, if available) global commands.`
@@ -97,7 +96,7 @@ export class CommandSyncer {
 
 	private async handleScopedGuildsCommand(
 		resolvedName: string,
-		module: SlashCommand | BothCommand
+		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg
 	) {
 		for (const guildId of this.scopedGuilds) {
 			const guild = await this.client.guilds.fetch(guildId).catch(() => null);
@@ -126,14 +125,14 @@ export class CommandSyncer {
 	private async registerGuildCommand(
 		guild: Guild,
 		resolvedName: string,
-		module: SlashCommand | BothCommand
+		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg
 	) {
 		await guild.commands.create({
 			name: resolvedName,
 			description: module.description ?? "..",
 			type: ApplicationCommandType.ChatInput,
 			options: this.optionsTransformer(
-				module.options ?? []
+				module ?? []
 			) as APIApplicationCommandOption[],
 		});
 
@@ -144,15 +143,13 @@ export class CommandSyncer {
 
 	private async registerGlobalCommand(
 		resolvedName: string,
-		module: SlashCommand | BothCommand
+		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
 	) {
 		await this.client.application!.commands.create({
 			name: resolvedName,
 			description: module.description ?? "..",
 			type: ApplicationCommandType.ChatInput,
-			options: this.optionsTransformer(
-				module.options ?? []
-			) as APIApplicationCommandOption[],
+			options: this.optionsTransformer(module) as APIApplicationCommandOption[],
 		});
 
 		this.debug(`Global command ${resolvedName} created.`);
@@ -160,14 +157,14 @@ export class CommandSyncer {
 
 	private async updateCommand(
 		registeredCommand: ApplicationCommand,
-		module: SlashCommand | BothCommand,
+		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg,
 		resolvedName: string
 	) {
 		await registeredCommand.edit({
 			name: module.name,
 			description: module.description,
 			options: this.optionsTransformer(
-				module.options ?? []
+				module ?? []
 			) as APIApplicationCommandOption[],
 			type: ApplicationCommandType.ChatInput,
 		});
@@ -175,16 +172,17 @@ export class CommandSyncer {
 		this.debug(`Command ${resolvedName} updated`);
 	}
 
-	public optionsTransformer(ops: Array<SernOptionsData>) {
-		return ops.map((el) =>
-			el.autocomplete ? (({ command, ...el }) => el)(el) : el
-		);
+	private optionsTransformer(
+		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
+	) {
+		if (module.type === CommandType.Slash || module.type === CommandType.Both)
+			return (
+				module.options?.map((el) =>
+					el.autocomplete ? (({ command, ...el }) => el)(el) : el
+				) || []
+			);
+		else return undefined;
 	}
-
-	private handleContextMenus(
-		module: ContextMenuUser | ContextMenuMsg,
-		resolvedName: string
-	) {}
 
 	/** Syncs application commands */
 	private async sync() {
@@ -197,18 +195,13 @@ export class CommandSyncer {
 
 			if (this.publishable(module)) {
 				const resolvedName = module.name ?? basename(path).slice(0, -3);
-				switch (module.type) {
-					case CommandType.Both:
-					case CommandType.Slash:
-						await this.handleSlashCommand(module, resolvedName);
-
-						break;
-					case CommandType.CtxMsg:
-					case CommandType.CtxUser:
-						this.handleContextMenus(module, resolvedName);
-
-						break;
-				}
+				if (
+					module.type === CommandType.Both ||
+					module.type === CommandType.Slash ||
+					module.type === CommandType.CtxUser ||
+					module.type === CommandType.CtxMsg
+				)
+					this.handleCommand(module, resolvedName);
 			}
 		}
 	}
