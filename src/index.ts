@@ -1,7 +1,8 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
-import { randomStatus, SernLogger, /*CommandSyncer*/ } from "#utils";
+import { randomStatus, SernLogger } from "#utils";
+import { CommandSyncer } from "./utils/SyncCommands.js";
 
 const client = new Client({
 	intents: [
@@ -27,17 +28,20 @@ const client = new Client({
 export interface BotDependencies extends Dependencies {
 	"@sern/client": Singleton<Client>;
 	"@sern/logger": Singleton<SernLogger>;
+	sync: Singleton<CommandSyncer>;
 }
 
 export const useContainer = Sern.makeDependencies<BotDependencies>({
 	build: (root) =>
 		root
 			.add({ "@sern/client": single(client) })
-			.add({ "@sern/logger": single(new SernLogger("info")) })
+			.add({ "@sern/logger": single(new SernLogger("debug")) })
 			.add({ process: single(process) })
-	  //  .add(ctx =>
-		//		({'sync' : single(new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
-		//	))
+			.add((ctx) => ({
+				sync: single(
+					new CommandSyncer(ctx["@sern/logger"], ctx["@sern/client"], [])
+				),
+			})),
 });
 Sern.init({
 	defaultPrefix: "sern",
