@@ -51,7 +51,7 @@ export class CommandSyncer {
 	}
 
 	/** Returns true if a `CommandModule` is publishable */
-	private publishable(module: CommandModule) {
+	private publishable(module: CommandModule): module is Publishable {
 		const publishableTypes =
 			CommandType.Both |
 			CommandType.CtxUser |
@@ -61,10 +61,7 @@ export class CommandSyncer {
 	}
 
 	/** Handles a slash command module. */
-	private async handleCommand(
-		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg,
-		resolvedName: string
-	) {
+	private async handleCommand(module: Publishable, resolvedName: string) {
 		this.debug(`Checking if ${resolvedName} is already registered`);
 
 		if (this.scopedGuilds.length)
@@ -72,10 +69,7 @@ export class CommandSyncer {
 		else await this.handleGlobalCommand(resolvedName, module);
 	}
 
-	private async handleGlobalCommand(
-		resolvedName: string,
-		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
-	) {
+	private async handleGlobalCommand(resolvedName: string, module: Publishable) {
 		this.debug(
 			`Fetching (or retrieving from cache, if available) global commands.`
 		);
@@ -96,7 +90,7 @@ export class CommandSyncer {
 
 	private async handleScopedGuildsCommand(
 		resolvedName: string,
-		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg
+		module: Publishable
 	) {
 		for (const guildId of this.scopedGuilds) {
 			const guild = await this.client.guilds.fetch(guildId).catch(() => null);
@@ -125,7 +119,7 @@ export class CommandSyncer {
 	private async registerGuildCommand(
 		guild: Guild,
 		resolvedName: string,
-		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg
+		module: Publishable
 	) {
 		await guild.commands.create({
 			name: resolvedName,
@@ -143,7 +137,7 @@ export class CommandSyncer {
 
 	private async registerGlobalCommand(
 		resolvedName: string,
-		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
+		module: Publishable
 	) {
 		await this.client.application!.commands.create({
 			name: resolvedName,
@@ -157,7 +151,7 @@ export class CommandSyncer {
 
 	private async updateCommand(
 		registeredCommand: ApplicationCommand,
-		module: SlashCommand | BothCommand | ContextMenuUser | ContextMenuMsg,
+		module: Publishable,
 		resolvedName: string
 	) {
 		await registeredCommand.edit({
@@ -172,9 +166,9 @@ export class CommandSyncer {
 		this.debug(`Command ${resolvedName} updated`);
 	}
 
-	private optionsTransformer(
-		module: SlashCommand | BothCommand | ContextMenuMsg | ContextMenuUser
-	) {
+	/** Parses the `module` options into the correct format. (Since ContextMenus are sent differently than ApplicationCommands)
+	 */
+	private optionsTransformer(module: Publishable) {
 		if (module.type === CommandType.Slash || module.type === CommandType.Both)
 			return (
 				module.options?.map((el) =>
@@ -195,14 +189,14 @@ export class CommandSyncer {
 
 			if (this.publishable(module)) {
 				const resolvedName = module.name ?? basename(path).slice(0, -3);
-				if (
-					module.type === CommandType.Both ||
-					module.type === CommandType.Slash ||
-					module.type === CommandType.CtxUser ||
-					module.type === CommandType.CtxMsg
-				)
-					this.handleCommand(module, resolvedName);
+				this.handleCommand(module, resolvedName);
 			}
 		}
 	}
 }
+
+export type Publishable =
+	| SlashCommand
+	| BothCommand
+	| ContextMenuMsg
+	| ContextMenuUser;
