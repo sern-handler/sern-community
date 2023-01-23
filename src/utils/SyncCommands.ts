@@ -189,7 +189,7 @@ export class CommandSyncer {
 
 			if (this.publishable(module)) {
 				const resolvedName = module.name ?? basename(path).slice(0, -3);
-				this.handleCommand(module, resolvedName);
+				await this.handleCommand(module, resolvedName);
 			}
 		}
 	}
