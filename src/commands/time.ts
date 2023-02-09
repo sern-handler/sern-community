@@ -58,7 +58,7 @@ export default commandModule({
 					key: process.env.TIME_KEY!,
 					userid: ctx.user.id,
 				};
-				const request = await fetch("https://api.srizan.ml/sern/newTime", {
+				const request = await fetch("https://api.srizan.dev/sern/newTime", {
 					method: "POST",
 					body: JSON.stringify(reqData),
 					headers: {
@@ -83,7 +83,7 @@ export default commandModule({
 			case "get": {
 				const option = options.getMember("user") as GuildMember;
 				const request = await fetch(
-					`https://api.srizan.ml/sern/getTime?userid=${option.id}`
+					`https://api.srizan.dev/sern/getTime?userid=${option.id}`
 				).catch(() => null);
 
 				const data = (await request?.json()) as APIResponse;
@@ -113,7 +113,7 @@ export default commandModule({
 			}
 			case "delete": {
 				const request = await fetch(
-					`https://api.srizan.ml/sern/deleteTime?userid=${ctx.user.id}&key=${process.env.TIME_KEY}`,
+					`https://api.srizan.dev/sern/deleteTime?userid=${ctx.user.id}&key=${process.env.TIME_KEY}`,
 					{
 						method: "DELETE",
 					}
