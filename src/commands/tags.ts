@@ -1,4 +1,3 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -11,10 +10,11 @@ import { createRequire } from "module";
 import { Evo, Seren } from "#constants";
 import { ownerOnly, publish } from "#plugins";
 import type { TagData } from "../types";
+import { slashCommand } from "#utils";
 const require = createRequire(import.meta.url);
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
+        description: "Edit tags",
 	plugins: [publish(), ownerOnly([Evo, Seren])],
 	options: [
 		{

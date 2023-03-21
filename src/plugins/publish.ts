@@ -1,7 +1,26 @@
+// @ts-nocheck
+/**
+ * This is publish plugin, it allows you to publish your application commands using the discord.js library with ease.
+ *
+ * @author @EvolutionX-10 [<@697795666373640213>]
+ * @version 2.0.0
+ * @example
+ * ```ts
+ * import { publish } from "../plugins/publish";
+ * import { commandModule } from "@sern/handler";
+ * export default commandModule({
+ *  plugins: [ publish() ], // put an object containing permissions, ids for guild commands, boolean for dmPermission
+ *  // plugins: [ publish({ guildIds: ['guildId'], defaultMemberPermissions: 'Administrator'})]
+ *  execute: (ctx) => {
+ * 		//your code here
+ *  }
+ * })
+ * ```
+ */
 import {
-	CommandPlugin,
+	CommandInitPlugin,
 	CommandType,
-	PluginType,
+	controller,
 	SernOptionsData,
 	SlashCommand,
 } from "@sern/handler";
@@ -10,113 +29,133 @@ import {
 	ApplicationCommandType,
 	PermissionResolvable,
 } from "discord.js";
+import { useContainer } from "../index.js";
 
-export function publish(
-	options?: PublishOptions
-): CommandPlugin<
-	| CommandType.Slash
-	| CommandType.Both
-	| CommandType.MenuMsg
-	| CommandType.MenuUser
-> {
-	return {
-		type: PluginType.Command,
-		description: "Manage Slash Commands",
-		name: "slash-auto-publish",
-		async execute({ client }, { mod: module }, controller) {
-			const defaultOptions = {
-				guildIds: [],
-				dmPermission: undefined,
-				defaultMemberPermissions: null,
-			};
+export const CommandTypeRaw = {
+	[CommandType.Both]: ApplicationCommandType.ChatInput,
+	[CommandType.CtxUser]: ApplicationCommandType.User,
+	[CommandType.CtxMsg]: ApplicationCommandType.Message,
+	[CommandType.Slash]: ApplicationCommandType.ChatInput,
+} as const;
 
-			options = { ...defaultOptions, ...options } as PublishOptions &
-				ValidPublishOptions;
-			let { defaultMemberPermissions, dmPermission, guildIds } =
-				options as unknown as ValidPublishOptions;
+export function publish<
+	T extends
+		| CommandType.Both
+		| CommandType.Slash
+		| CommandType.CtxMsg
+		| CommandType.CtxUser
+>(options?: PublishOptions) {
+	return CommandInitPlugin<T>(async ({ module }) => {
+		// Users need to provide their own useContainer function.
+		const [client] = useContainer("@sern/client");
+		const defaultOptions = {
+			guildIds: [],
+			dmPermission: undefined,
+			defaultMemberPermissions: null,
+		};
 
-			function c(e: unknown) {
-				console.error("publish command didnt work for", module.name!);
-				console.error(e);
-			}
-			try {
-				const commandData = {
-					type: CommandTypeRaw[module.type],
-					name: module.name!,
-					description: [CommandType.Slash, CommandType.Both].includes(
-						module.type
-					)
-						? module.description
-						: undefined,
-					options: [CommandType.Slash, CommandType.Both].includes(module.type)
-						? optionsTransformer((module as SlashCommand).options ?? [])
-						: [],
-					defaultMemberPermissions,
-					dmPermission,
-				} as ApplicationCommandData;
+		options = { ...defaultOptions, ...options } as PublishOptions &
+			ValidPublishOptions;
+		let { defaultMemberPermissions, dmPermission, guildIds } =
+			options as unknown as ValidPublishOptions;
 
-				if (!guildIds.length) {
-					const cmd = (await client.application!.commands.fetch()).find(
-						(c) =>
-							c.name === module.name && c.type === CommandTypeRaw[module.type]
-					);
-					if (cmd) {
-						if (!cmd.equals(commandData, true)) {
-							console.log(`Found differences in global command ${module.name}`);
-							cmd.edit(commandData).then(() => {
-								console.log(
-									`${module.name} updated with new data successfully!`
-								);
-							});
-						}
-						return controller.next();
+		function c(e: unknown) {
+			console.error("publish command didnt work for", module.name);
+			console.error(e);
+		}
+
+		const log =
+			(...message: any[]) =>
+			() =>
+				console.log(...message);
+		const logged = (...message: any[]) => log(message);
+		/**
+		 * a local function that returns either one value or the other,
+		 * depending on {t}'s CommandType. If the commandtype of
+		 * this module is CommandType.Both or CommandType.Text or CommandType.Slash,
+		 * return 'is', else return 'els'
+		 * @param t
+		 * @returns S | T
+		 */
+		const appCmd = <V extends CommandType, S, T>(t: V) => {
+			return (is: S, els: T) => ((t & CommandType.Both) !== 0 ? is : els);
+		};
+		const curAppType = CommandTypeRaw[module.type];
+		const createCommandData = () => {
+			const cmd = appCmd(module.type);
+			return {
+				name: module.name,
+				type: curAppType,
+				description: cmd(module.description, ""),
+				options: cmd(
+					optionsTransformer((module as SlashCommand).options ?? []),
+					[]
+				),
+				defaultMemberPermissions,
+				dmPermission,
+			} as ApplicationCommandData;
+		};
+
+		try {
+			const commandData = createCommandData();
+
+			if (!guildIds.length) {
+				const cmd = (await client.application!.commands.fetch()).find(
+					(c) => c.name === module.name && c.type === curAppType
+				);
+				if (cmd) {
+					if (!cmd.equals(commandData, true)) {
+						logged(
+							`Found differences in global command ${module.name}`
+						);
+						cmd.edit(commandData).then(
+							log(
+								`${module.name} updated with new data successfully!`
+							)
+						);
 					}
-					client
-						.application!.commands.create(commandData)
-						.then(() => {
-							console.log("Command created", module.name!);
-						})
-						.catch(c);
 					return controller.next();
 				}
+				client
+					.application!.commands.create(commandData)
+					.then(log("Command created", module.name))
+					.catch(c);
+				return controller.next();
+			}
 
-				for (const id of guildIds) {
-					const guild = await client.guilds.fetch(id).catch(c);
-					if (!guild) continue;
-					const guildcmd = (await guild.commands.fetch()).find(
-						(c) =>
-							c.name === module.name && c.type === CommandTypeRaw[module.type]
-					);
-					if (guildcmd) {
-						if (!guildcmd.equals(commandData, true)) {
-							console.log(`Found differences in command ${module.name}`);
-							guildcmd
-								.edit(commandData)
-								.then(() =>
-									console.log(
-										`${module.name} updated with new data successfully!`
-									)
+			for (const id of guildIds) {
+				const guild = await client.guilds.fetch(id).catch(c);
+				if (!guild) continue;
+				const guildCmd = (await guild.commands.fetch()).find(
+					(c) => c.name === module.name && c.type === curAppType
+				);
+				if (guildCmd) {
+					if (!guildCmd.equals(commandData, true)) {
+						logged(`Found differences in command ${module.name}`);
+						guildCmd
+							.edit(commandData)
+							.then(
+								log(
+									`${module.name} updated with new data successfully!`
 								)
-								.catch(c);
-							continue;
-						}
+							)
+							.catch(c);
 						continue;
 					}
-					guild.commands
-						.create(commandData)
-						.then(() =>
-							console.log("Guild Command created", module.name!, guild.name)
-						)
-						.catch(c);
+					continue;
 				}
-				return controller.next();
-			} catch (e) {
-				console.log("Command did not register" + module.name!);
-				console.log(e);
-				return controller.stop();
+				guild.commands
+					.create(commandData)
+					.then(log("Guild Command created", module.name, guild.name))
+					.catch(c);
 			}
-		},
-	};
+			return controller.next();
+		} catch (e) {
+			logged("Command did not register" + module.name);
+			logged(e);
+			return controller.stop();
+		}
+	});
 }
 
 export function optionsTransformer(ops: Array<SernOptionsData>) {
@@ -125,13 +164,6 @@ export function optionsTransformer(ops: Array<SernOptionsData>) {
 	);
 }
 
-export const CommandTypeRaw = {
-	[CommandType.Both]: ApplicationCommandType.ChatInput,
-	[CommandType.MenuMsg]: ApplicationCommandType.Message,
-	[CommandType.MenuUser]: ApplicationCommandType.User,
-	[CommandType.Slash]: ApplicationCommandType.ChatInput,
-} as const;
-
 export type NonEmptyArray<T extends `${number}` = `${number}`> = [T, ...T[]];
 
 export interface ValidPublishOptions {
@@ -139,11 +171,13 @@ export interface ValidPublishOptions {
 	dmPermission: boolean;
 	defaultMemberPermissions: PermissionResolvable;
 }
+
 interface GuildPublishOptions {
 	guildIds?: NonEmptyArray;
 	defaultMemberPermissions?: PermissionResolvable;
 	dmPermission?: never;
 }
+
 interface GlobalPublishOptions {
 	defaultMemberPermissions?: PermissionResolvable;
 	dmPermission?: false;

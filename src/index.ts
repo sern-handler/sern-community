@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Sern, SernEmitter } from "@sern/handler";
+import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
-import { randomStatus } from "./utils/randomStatus.js";
+import { randomStatus, SernLogger, /*CommandSyncer*/ } from "#utils";
 
 const client = new Client({
 	intents: [
@@ -24,18 +24,34 @@ const client = new Client({
 	},
 });
 
-Sern.addExternal(process);
+export interface BotDependencies extends Dependencies {
+	"@sern/client": Singleton<Client>;
+	"@sern/logger": Singleton<SernLogger>;
+}
+
+export const useContainer = Sern.makeDependencies<BotDependencies>({
+	build: (root) =>
+		root
+	            .add({ "@sern/client": single(() => client) })
+	            .upsert({ "@sern/logger": single(() => new SernLogger("info")) })
+	            .add({ process: single(() => process) })
+	  //  .add(ctx =>
+		//		({'sync' : single(() => new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
+		//	))
+});
 Sern.init({
-	client,
-	sernEmitter: new SernEmitter(),
 	defaultPrefix: "sern",
 	commands: "dist/src/commands",
 	events: "dist/src/events",
+	containerConfig: {
+		get: useContainer,
+	},
 });
 
 client.once("ready", (client) => {
 	randomStatus(client);
-	console.log(`[✅]: Logged in as ${client.user.username}`);
+	const [logger] = useContainer("@sern/logger");
+	logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
 });
 
 await client.login();

@@ -1,4 +1,28 @@
-import { CommandType, Context, EventPlugin, PluginType } from "@sern/handler";
+// @ts-nocheck
+/**
+ * Allows you to set cooldowns (or "ratelimits") for commands
+ * limits user/channel/guild actions,
+ * @author @trueharuu [<@504698587221852172>]
+ * @version 1.0.0
+ * @example
+ * ```ts
+ * import { cooldown } from "../plugins/cooldown";
+ * import { commandModule } from "@sern/handler";
+ * export default commandModule({
+ *  plugins: [cooldown.add( [ ['channel', '1/4'] ] )], // limit to 1 action every 4 seconds per channel
+ *  execute: (ctx) => {
+ * 		//your code here
+ *  }
+ * })
+ * ```
+ */
+
+import {
+	CommandControlPlugin,
+	CommandType,
+	Context,
+	controller,
+} from "@sern/handler";
 import { GuildMember } from "discord.js";
 /**
  * actions/seconds
@@ -88,44 +112,38 @@ function add(
 		| Cooldown
 	>,
 	message?: CooldownResponse
-): EventPlugin<CommandType.Both> {
+) {
 	const raw = items.map((c) => {
 		if (!Array.isArray(c)) return c;
 		return parseCooldown(c[0] as CooldownLocation, c[1]);
 	}) as Array<Cooldown>;
+	return CommandControlPlugin<CommandType.Both>(async (context, args) => {
+		for (const { location, actions, seconds } of raw) {
+			const id = getPropertyForLocation(context, location);
+			const cooldown = map.get(id!);
 
-	return {
-		name: "cooldown",
-		description: "limits user/channel/guild actions",
-		type: PluginType.Event,
-		async execute([context], controller) {
-			for (const { location, actions, seconds } of raw) {
-				const id = getPropertyForLocation(context, location);
-				const cooldown = map.get(id);
-
-				if (!cooldown) {
-					map.set(id, 1, seconds * 1000);
-					continue;
-				}
-
-				if (cooldown >= actions) {
-					if (message) {
-						await message({
-							location,
-							actions: cooldown,
-							maxActions: actions,
-							seconds,
-							context,
-						});
-					}
-					return controller.stop();
-				}
-
-				map.set(id, cooldown + 1, seconds * 1000);
+			if (!cooldown) {
+				map.set(id!, 1, seconds * 1000);
+				continue;
 			}
-			return controller.next();
-		},
-	};
+
+			if (cooldown >= actions) {
+				if (message) {
+					await message({
+						location,
+						actions: cooldown,
+						maxActions: actions,
+						seconds,
+						context,
+					});
+				}
+				return controller.stop();
+			}
+
+			map.set(id!, cooldown + 1, seconds * 1000);
+		}
+		return controller.next();
+	});
 }
 
 type Location = (value: CooldownString) => ReturnType<typeof add>;

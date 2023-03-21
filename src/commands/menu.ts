@@ -1,20 +1,18 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	Collection,
 	Role,
 	TextChannel,
-	SelectMenuBuilder,
+	StringSelectMenuBuilder,
 	ApplicationCommandOptionType,
 	ChannelType,
 	EmbedBuilder,
 } from "discord.js";
 import { ownerOnly, publish } from "#plugins";
-import { Resolver } from "#utils";
+import { Resolver, slashCommand } from "#utils";
 
-export default commandModule({
+export default slashCommand({
 	plugins: [ownerOnly(), publish()],
-	type: CommandType.Slash,
 	description: "Select Menu Role",
 	options: [
 		{
@@ -73,7 +71,7 @@ export default commandModule({
 
 function createMenu(channel: TextChannel, role: Collection<string, Role>) {
 	if (!channel || !role) throw new Error("Missing channel or role");
-	const menu = new SelectMenuBuilder()
+	const menu = new StringSelectMenuBuilder()
 		.setCustomId("role-menu")
 		.setMaxValues(role.size)
 		.setMinValues(0)
@@ -86,6 +84,6 @@ function createMenu(channel: TextChannel, role: Collection<string, Role>) {
 				};
 			})
 		);
-	const row = new ActionRowBuilder<SelectMenuBuilder>().setComponents(menu);
+	const row = new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(menu);
 	return row;
 }

@@ -1,11 +1,8 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
-import { publish } from "../../plugins/publish.js";
-import { TicTacToe } from "../../utils/TicTacToe.js";
-import { Timestamp } from "../../utils/Timestamp.js";
+import { publish } from "#plugins";
+import { slashCommand, Timestamp, TicTacToe } from "#utils";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish({ dmPermission: false })],
 	options: [
 		{

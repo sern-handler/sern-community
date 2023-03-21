@@ -15,7 +15,6 @@ const statues: [
 ];
 
 export function randomStatus(client: Client) {
-	console.clear();
 	setInterval(() => {
 		const shuffledStatuses = shuffleArray(statues);
 		const [type, name, status] = [...shuffledStatuses].shift()!;

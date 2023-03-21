@@ -1,4 +1,3 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -13,10 +12,10 @@ import {
 } from "discord.js";
 import { fetch } from "undici";
 import { cooldown, publish } from "#plugins";
-import { Resolver } from "#utils";
+import { Resolver, slashCommand } from "#utils";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
+        description: "Submit an emoji",
 	plugins: [publish({ dmPermission: false }), cooldown.add([["user", "1/15"]])],
 	options: [
 		{
@@ -45,7 +44,7 @@ export default commandModule({
 			],
 		},
 	],
-	async execute(ctx, [, args]) {
+	execute: async (ctx, [, args]) => {
 		const command = args.getSubcommand();
 
 		await ctx.interaction.deferReply();

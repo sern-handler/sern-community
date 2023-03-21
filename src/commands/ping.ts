@@ -1,9 +1,7 @@
-import { commandModule, CommandType } from "@sern/handler";
 import { publish } from "#plugins";
-import { Timestamp } from "#utils";
+import { Timestamp, slashCommand } from "#utils";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish()],
 	description: "Pong!",
 	execute: async (context) => {

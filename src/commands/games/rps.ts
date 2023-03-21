@@ -1,4 +1,3 @@
-import { commandModule, CommandType } from "@sern/handler";
 import {
 	ActionRowBuilder,
 	ApplicationCommandOptionType,
@@ -9,9 +8,9 @@ import {
 	User,
 } from "discord.js";
 import { publish } from "#plugins";
+import { slashCommand } from "#utils";
 
-export default commandModule({
-	type: CommandType.Slash,
+export default slashCommand({
 	plugins: [publish({ dmPermission: false })],
 	description: "wanna win in rps?",
 	options: [
