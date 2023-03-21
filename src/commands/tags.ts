@@ -14,6 +14,7 @@ import { slashCommand } from "#utils";
 const require = createRequire(import.meta.url);
 
 export default slashCommand({
+        description: "Edit tags",
 	plugins: [publish(), ownerOnly([Evo, Seren])],
 	options: [
 		{

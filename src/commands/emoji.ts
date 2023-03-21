@@ -15,6 +15,7 @@ import { cooldown, publish } from "#plugins";
 import { Resolver, slashCommand } from "#utils";
 
 export default slashCommand({
+        description: "Submit an emoji",
 	plugins: [publish({ dmPermission: false }), cooldown.add([["user", "1/15"]])],
 	options: [
 		{

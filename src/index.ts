@@ -32,9 +32,9 @@ export interface BotDependencies extends Dependencies {
 export const useContainer = Sern.makeDependencies<BotDependencies>({
 	build: (root) =>
 		root
-			.add({ "@sern/client": single(() => client) })
-			.add({ "@sern/logger": single(() => new SernLogger("info")) })
-			.add({ process: single(() => process) })
+	            .add({ "@sern/client": single(() => client) })
+	            .upsert({ "@sern/logger": single(() => new SernLogger("info")) })
+	            .add({ process: single(() => process) })
 	  //  .add(ctx =>
 		//		({'sync' : single(() => new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
 		//	))

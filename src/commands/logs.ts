@@ -13,6 +13,7 @@ async function ephemeral(ctx: Context, options: ReplyOptions) {
 }
 
 export default slashCommand({
+        description: "Fetch logs",
 	plugins: [publish(), ownerOnly()],
 	execute: async (ctx, args) => {
 		try {

@@ -1,7 +1,7 @@
 import {
+    AnyCommandPlugin,
 	BaseOptions,
 	commandModule,
-	CommandModulePlugin,
 	CommandType,
 	Context,
 	SernSubCommandData,
@@ -11,8 +11,8 @@ import {
 
 export function slashCommand(data: {
 	name?: string;
-	description?: string;
-	plugins?: CommandModulePlugin<CommandType.Slash>[];
+	description: string;
+	plugins?: AnyCommandPlugin[];
 	options?:
 		| (SernSubCommandData | SernSubCommandGroupData | BaseOptions)[]
 		| undefined;
