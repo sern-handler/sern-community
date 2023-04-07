@@ -10,7 +10,7 @@
 		"esModuleInterop": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"verbatimModuleSyntax": true,
+		"verbatimModuleSyntax": false,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
