@@ -6,7 +6,7 @@ export default eventModule({
 	type: EventType.Discord,
 	async execute(message: Message) {
 		if (message.author?.bot || message.webhookId) return;
-		const regex = /w+h+a+t+(?:'s+| is+|s+|’s+)? (?:.*)?b+o+f+a+/gim;
+		const regex = /(?:w+h+a+t+)?(?:'s+| is+|s+|’s+)? ?(?:.*)?b+o+f+a+/gmi;
 
 		if (message.content.match(regex)) {
 			return message.reply("bofa deez nuts");
