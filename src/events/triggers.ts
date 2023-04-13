@@ -9,8 +9,8 @@ export default eventModule({
 		if (message.author?.bot || message.webhookId) return;
 		const regex = /(?:w+h+a+t+)?(?:'s+| is+|s+|’s+)? ?(?:.*)?b+o+f+a+/gim;
 		const rand = Math.random() * 10000;
-		await wait(rand);
 		if (message.content.match(regex)) {
+			await wait(rand);
 			return message.reply("bofa deez nuts");
 		}
 	},
