@@ -46,6 +46,7 @@ export default eventModule({
 			button,
 			deleteButton,
 		]);
+
 		const embed = new EmbedBuilder()
 			.setDescription(tag.content.trim())
 			.setFooter({
@@ -60,10 +61,11 @@ export default eventModule({
 		message.author.data = {
 			inCooldown: true,
 		};
+		tag.embed ??= true;
 
 		const msg = await message.channel.send({
-			content: text,
-			embeds: [embed],
+			content: tag.embed ? text : tag.content,
+			embeds: tag.embed ? [embed] : [],
 			components: [row],
 			allowedMentions: {
 				parse: [],
