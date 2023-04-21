@@ -41,13 +41,11 @@ export class CommandSyncer {
 		private client: Client,
 		private scopedGuilds: string[] = []
 	) {
-		setTimeout(() => {
-			this.sync()
-				.catch((e) =>
-					logger.error({ message: e ?? "Something went wrong with syncing" })
-				)
-				.then(() => logger.info({ message: "Commands synced successfully" }));
-		}, 20_000);
+		this.sync()
+			.catch((e) =>
+				logger.error({ message: e ?? "Something went wrong with syncing" })
+			)
+			.then(() => logger.info({ message: "Commands synced successfully" }));
 	}
 
 	/** Returns true if a `CommandModule` is publishable */
@@ -179,7 +177,7 @@ export class CommandSyncer {
 	}
 
 	/** Syncs application commands */
-	private async sync() {
+	public async sync() {
 		this.logger.info({ message: "Syncing commands" });
 
 		for await (const path of getFiles(this.commandsPath)) {
