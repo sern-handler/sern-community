@@ -34,12 +34,12 @@ export interface BotDependencies extends Dependencies {
 export const useContainer = Sern.makeDependencies<BotDependencies>({
 	build: (root) =>
 		root
-			.add({ "@sern/client": single(client) })
-			.add({ "@sern/logger": single(new SernLogger("debug")) })
-			.add({ process: single(process) })
+			.add({ "@sern/client": single(() => client) })
+			.upsert({ "@sern/logger": single(() => new SernLogger("info")) })
+			.add({ process: single(() => process) })
 			.add((ctx) => ({
 				sync: single(
-					new CommandSyncer(ctx["@sern/logger"], ctx["@sern/client"], [])
+					() => new CommandSyncer(ctx["@sern/logger"], ctx["@sern/client"], [])
 				),
 			})),
 });
@@ -55,7 +55,14 @@ Sern.init({
 client.once("ready", (client) => {
 	randomStatus(client);
 	const [logger] = useContainer("@sern/logger");
+	const [syncer] = useContainer("sync");
 	logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
+	syncer
+		.sync()
+		.catch((e) =>
+			logger.error({ message: e ?? "Something went wrong with syncing" })
+		)
+		.then(() => logger.info({ message: "Commands synced successfully" }));
 });
 
 await client.login();
