@@ -145,7 +145,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/auth-token@npm:^3.0.0, @octokit/auth-token@npm:^3.0.3":
+"@octokit/auth-token@npm:^3.0.0":
   version: 3.0.3
   resolution: "@octokit/auth-token@npm:3.0.3"
   dependencies:
@@ -2039,7 +2039,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sern-community@workspace:."
   dependencies:
-    "@octokit/auth-token": ^3.0.3
     "@octokit/rest": ^19.0.7
     "@sern/handler": 2.6.1
     "@types/node": 18.11.18
