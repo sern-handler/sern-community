@@ -35,6 +35,7 @@ export async function cp(client: Client) {
 	const resp = await fetch(link).catch(() => null);
 	if (!resp) return null;
 	const dataArray = (await resp.json()) as Data[];
+	// TODO: use octokit instead of fetch
 	for (const data of dataArray) {
 		const name = data.name.replace(".ts", "");
 		data.rawData = await (await fetch(data.download_url))
