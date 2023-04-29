@@ -1,7 +1,8 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
-import { randomStatus, SernLogger, /*CommandSyncer*/ } from "#utils";
+import { randomStatus, SernLogger /*CommandSyncer*/ } from "#utils";
+import { Octokit } from "@octokit/rest";
 
 const client = new Client({
 	intents: [
@@ -27,17 +28,21 @@ const client = new Client({
 export interface BotDependencies extends Dependencies {
 	"@sern/client": Singleton<Client>;
 	"@sern/logger": Singleton<SernLogger>;
+	"octokit": Singleton<Octokit>;
 }
 
 export const useContainer = Sern.makeDependencies<BotDependencies>({
 	build: (root) =>
 		root
-	            .add({ "@sern/client": single(() => client) })
-	            .upsert({ "@sern/logger": single(() => new SernLogger("info")) })
-	            .add({ process: single(() => process) })
-	  //  .add(ctx =>
-		//		({'sync' : single(() => new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
-		//	))
+			.add({ "@sern/client": single(() => client) })
+			.upsert({ "@sern/logger": single(() => new SernLogger("info")) })
+			.add({ process: single(() => process) })
+			.add({
+				octokit: single(() => new Octokit({ auth: process.env.GITHUB_TOKEN })),
+			}),
+	//  .add(ctx =>
+	//		({'sync' : single(() => new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
+	//	))
 });
 Sern.init({
 	defaultPrefix: "sern",
