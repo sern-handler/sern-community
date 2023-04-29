@@ -180,16 +180,16 @@ export default commandModule({
 		let reply = target
 			? `*GitHub ${
 					issue.pull_request ? "Pull Request" : "Issue"
-			  } data for ${target}>*\n`
+			  } data for ${target}*\n`
 			: "";
 
 		reply += `${emoji(issue)}  [\`${prefix(
 			issue.pull_request
-		)}${number} in sern/${repo}\`](<${issue.html_url}>) ___${
+		)}${number} sern/${repo}\`](<${issue.html_url}>)\n___${
 			issue.title
-		}___\n${suffix(issue)} by [${issue.user!.login}](<${
-			issue.user?.html_url
-		}>)`;
+		}___ by [*${issue.user!.login}*](<${issue.user?.html_url}>) ${suffix(
+			issue
+		)}`;
 
 		return ctx.reply(reply);
 	},
