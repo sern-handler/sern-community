@@ -3,9 +3,8 @@ import { CommandType, commandModule } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
 import { Octokit } from "@octokit/rest";
 import { Timestamp } from "#utils";
-const octokit = new Octokit({
-	auth: process.env.GITHUB_TOKEN,
-});
+import { Emojis } from "#constants";
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -53,35 +52,54 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
+					const text = ctx.options.getFocused();
 					const repo = ctx.options.getString("repo");
 					if (!repo) return ctx.respond([]);
-					const issues = await octokit.issues.listForRepo({
-						owner: "sern-handler",
-						repo,
-						state: "all",
-					});
+
+					let search;
+
+					if (text.length) {
+						search = await octokit.search.issuesAndPullRequests({
+							q: `repo:sern-handler/${repo} ${text} in:title`,
+						});
+					}
 
 					const prefix = (t: object | undefined) => (t ? "$" : "#");
 
-					const text = ctx.options.getFocused();
-					const map = issues.data
-						.filter((i) => (text.length ? true : i.state === "open"))
-						.map((issue) => ({
-							name: cutText(
-								`${prefix(issue.pull_request)}${issue.number} - ${issue.title}`
-							),
-							value: issue.number,
-						}));
-
 					if (!text.length) {
+						const issues = await octokit.issues.listForRepo({
+							owner: "sern-handler",
+							repo,
+							state: "all",
+							per_page: 100,
+						});
+						const map = issues.data
+							.filter((i) => (text.length ? true : i.state === "open"))
+							.map((issue) => ({
+								name: cutText(
+									`${prefix(issue.pull_request)}${issue.number} - ${
+										issue.title
+									}`
+								),
+								value: issue.number,
+							}));
+
 						return ctx.respond(map.slice(0, 25));
 					}
+
 					return ctx.respond(
-						map
-							.filter((issue) =>
-								issue.name.toLowerCase().includes(text.toLowerCase())
-							)
-							.slice(0, 25)
+						search?.data.items
+							.filter((i) => i.title.toLowerCase().includes(text.toLowerCase()))
+							.map((issue) => ({
+								name: cutText(
+									`${prefix(issue.pull_request)}${issue.number} - ${
+										issue.title
+									}`
+								),
+								value: issue.number,
+							}))
+
+							.slice(0, 25) ?? []
 					);
 				},
 			},
@@ -94,8 +112,6 @@ export default commandModule({
 		},
 	],
 	async execute(ctx, [, options]) {
-		const octokit = new Octokit();
-
 		const repo = options.getString("repo", true);
 		const number = options.getInteger("number", true);
 		const target = options.getUser("target");
@@ -108,16 +124,72 @@ export default commandModule({
 			})
 		).data;
 		const prefix = (t: object | undefined) => (t ? "$" : "#");
+		const emoji = (i: typeof issue): string => {
+			if (i.pull_request) {
+				switch (i.state) {
+					case "open":
+						return i.draft ? Emojis.PRDraft : Emojis.PROpen;
+					case "closed":
+						return i.pull_request.merged_at ? Emojis.PRMerged : Emojis.PRClosed;
+				}
+			}
+			switch (i.state) {
+				case "open":
+					return Emojis.IssueOpen;
+				case "closed":
+					return i.state_reason === "completed"
+						? Emojis.IssueClosed
+						: i.state_reason === "not_planned"
+						? Emojis.IssueNotPlanned
+						: "";
+			}
+			return "";
+		};
 
-		const reply = `[\`${prefix(
+		const suffix = (i: typeof issue): string => {
+			let str = "";
+			let time = "";
+			if (i.pull_request) {
+				switch (i.state) {
+					case "open":
+						str = i.draft ? "drafted" : "opened";
+						time = i.created_at;
+						break;
+					case "closed":
+						str = i.pull_request.merged_at ? "merged" : "closed";
+						time = i.pull_request.merged_at ?? i.closed_at ?? "";
+						break;
+				}
+			} else {
+				switch (i.state) {
+					case "open":
+						str = "opened";
+						time = i.created_at;
+						break;
+					case "closed":
+						str = i.state_reason === "completed" ? "completed" : "closed";
+						time = i.closed_at ?? "";
+						break;
+				}
+			}
+			return `${str} ${new Timestamp(
+				new Date(time).getTime()
+			).getRelativeTime()}`;
+		};
+
+		let reply = target
+			? `*GitHub ${
+					issue.pull_request ? "Pull Request" : "Issue"
+			  } data for ${target}>*\n`
+			: "";
+
+		reply += `${emoji(issue)}  [\`${prefix(
 			issue.pull_request
 		)}${number} in sern/${repo}\`](<${issue.html_url}>) ___${
 			issue.title
-		}___\nOpened by [${issue.user!.login}](<${
+		}___\n${suffix(issue)} by [${issue.user!.login}](<${
 			issue.user?.html_url
-		}>) ${new Timestamp(
-			new Date(issue.created_at).getTime()
-		).getRelativeTime()}`;
+		}>)`;
 
 		return ctx.reply(reply);
 	},
