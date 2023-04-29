@@ -28,6 +28,7 @@ export default commandModule({
 						.sort(
 							(a, b) => (b.stargazers_count ?? 0) - (a.stargazers_count ?? 0)
 						)
+						.filter(r => !r.private)
 						.map((repo) => ({ name: `sern/${repo.name}`, value: repo.name }));
 
 					if (!text.length) {
