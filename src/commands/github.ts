@@ -1,10 +1,10 @@
 import { publish } from "#plugins";
 import { CommandType, commandModule } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
-import { Octokit } from "@octokit/rest";
 import { Timestamp } from "#utils";
 import { Emojis } from "#constants";
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+import { useContainer } from "../index.js";
+const prefix = (t: unknown) => (t ? "$" : "#");
 
 export default commandModule({
 	type: CommandType.Slash,
@@ -20,27 +20,31 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
+					const [octokit] = useContainer("octokit");
+
 					const text = ctx.options.getFocused();
 					const org = await octokit.repos.listForOrg({ org: "sern-handler" });
 
 					if (!org) return ctx.respond([]);
-					const repos = org.data
-						.sort(
-							(a, b) => (b.stargazers_count ?? 0) - (a.stargazers_count ?? 0)
-						)
-						.filter(r => !r.private)
+
+					const topRepos = org.data.sort(
+						(a, b) => (b.stargazers_count ?? 0) - (a.stargazers_count ?? 0)
+					);
+
+					const publicRepos = topRepos
+						.filter((r) => !r.private)
 						.map((repo) => ({ name: `sern/${repo.name}`, value: repo.name }));
 
 					if (!text.length) {
-						return ctx.respond(repos.slice(0, 25));
+						return ctx.respond(publicRepos.slice(0, 25)).catch(() => null);
 					}
 					return ctx.respond(
-						repos
+						publicRepos
 							.filter((repo) =>
 								repo.name.toLowerCase().includes(text.toLowerCase())
 							)
 							.slice(0, 25)
-					);
+					).catch(() => null);
 				},
 			},
 		},
@@ -53,6 +57,8 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
+					const [octokit] = useContainer("octokit");
+
 					const text = ctx.options.getFocused();
 					const repo = ctx.options.getString("repo");
 					if (!repo) return ctx.respond([]);
@@ -66,8 +72,6 @@ export default commandModule({
 							})
 							.catch(() => null);
 					}
-
-					const prefix = (t: object | undefined) => (t ? "$" : "#");
 
 					if (!text.length) {
 						const issues = await octokit.issues
@@ -88,7 +92,7 @@ export default commandModule({
 							value: issue.number,
 						}));
 
-						return ctx.respond(map);
+						return ctx.respond(map).catch(() => null);
 					}
 
 					return ctx.respond(
@@ -103,7 +107,7 @@ export default commandModule({
 								value: issue.number,
 							}))
 							.slice(0, 25) ?? []
-					);
+					).catch(() => null);
 				},
 			},
 		},
@@ -115,19 +119,20 @@ export default commandModule({
 		},
 	],
 	async execute(ctx, [, options]) {
+		const [octokit] = useContainer("octokit");
+
 		const repo = options.getString("repo", true);
 		const number = options.getInteger("number", true);
 		const target = options.getUser("target");
 
-		const issue = (
-			await octokit.issues
-				.get({
-					owner: "sern-handler",
-					repo,
-					issue_number: number,
-				})
-				.catch(() => null)
-		)?.data;
+		const issue = await octokit.issues
+			.get({
+				owner: "sern-handler",
+				repo,
+				issue_number: number,
+			})
+			.then((r) => r.data)
+			.catch(() => null);
 
 		if (!issue) {
 			return ctx.reply({
@@ -135,8 +140,6 @@ export default commandModule({
 				ephemeral: true,
 			});
 		}
-
-		const prefix = (t: object | undefined) => (t ? "$" : "#");
 		const emoji = (i: typeof issue): string => {
 			if (i.pull_request) {
 				switch (i.state) {
