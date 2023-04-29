@@ -59,32 +59,35 @@ export default commandModule({
 					let search;
 
 					if (text.length) {
-						search = await octokit.search.issuesAndPullRequests({
-							q: `repo:sern-handler/${repo} ${text} in:title`,
-						});
+						search = await octokit.search
+							.issuesAndPullRequests({
+								q: `repo:sern-handler/${repo} ${text} in:title`,
+							})
+							.catch(() => null);
 					}
 
 					const prefix = (t: object | undefined) => (t ? "$" : "#");
 
 					if (!text.length) {
-						const issues = await octokit.issues.listForRepo({
-							owner: "sern-handler",
-							repo,
-							state: "all",
-							per_page: 100,
-						});
-						const map = issues.data
-							.filter((i) => (text.length ? true : i.state === "open"))
-							.map((issue) => ({
-								name: cutText(
-									`${prefix(issue.pull_request)}${issue.number} - ${
-										issue.title
-									}`
-								),
-								value: issue.number,
-							}));
+						const issues = await octokit.issues
+							.listForRepo({
+								owner: "sern-handler",
+								repo,
+								state: "all",
+								per_page: 25,
+							})
+							.catch(() => null);
 
-						return ctx.respond(map.slice(0, 25));
+						if (!issues) return ctx.respond([]);
+
+						const map = issues.data.map((issue) => ({
+							name: cutText(
+								`${prefix(issue.pull_request)}${issue.number} - ${issue.title}`
+							),
+							value: issue.number,
+						}));
+
+						return ctx.respond(map);
 					}
 
 					return ctx.respond(
@@ -98,7 +101,6 @@ export default commandModule({
 								),
 								value: issue.number,
 							}))
-
 							.slice(0, 25) ?? []
 					);
 				},
@@ -117,12 +119,22 @@ export default commandModule({
 		const target = options.getUser("target");
 
 		const issue = (
-			await octokit.issues.get({
-				owner: "sern-handler",
-				repo,
-				issue_number: number,
-			})
-		).data;
+			await octokit.issues
+				.get({
+					owner: "sern-handler",
+					repo,
+					issue_number: number,
+				})
+				.catch(() => null)
+		)?.data;
+
+		if (!issue) {
+			return ctx.reply({
+				content: `I could not find [\`#${number} in sern/${repo}\`](https://github.com/sern-handler/${repo}/)`,
+				ephemeral: true,
+			});
+		}
+
 		const prefix = (t: object | undefined) => (t ? "$" : "#");
 		const emoji = (i: typeof issue): string => {
 			if (i.pull_request) {
