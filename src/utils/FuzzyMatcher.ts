@@ -3,10 +3,7 @@ import { findBestMatch } from "string-similarity";
 import type { TagData } from "../types/index.js";
 
 export class FuzzyMatcher {
-	public constructor(
-		private readonly message: Message,
-		private readonly tags: TagData[]
-	) {}
+	public constructor(private readonly message: Message, private readonly tags: TagData[]) {}
 
 	readonly #regex = /<@!?(?<id>\d{17,20})>/g;
 
@@ -19,17 +16,13 @@ export class FuzzyMatcher {
 	}
 
 	public fuzzyMatch() {
-		const keywords = this.tags
-			.flatMap((t) => t.keywords)
-			.map((k) => k.toLowerCase());
+		const keywords = this.tags.flatMap((t) => t.keywords).map((k) => k.toLowerCase());
 		const matches = findBestMatch(this.cleanContent.toLowerCase(), keywords);
 
 		if (matches.bestMatch.rating < 0.4) return null;
 		const words = this.cleanContent.toLowerCase().split(" ");
 
-		const firstMatchedTag = this.tags.find((t) =>
-			t.keywords.includes(matches.bestMatch.target)
-		);
+		const firstMatchedTag = this.tags.find((t) => t.keywords.includes(matches.bestMatch.target));
 		if (!firstMatchedTag) return null;
 
 		const keyword = firstMatchedTag.keywords.find((k) => {

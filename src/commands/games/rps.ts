@@ -22,11 +22,9 @@ export default slashCommand({
 		},
 	],
 	execute: async (context) => {
-		const opponent =
-			context.interaction.options.getUser("user") ?? context.client.user!;
+		const opponent = context.interaction.options.getUser("user") ?? context.client.user!;
 
-		if (opponent.id === context.user.id)
-			return context.reply(`Can't play with yourself dumb dumb`);
+		if (opponent.id === context.user.id) return context.reply(`Can't play with yourself dumb dumb`);
 
 		const buttons = ["🪨|Rock", "📄|Paper", "✂|Scissors"].map((s) => {
 			const [emoji, label] = s.split("|");
@@ -75,9 +73,7 @@ export default slashCommand({
 					: undefined
 			) as Choice;
 
-			userChoice ??= (
-				i.user.id === context.user.id ? i.customId : undefined
-			) as Choice;
+			userChoice ??= (i.user.id === context.user.id ? i.customId : undefined) as Choice;
 			return [userChoice, opponentChoice];
 		};
 

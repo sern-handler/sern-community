@@ -11,12 +11,7 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 	],
-	partials: [
-		Partials.GuildMember,
-		Partials.Message,
-		Partials.ThreadMember,
-		Partials.Channel,
-	],
+	partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember, Partials.Channel],
 	sweepers: {
 		messages: {
 			interval: 43200,
@@ -28,7 +23,7 @@ const client = new Client({
 export interface BotDependencies extends Dependencies {
 	"@sern/client": Singleton<Client>;
 	"@sern/logger": Singleton<SernLogger>;
-	"octokit": Singleton<Octokit>;
+	octokit: Singleton<Octokit>;
 }
 
 export const useContainer = Sern.makeDependencies<BotDependencies>({

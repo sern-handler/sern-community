@@ -19,9 +19,7 @@ import {
 export class Paginator {
 	private currentCount: number = 0;
 	private selectMenuOptions?: RestOrArray<
-		| SelectMenuOptionBuilder
-		| APISelectMenuOption
-		| SelectMenuComponentOptionData
+		SelectMenuOptionBuilder | APISelectMenuOption | SelectMenuComponentOptionData
 	>;
 	private descriptions?: string[];
 
@@ -57,19 +55,14 @@ export class Paginator {
 
 	public setSelectMenuOptions(
 		...options: RestOrArray<
-			| SelectMenuOptionBuilder
-			| APISelectMenuOption
-			| SelectMenuComponentOptionData
+			SelectMenuOptionBuilder | APISelectMenuOption | SelectMenuComponentOptionData
 		>
 	): this {
 		this.selectMenuOptions = options;
 		return this;
 	}
 
-	public async run(
-		messageOrInteraction: Message | CommandInteraction,
-		user?: User
-	) {
+	public async run(messageOrInteraction: Message | CommandInteraction, user?: User) {
 		this.sanityChecks();
 
 		const target = user
@@ -85,19 +78,11 @@ export class Paginator {
 			: [this.buildButtons()];
 
 		if (messageOrInteraction instanceof Message) {
-			const message = await this.handleMessage(
-				messageOrInteraction,
-				embeds,
-				rows
-			);
+			const message = await this.handleMessage(messageOrInteraction, embeds, rows);
 
 			return this.handleCollector(message, target);
 		} else {
-			const message = await this.handleInteraction(
-				messageOrInteraction,
-				embeds,
-				rows
-			);
+			const message = await this.handleInteraction(messageOrInteraction, embeds, rows);
 			return this.handleCollector(message, target);
 		}
 	}
@@ -105,10 +90,7 @@ export class Paginator {
 	private async handleMessage(
 		message: Message,
 		embeds: EmbedBuilder[],
-		rows: (
-			| ActionRowBuilder<StringSelectMenuBuilder>
-			| ActionRowBuilder<ButtonBuilder>
-		)[]
+		rows: (ActionRowBuilder<StringSelectMenuBuilder> | ActionRowBuilder<ButtonBuilder>)[]
 	) {
 		const msg = await message.channel.send({
 			embeds: [embeds![this.currentCount]],
@@ -120,10 +102,7 @@ export class Paginator {
 	private async handleInteraction(
 		interaction: CommandInteraction,
 		embeds: EmbedBuilder[],
-		rows: (
-			| ActionRowBuilder<StringSelectMenuBuilder>
-			| ActionRowBuilder<ButtonBuilder>
-		)[]
+		rows: (ActionRowBuilder<StringSelectMenuBuilder> | ActionRowBuilder<ButtonBuilder>)[]
 	) {
 		let msg: Message<boolean>;
 		if (interaction.replied || interaction.deferred) {
@@ -254,9 +233,7 @@ export class Paginator {
 							default: i === this.currentCount,
 						})))
 			);
-		const row = new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
-			select
-		);
+		const row = new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(select);
 		return row;
 	}
 
@@ -279,9 +256,7 @@ export class Paginator {
 	}
 
 	private updateSelect(components: ActionRow<MessageActionRowComponent>[]) {
-		const selectMenuOption = (
-			components[1].components[0].data as APIStringSelectComponent
-		).options;
+		const selectMenuOption = (components[1].components[0].data as APIStringSelectComponent).options;
 		for (const option of selectMenuOption) {
 			if (option.value === `${this.currentCount}`) option.default = true;
 			else option.default = false;

@@ -1,9 +1,4 @@
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	Message,
-	EmbedBuilder,
-} from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, Message, EmbedBuilder } from "discord.js";
 
 export function Paginate() {
 	const __embeds = [] as EmbedBuilder[];
@@ -42,10 +37,7 @@ export function Paginate() {
 			return {
 				embeds: [__embeds.at(cur)!],
 				components: [
-					new ActionRowBuilder<ButtonBuilder>().addComponents(
-						traverser[0],
-						traverser[1]
-					),
+					new ActionRowBuilder<ButtonBuilder>().addComponents(traverser[0], traverser[1]),
 				],
 			};
 		},

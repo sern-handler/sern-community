@@ -1,11 +1,6 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, Colors, EmbedBuilder } from "discord.js";
-import {
-	Kind,
-	PurpleComment,
-	PurpleSummary,
-	TentacledKindString,
-} from "../../typings/docs.js";
+import { Kind, PurpleComment, PurpleSummary, TentacledKindString } from "../../typings/docs.js";
 import { Paginator } from "#utils";
 import { publish } from "#plugins";
 import DocHandler from "../trie/doc-autocmp.js";
@@ -18,9 +13,7 @@ function handleComments(sum: PurpleSummary) {
 		case Kind.InlineTag:
 			return {
 				name: "Reference",
-				value: `[${docHandler.DocTrie.search(sum.target!.toString())}](${
-					sum.text
-				})`,
+				value: `[${docHandler.DocTrie.search(sum.target!.toString())}](${sum.text})`,
 			};
 	}
 }
@@ -40,13 +33,9 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				execute(autocomplete) {
-					const choices = docHandler.DocTrie.search(
-						autocomplete.options.getFocused()
-					);
+					const choices = docHandler.DocTrie.search(autocomplete.options.getFocused());
 					return autocomplete.respond(
-						choices
-							.map((res) => ({ name: res.node.name, value: res.node.name }))
-							.slice(0, 25)
+						choices.map((res) => ({ name: res.node.name, value: res.node.name })).slice(0, 25)
 					);
 				},
 			},
@@ -64,9 +53,7 @@ export default commandModule({
 			const comments =
 				res.node.kindString === TentacledKindString.Function
 					? res.node.signatures?.flatMap((dec) => {
-							const summary = dec.comment?.summary as
-								| PurpleSummary[]
-								| undefined;
+							const summary = dec.comment?.summary as PurpleSummary[] | undefined;
 							return summary?.map(handleComments) ?? [];
 					  })
 					: res.node.comment?.summary?.map(handleComments);
@@ -99,11 +86,7 @@ export default commandModule({
 			});
 
 			return new EmbedBuilder()
-				.addFields(
-					{ name: "Category", value: res.name },
-					...(comments ?? []),
-					...(blockTags ?? [])
-				)
+				.addFields({ name: "Category", value: res.name }, ...(comments ?? []), ...(blockTags ?? []))
 				.setTitle(`🔖 ${res.node.name}`)
 				.setColor(Colors.DarkVividPink)
 				.setAuthor({

@@ -24,11 +24,7 @@ import {
 	SernOptionsData,
 	SlashCommand,
 } from "@sern/handler";
-import {
-	ApplicationCommandData,
-	ApplicationCommandType,
-	PermissionResolvable,
-} from "discord.js";
+import { ApplicationCommandData, ApplicationCommandType, PermissionResolvable } from "discord.js";
 import { useContainer } from "../index.js";
 
 export const CommandTypeRaw = {
@@ -39,11 +35,7 @@ export const CommandTypeRaw = {
 } as const;
 
 export function publish<
-	T extends
-		| CommandType.Both
-		| CommandType.Slash
-		| CommandType.CtxMsg
-		| CommandType.CtxUser
+	T extends CommandType.Both | CommandType.Slash | CommandType.CtxMsg | CommandType.CtxUser
 >(options?: PublishOptions) {
 	return CommandInitPlugin<T>(async ({ module }) => {
 		// Users need to provide their own useContainer function.
@@ -54,8 +46,7 @@ export function publish<
 			defaultMemberPermissions: null,
 		};
 
-		options = { ...defaultOptions, ...options } as PublishOptions &
-			ValidPublishOptions;
+		options = { ...defaultOptions, ...options } as PublishOptions & ValidPublishOptions;
 		let { defaultMemberPermissions, dmPermission, guildIds } =
 			options as unknown as ValidPublishOptions;
 
@@ -87,10 +78,7 @@ export function publish<
 				name: module.name,
 				type: curAppType,
 				description: cmd(module.description, ""),
-				options: cmd(
-					optionsTransformer((module as SlashCommand).options ?? []),
-					[]
-				),
+				options: cmd(optionsTransformer((module as SlashCommand).options ?? []), []),
 				defaultMemberPermissions,
 				dmPermission,
 			} as ApplicationCommandData;
@@ -105,14 +93,8 @@ export function publish<
 				);
 				if (cmd) {
 					if (!cmd.equals(commandData, true)) {
-						logged(
-							`Found differences in global command ${module.name}`
-						);
-						cmd.edit(commandData).then(
-							log(
-								`${module.name} updated with new data successfully!`
-							)
-						);
+						logged(`Found differences in global command ${module.name}`);
+						cmd.edit(commandData).then(log(`${module.name} updated with new data successfully!`));
 					}
 					return controller.next();
 				}
@@ -134,11 +116,7 @@ export function publish<
 						logged(`Found differences in command ${module.name}`);
 						guildCmd
 							.edit(commandData)
-							.then(
-								log(
-									`${module.name} updated with new data successfully!`
-								)
-							)
+							.then(log(`${module.name} updated with new data successfully!`))
 							.catch(c);
 						continue;
 					}
@@ -159,9 +137,7 @@ export function publish<
 }
 
 export function optionsTransformer(ops: Array<SernOptionsData>) {
-	return ops.map((el) =>
-		el.autocomplete ? (({ command, ...el }) => el)(el) : el
-	);
+	return ops.map((el) => (el.autocomplete ? (({ command, ...el }) => el)(el) : el));
 }
 
 export type NonEmptyArray<T extends `${number}` = `${number}`> = [T, ...T[]];

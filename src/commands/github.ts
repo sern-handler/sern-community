@@ -23,7 +23,9 @@ export default commandModule({
 					const [octokit] = useContainer("octokit");
 
 					const text = ctx.options.getFocused();
-					const org = await octokit.repos.listForOrg({ org: "sern-handler" });
+					const org = await octokit.repos.listForOrg({
+						org: "sern-handler",
+					});
 
 					if (!org) return ctx.respond([]);
 
@@ -33,18 +35,21 @@ export default commandModule({
 
 					const publicRepos = topRepos
 						.filter((r) => !r.private)
-						.map((repo) => ({ name: `sern/${repo.name}`, value: repo.name }));
+						.map((repo) => ({
+							name: `sern/${repo.name}`,
+							value: repo.name,
+						}));
 
 					if (!text.length) {
 						return ctx.respond(publicRepos.slice(0, 25)).catch(() => null);
 					}
-					return ctx.respond(
-						publicRepos
-							.filter((repo) =>
-								repo.name.toLowerCase().includes(text.toLowerCase())
-							)
-							.slice(0, 25)
-					).catch(() => null);
+					return ctx
+						.respond(
+							publicRepos
+								.filter((repo) => repo.name.toLowerCase().includes(text.toLowerCase()))
+								.slice(0, 25)
+						)
+						.catch(() => null);
 				},
 			},
 		},
@@ -86,28 +91,24 @@ export default commandModule({
 						if (!issues) return ctx.respond([]);
 
 						const map = issues.data.map((issue) => ({
-							name: cutText(
-								`${prefix(issue.pull_request)}${issue.number} - ${issue.title}`
-							),
+							name: cutText(`${prefix(issue.pull_request)}${issue.number} - ${issue.title}`),
 							value: issue.number,
 						}));
 
 						return ctx.respond(map).catch(() => null);
 					}
 
-					return ctx.respond(
-						search?.data.items
-							.filter((i) => i.title.toLowerCase().includes(text.toLowerCase()))
-							.map((issue) => ({
-								name: cutText(
-									`${prefix(issue.pull_request)}${issue.number} - ${
-										issue.title
-									}`
-								),
-								value: issue.number,
-							}))
-							.slice(0, 25) ?? []
-					).catch(() => null);
+					return ctx
+						.respond(
+							search?.data.items
+								.filter((i) => i.title.toLowerCase().includes(text.toLowerCase()))
+								.map((issue) => ({
+									name: cutText(`${prefix(issue.pull_request)}${issue.number} - ${issue.title}`),
+									value: issue.number,
+								}))
+								.slice(0, 25) ?? []
+						)
+						.catch(() => null);
 				},
 			},
 		},
@@ -188,22 +189,16 @@ export default commandModule({
 						break;
 				}
 			}
-			return `${str} ${new Timestamp(
-				new Date(time).getTime()
-			).getRelativeTime()}`;
+			return `${str} ${new Timestamp(new Date(time).getTime()).getRelativeTime()}`;
 		};
 
 		let reply = target
-			? `*GitHub ${
-					issue.pull_request ? "Pull Request" : "Issue"
-			  } data for ${target}*\n`
+			? `*GitHub ${issue.pull_request ? "Pull Request" : "Issue"} data for ${target}*\n`
 			: "";
 
-		reply += `${emoji(issue)}  [\`${prefix(
-			issue.pull_request
-		)}${number} sern/${repo}\`](<${issue.html_url}>)\n___${
-			issue.title
-		}___ by [*${issue.user!.login}*](<${issue.user?.html_url}>) ${suffix(
+		reply += `${emoji(issue)}  [\`${prefix(issue.pull_request)}${number} sern/${repo}\`](<${
+			issue.html_url
+		}>)\n___${issue.title}___ by [*${issue.user!.login}*](<${issue.user?.html_url}>) ${suffix(
 			issue
 		)}`;
 

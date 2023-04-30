@@ -26,9 +26,7 @@ export default commandModule({
 		};
 		const filePath = `./tags.json`;
 		const file: TagData[] = require(`${process.cwd()}/tags.json`);
-		const oldTag = file.find(
-			(t) => t.name === (ctx.user.data as { tag: string }).tag
-		)!;
+		const oldTag = file.find((t) => t.name === (ctx.user.data as { tag: string }).tag)!;
 
 		const similarKeywords = file.filter(
 			(t) =>
@@ -44,8 +42,7 @@ export default commandModule({
 			);
 		}
 
-		file[file.findIndex((t) => t.name === (ctx.user.data as UserTag).tag)] =
-			tag;
+		file[file.findIndex((t) => t.name === (ctx.user.data as UserTag).tag)] = tag;
 
 		writeFileSync(filePath, JSON.stringify(file, null, 2));
 

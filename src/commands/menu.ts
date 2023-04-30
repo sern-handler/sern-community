@@ -37,16 +37,13 @@ export default slashCommand({
 	],
 	async execute(ctx, [, options]) {
 		const channel = options.getChannel("channel", true) as TextChannel;
-		const role = new Resolver(options.getString("role", true), ctx.interaction)
-			.roles;
+		const role = new Resolver(options.getString("role", true), ctx.interaction).roles;
 		const message = options.getString("message", true);
 
 		if (role.size > 25) return ctx.reply("Too many roles");
 
 		const cdn = role.filter(
-			(r) =>
-				r.managed ||
-				r.position > (ctx.guild?.members.me)!.roles.highest.position
+			(r) => r.managed || r.position > (ctx.guild?.members.me)!.roles.highest.position
 		).size;
 		if (cdn) {
 			return ctx.reply(
@@ -57,9 +54,7 @@ export default slashCommand({
 		const row = createMenu(channel, role);
 		const embed = new EmbedBuilder()
 			.setTitle(message)
-			.setDescription(
-				`Please select your roles below\nYou can select multiple roles`
-			)
+			.setDescription(`Please select your roles below\nYou can select multiple roles`)
 			.setColor(0xcc5279);
 		await channel.send({
 			embeds: [embed],

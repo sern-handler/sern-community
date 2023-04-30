@@ -40,9 +40,7 @@ export default slashCommand({
 								return ctx.respond(
 									tags
 										.filter((t) =>
-											focus.length
-												? t.toLowerCase().includes(focus.toLowerCase())
-												: true
+											focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true
 										)
 										.map((t) => ({ name: t, value: t }))
 								);

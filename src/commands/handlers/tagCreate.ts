@@ -38,9 +38,7 @@ export default commandModule({
 				return ctx.reply(`Tag __${tagName}__ already exists`);
 			}
 
-			const similarKeywords = file.filter((t) =>
-				t.keywords.some((k) => tag.keywords.includes(k))
-			);
+			const similarKeywords = file.filter((t) => t.keywords.some((k) => tag.keywords.includes(k)));
 			if (similarKeywords.length) {
 				return ctx.reply(
 					`Tag __${tagName}__ has similar keywords to __${similarKeywords

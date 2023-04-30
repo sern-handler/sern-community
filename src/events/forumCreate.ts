@@ -8,8 +8,7 @@ export default eventModule({
 	plugins: [onCorrectThread(forumID)],
 	name: "threadCreate",
 	async execute(thread: AnyThreadChannel, _: boolean) {
-		if (thread.appliedTags.length > 3)
-			await thread.setAppliedTags(thread.appliedTags.slice(0, 3));
+		if (thread.appliedTags.length > 3) await thread.setAppliedTags(thread.appliedTags.slice(0, 3));
 
 		const msg = await thread.fetchStarterMessage().catch(() => null);
 		if (!msg) return thread.setLocked(true);

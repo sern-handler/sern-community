@@ -14,7 +14,7 @@ import { slashCommand } from "#utils";
 const require = createRequire(import.meta.url);
 
 export default slashCommand({
-        description: "Edit tags",
+	description: "Edit tags",
 	plugins: [publish(), ownerOnly([Evo, Seren])],
 	options: [
 		{
@@ -46,9 +46,7 @@ export default slashCommand({
 								return ctx.respond(
 									tags
 										.filter((t) =>
-											focus.length
-												? t.toLowerCase().includes(focus.toLowerCase())
-												: true
+											focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true
 										)
 										.map((t) => ({ name: t, value: t }))
 								);
@@ -82,9 +80,7 @@ export default slashCommand({
 								return ctx.respond(
 									tags
 										.filter((t) =>
-											focus.length
-												? t.toLowerCase().includes(focus.toLowerCase())
-												: true
+											focus.length ? t.toLowerCase().includes(focus.toLowerCase()) : true
 										)
 										.map((t) => ({ name: t, value: t }))
 								);
@@ -102,9 +98,7 @@ export default slashCommand({
 		const file: TagData[] = require(`${process.cwd()}/tags.json`);
 
 		if (subcmd === "create") {
-			const modal = new ModalBuilder()
-				.setTitle("Tag Creation")
-				.setCustomId("@sern/tag/create");
+			const modal = new ModalBuilder().setTitle("Tag Creation").setCustomId("@sern/tag/create");
 
 			const tagName = new TextInputBuilder()
 				.setCustomId("tag-name")
@@ -146,9 +140,7 @@ export default slashCommand({
 			if (!tagData) {
 				return context.reply(`No tag found with name __${tag}__`);
 			}
-			const modal = new ModalBuilder()
-				.setTitle("Tag Edit")
-				.setCustomId("@sern/tag/edit");
+			const modal = new ModalBuilder().setTitle("Tag Edit").setCustomId("@sern/tag/edit");
 
 			const tagName = new TextInputBuilder()
 				.setCustomId("tag-name")
@@ -193,10 +185,7 @@ export default slashCommand({
 				return context.reply("Tag not found");
 			}
 			file.splice(file.indexOf(tagData), 1);
-			writeFileSync(
-				`${process.cwd()}/tags.json`,
-				JSON.stringify(file, null, 2)
-			);
+			writeFileSync(`${process.cwd()}/tags.json`, JSON.stringify(file, null, 2));
 
 			return context.reply(`Tag ${tag} deleted`);
 		}

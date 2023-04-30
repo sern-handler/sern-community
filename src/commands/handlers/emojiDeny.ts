@@ -16,9 +16,7 @@ export default commandModule({
 
 		const components = [
 			new ActionRowBuilder<ButtonBuilder>().setComponents(
-				ctx.message!.components[0].components.map((c) =>
-					new ButtonBuilder(c.data).setDisabled()
-				)
+				ctx.message!.components[0].components.map((c) => new ButtonBuilder(c.data).setDisabled())
 			),
 		];
 
@@ -26,8 +24,7 @@ export default commandModule({
 			.setFields(ctx.message!.embeds[0].fields[0], {
 				name: "Status",
 				value:
-					`Denied by ${ctx.user}` +
-					"\nThank you but we are not interested in this at the moment!",
+					`Denied by ${ctx.user}` + "\nThank you but we are not interested in this at the moment!",
 			})
 			.setColor("Red")
 			.setTimestamp();

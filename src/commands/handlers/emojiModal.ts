@@ -32,9 +32,7 @@ export default commandModule({
 
 		const components = [
 			new ActionRowBuilder<ButtonBuilder>().setComponents(
-				ctx.message!.components[0].components.map((c) =>
-					new ButtonBuilder(c.data).setDisabled()
-				)
+				ctx.message!.components[0].components.map((c) => new ButtonBuilder(c.data).setDisabled())
 			),
 		];
 

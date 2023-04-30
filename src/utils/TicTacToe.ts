@@ -43,11 +43,7 @@ export class TicTacToe {
 		return user;
 	}
 
-	public createCollector(
-		response: InteractionResponse<boolean>,
-		player: User,
-		opponent: User
-	) {
+	public createCollector(response: InteractionResponse<boolean>, player: User, opponent: User) {
 		return response.createMessageComponentCollector({
 			componentType: ComponentType.Button,
 			filter: (i) => [player.id, opponent.id].includes(i.user.id),
@@ -76,11 +72,7 @@ export class TicTacToe {
 
 			const possibleWinner = this.computeWin(pieces);
 			if (possibleWinner.winner) {
-				this.disableAllButtons(
-					pieces,
-					possibleWinner.winner,
-					possibleWinner.winPieces
-				);
+				this.disableAllButtons(pieces, possibleWinner.winner, possibleWinner.winPieces);
 				collector.stop(`Finished!`);
 
 				return void (await i.update({
@@ -100,9 +92,7 @@ export class TicTacToe {
 				disabled === 9
 					? "Game ended in tie, what a shame!"
 					: `Let the game begin!\n${interaction.user} vs ${opponent}\n\n> Current Chance: ${chance} [${mark}]` +
-					  `\nTime ends ${new Timestamp(
-							Date.now() + this.time!
-					  ).getRelativeTime()}`;
+					  `\nTime ends ${new Timestamp(Date.now() + this.time!).getRelativeTime()}`;
 
 			await i.update({
 				content,
@@ -152,18 +142,10 @@ export class TicTacToe {
 	public buildRows() {
 		return Array<ActionRowBuilder>(3)
 			.fill(new ActionRowBuilder())
-			.map((_, i) =>
-				new ActionRowBuilder<ButtonBuilder>().setComponents(
-					this.buildButtons(i)
-				)
-			);
+			.map((_, i) => new ActionRowBuilder<ButtonBuilder>().setComponents(this.buildButtons(i)));
 	}
 
-	public mark(
-		rows: ActionRowBuilder<ButtonBuilder>[],
-		id: string,
-		mark: "X" | "O"
-	) {
+	public mark(rows: ActionRowBuilder<ButtonBuilder>[], id: string, mark: "X" | "O") {
 		for (const row of rows) {
 			for (const button of row.components) {
 				if ((button.data as APIButtonComponentWithCustomId).custom_id === id) {
@@ -187,26 +169,17 @@ export class TicTacToe {
 				const { emoji } = piece.data;
 				if (!emoji) continue;
 				const emojiString = `<:${emoji.name}:${emoji.id}>`;
-				const id = (piece.data as APIButtonComponentWithCustomId)
-					.custom_id as Combination;
+				const id = (piece.data as APIButtonComponentWithCustomId).custom_id as Combination;
 				if (emojiString === this.#X) markedX.push(id);
 				else markedO.push(id);
 			}
 		}
-		if (
-			this.#WinConditions.find((win) => win.every((r) => markedX.includes(r)))
-		) {
-			winPieces = this.#WinConditions.find((win) =>
-				win.every((r) => markedX.includes(r))
-			)!;
+		if (this.#WinConditions.find((win) => win.every((r) => markedX.includes(r)))) {
+			winPieces = this.#WinConditions.find((win) => win.every((r) => markedX.includes(r)))!;
 			winner = "X";
 		}
-		if (
-			this.#WinConditions.find((win) => win.every((r) => markedO.includes(r)))
-		) {
-			winPieces = this.#WinConditions.find((win) =>
-				win.every((r) => markedO.includes(r))
-			)!;
+		if (this.#WinConditions.find((win) => win.every((r) => markedO.includes(r)))) {
+			winPieces = this.#WinConditions.find((win) => win.every((r) => markedO.includes(r)))!;
 			winner = "O";
 		}
 		return { winner, winPieces };
@@ -227,9 +200,7 @@ export class TicTacToe {
 					if (
 						win === emojiString &&
 						winPieces.some((w) =>
-							w.includes(
-								(piece.data as APIButtonComponentWithCustomId).custom_id
-							)
+							w.includes((piece.data as APIButtonComponentWithCustomId).custom_id)
 						)
 					)
 						piece.setStyle(ButtonStyle.Success);

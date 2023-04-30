@@ -10,8 +10,7 @@ export default commandModule({
 		const roles = interaction.values;
 
 		const menuRoles: string[] = (
-			interaction.message.components[0].components[0]
-				.data as Readonly<APIStringSelectComponent>
+			interaction.message.components[0].components[0].data as Readonly<APIStringSelectComponent>
 		).options.map((o: { label: string; value: string }) => o.value);
 
 		const member = interaction.member as GuildMember;

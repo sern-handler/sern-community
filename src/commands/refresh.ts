@@ -38,9 +38,7 @@ export async function cp(client: Client) {
 	// TODO: use octokit instead of fetch
 	for (const data of dataArray) {
 		const name = data.name.replace(".ts", "");
-		data.rawData = await (await fetch(data.download_url))
-			.text()
-			.catch(() => "");
+		data.rawData = await (await fetch(data.download_url)).text().catch(() => "");
 		cache.set(name, data);
 	}
 	client.cache = cache;

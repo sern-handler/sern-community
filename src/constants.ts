@@ -11,5 +11,5 @@ export const enum Emojis {
 	PRDraft = "<:pr_draft:1101708908747309126>",
 	IssueOpen = "<:issue_open:1101709315955511346>",
 	IssueClosed = "<:issue_closed:1101716515771920424>",
-	IssueNotPlanned = "<:issue_notplanned:1101719419434045540>"
+	IssueNotPlanned = "<:issue_notplanned:1101719419434045540>",
 }

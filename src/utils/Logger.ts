@@ -16,9 +16,7 @@ export class SernLogger implements Logging {
 				})
 			);
 		} else {
-			this._winston.add(
-				new winston.transports.File({ filename: "error.log" })
-			);
+			this._winston.add(new winston.transports.File({ filename: "error.log" }));
 		}
 	}
 

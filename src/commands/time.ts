@@ -74,8 +74,7 @@ export default slashCommand({
 					});
 
 				return ctx.reply({
-					content:
-						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
+					content: data?.ok ?? data?.error ?? "Something went wrong! Please try again",
 					ephemeral: true,
 				});
 			}
@@ -126,8 +125,7 @@ export default slashCommand({
 					});
 
 				return ctx.reply({
-					content:
-						data?.ok ?? data?.error ?? "Something went wrong! Please try again",
+					content: data?.ok ?? data?.error ?? "Something went wrong! Please try again",
 					ephemeral: true,
 				});
 			}
@@ -139,9 +137,7 @@ function fuzz(s: string, locale = false) {
 	const path = `./time/${locale ? "countrylocalecodes" : "timezone"}.txt`;
 
 	let zones: string[] = JSON.parse(`${readFileSync(path)}`);
-	zones = zones.filter((choice) =>
-		choice.toLowerCase().includes(s.toLowerCase())
-	);
+	zones = zones.filter((choice) => choice.toLowerCase().includes(s.toLowerCase()));
 	return zones.slice(0, 25).map((z) => ({ name: z, value: z }));
 }
 

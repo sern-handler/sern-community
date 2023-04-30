@@ -1,6 +1,6 @@
 import { eventModule, EventType } from "@sern/handler";
 import type { Message } from "discord.js";
-const wait = (await import('util')).promisify(setTimeout);
+const wait = (await import("util")).promisify(setTimeout);
 
 export default eventModule({
 	name: "messageCreate",

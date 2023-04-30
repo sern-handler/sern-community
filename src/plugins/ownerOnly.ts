@@ -21,18 +21,18 @@ import { CommandType, CommandControlPlugin, controller } from "@sern/handler";
 import { ownerIDs } from "#constants";
 
 function map(s: string[]) {
-    const userMention = (s: string) => `<@!${s}>`;
-    return s.map((id) => `\` - \` ${userMention(id)}`).join("\n");
+	const userMention = (s: string) => `<@!${s}>`;
+	return s.map((id) => `\` - \` ${userMention(id)}`).join("\n");
 }
 export function ownerOnly(override?: string[]) {
 	return CommandControlPlugin<CommandType.Both>(async (ctx, args) => {
 		if ((override ?? ownerIDs).includes(ctx.user.id)) return controller.next();
 		//* If you want to reply when the command fails due to user not being owner, you can use following
 		await ctx.reply({
-                    content: `Not for you! Only these users can run this\n${map(override ?? ownerIDs)}`,
-                    ephemeral: true,
-                    allowedMentions: { repliedUser: false },
-                });
+			content: `Not for you! Only these users can run this\n${map(override ?? ownerIDs)}`,
+			ephemeral: true,
+			allowedMentions: { repliedUser: false },
+		});
 		return controller.stop(); //! Important: It stops the execution of command!
 	});
 }

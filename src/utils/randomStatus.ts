@@ -1,10 +1,6 @@
 import { ActivityType, Client, ClientPresenceStatus } from "discord.js";
 
-const statues: [
-	Exclude<ActivityType, ActivityType.Custom>,
-	string,
-	ClientPresenceStatus
-][] = [
+const statues: [Exclude<ActivityType, ActivityType.Custom>, string, ClientPresenceStatus][] = [
 	[ActivityType.Watching, "the sern community", "online"],
 	[ActivityType.Listening, "Evo", "dnd"],
 	[ActivityType.Playing, "with @sern/cli", "idle"],

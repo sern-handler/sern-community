@@ -17,8 +17,7 @@ export default slashCommand({
 				async execute(ctx) {
 					const { cache } = ctx.client;
 					const focus = ctx.options.getFocused();
-					if (!cache)
-						return ctx.respond([{ name: "No plugins found", value: "" }]);
+					if (!cache) return ctx.respond([{ name: "No plugins found", value: "" }]);
 					const data = [...cache.values()] as Data[];
 
 					const plugins = data.map((d) => {
@@ -26,9 +25,7 @@ export default slashCommand({
 						return { name, value: d.download_url };
 					});
 					return ctx.respond(
-						plugins.filter((p) =>
-							p.name.toLowerCase().includes(focus?.toLowerCase())
-						)
+						plugins.filter((p) => p.name.toLowerCase().includes(focus?.toLowerCase()))
 					);
 				},
 			},
@@ -44,13 +41,10 @@ export default slashCommand({
 		),
 	],
 	async execute(ctx, [, options]) {
-		if (!ctx.client.cache)
-			return ctx.reply("Plugins are uncached, contact Evo!");
+		if (!ctx.client.cache) return ctx.reply("Plugins are uncached, contact Evo!");
 
 		const url = options.getString("plugin", true);
-		const name = ctx.client.cache.findKey(
-			(d) => d.download_url === url
-		) as string;
+		const name = ctx.client.cache.findKey((d) => d.download_url === url) as string;
 
 		if (!name || !ctx.client.cache.get(name)!.rawData)
 			return ctx.reply(`No plugin found at this [link](<${url}>)`);

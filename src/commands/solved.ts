@@ -5,10 +5,7 @@ import { Timestamp, slashCommand } from "#utils";
 
 export default slashCommand({
 	description: "Solved the issue? Close the post!",
-	plugins: [
-		publish({ guildIds: ["889026545715400705"] }),
-		channelOnly([forumID]),
-	],
+	plugins: [publish({ guildIds: ["889026545715400705"] }), channelOnly([forumID])],
 	async execute(ctx) {
 		if (!ctx.channel) return;
 		if (!ctx.channel.isThread() || !ctx.channel.parent) return;
@@ -16,9 +13,7 @@ export default slashCommand({
 		if (!ctx.channel.ownerId) await ctx.channel.fetchOwner();
 		if (!ownerIDs.concat(ctx.channel.ownerId!).includes(ctx.user.id)) return;
 
-		const tag = ctx.channel.parent.availableTags.find(
-			(t) => t.name === "Solved"
-		);
+		const tag = ctx.channel.parent.availableTags.find((t) => t.name === "Solved");
 		if (!tag)
 			return ctx.reply({
 				content: "Something bad happened, Please contact Evo!",
@@ -26,24 +21,18 @@ export default slashCommand({
 			});
 
 		const memberCount = `• \`${ctx.channel.memberCount}\` member(s) participated in this post!`;
-		const msgCount = `• \`${
-			(ctx.channel.messageCount ?? 0) + 1
-		}\` message(s) are present here`;
+		const msgCount = `• \`${(ctx.channel.messageCount ?? 0) + 1}\` message(s) are present here`;
 		const msgSent = `• \`${
 			(ctx.channel.totalMessageSent ?? 0) + 1
 		}\` message(s) were sent in total here`;
 		const createdAt = `• This post was created ${new Timestamp(
 			ctx.channel.createdTimestamp!
 		).getRelativeTime()}`;
-		const solvedAt = `• This post was solved ${new Timestamp(
-			Date.now()
-		).getRelativeTime()}`;
+		const solvedAt = `• This post was solved ${new Timestamp(Date.now()).getRelativeTime()}`;
 
 		const funstats = `${ctx.channel.memberCount ? memberCount : ""}\n${
 			ctx.channel.messageCount ? msgCount : ""
-		}\n${
-			ctx.channel.totalMessageSent ? msgSent : ""
-		}\n${createdAt}\n${solvedAt}`;
+		}\n${ctx.channel.totalMessageSent ? msgSent : ""}\n${createdAt}\n${solvedAt}`;
 
 		await ctx.reply({
 			content: `This post is now closed, glad the issue got solved!\n\n\n${funstats}`,
@@ -53,11 +42,7 @@ export default slashCommand({
 		await ctx.channel
 			.setAppliedTags([...ctx.channel.appliedTags.slice(0, 4), tag.id])
 			.catch(() => null);
-		await ctx.channel
-			.setLocked(true, `Closed by ${ctx.user.tag}`)
-			.catch(() => null);
-		await ctx.channel
-			.setArchived(true, `Closed by ${ctx.user.tag}`)
-			.catch(() => null);
+		await ctx.channel.setLocked(true, `Closed by ${ctx.user.tag}`).catch(() => null);
+		await ctx.channel.setArchived(true, `Closed by ${ctx.user.tag}`).catch(() => null);
 	},
 });

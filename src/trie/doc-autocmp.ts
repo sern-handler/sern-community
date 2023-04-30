@@ -35,9 +35,7 @@ export default class DocHandler {
 				}
 			} else {
 				const sectionChildNodes = section.children.map((id: string) => {
-					const node = docs.children.find(
-						(c: { id: string }) => c.id === id
-					)! as DocsChild;
+					const node = docs.children.find((c: { id: string }) => c.id === id)! as DocsChild;
 					return {
 						name: section.title,
 						node,

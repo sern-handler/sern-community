@@ -15,7 +15,7 @@ import { cooldown, publish } from "#plugins";
 import { Resolver, slashCommand } from "#utils";
 
 export default slashCommand({
-        description: "Submit an emoji",
+	description: "Submit an emoji",
 	plugins: [publish({ dmPermission: false }), cooldown.add([["user", "1/15"]])],
 	options: [
 		{
@@ -53,11 +53,7 @@ export default slashCommand({
 				const attachment = args.getAttachment("attachment");
 				const urlString = args.getString("url");
 				const name = args.getString("name", true);
-				const send = sendTo(
-					"1014582281907753080",
-					ctx.member as GuildMember,
-					name
-				);
+				const send = sendTo("1014582281907753080", ctx.member as GuildMember, name);
 
 				if (attachment) {
 					const isValidAttachment = verify(
@@ -66,8 +62,7 @@ export default slashCommand({
 						(a) => a.contentType?.startsWith("image/") || false,
 						(a) =>
 							["image/png", "image/jpg", "image/gif"].includes(
-								a.contentType ??
-									"Something that is not png or jpg when contentType is null"
+								a.contentType ?? "Something that is not png or jpg when contentType is null"
 							)
 					);
 					if (!isValidAttachment) {
@@ -103,10 +98,7 @@ export default slashCommand({
 	},
 });
 
-function verify<T>(
-	attachment: T,
-	...conditions: ((attachment: T) => boolean)[]
-) {
+function verify<T>(attachment: T, ...conditions: ((attachment: T) => boolean)[]) {
 	return conditions.reduce((partial, func) => {
 		return func(attachment) && partial;
 	}, true);
@@ -143,9 +135,7 @@ function sendTo(channelId: Snowflake, member: GuildMember, name: string) {
 			)
 			.setTimestamp();
 
-		const channel = (await context.client.channels.fetch(
-			channelId
-		)) as TextChannel;
+		const channel = (await context.client.channels.fetch(channelId)) as TextChannel;
 		if (payload instanceof Attachment) {
 			embed.setImage(`attachment://${payload.name}`);
 		} else embed.setImage(payload.toString());

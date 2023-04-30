@@ -17,12 +17,7 @@
  * ```
  */
 
-import {
-	CommandControlPlugin,
-	CommandType,
-	Context,
-	controller,
-} from "@sern/handler";
+import { CommandControlPlugin, CommandType, Context, controller } from "@sern/handler";
 import { GuildMember } from "discord.js";
 /**
  * actions/seconds
@@ -41,10 +36,7 @@ export enum CooldownLocation {
 
 export class ExpiryMap<K, V> extends Map<K, V> {
 	public readonly expiry: number;
-	constructor(
-		expiry: number = Infinity,
-		iterable: [K, V][] | ReadonlyMap<K, V> = []
-	) {
+	constructor(expiry: number = Infinity, iterable: [K, V][] | ReadonlyMap<K, V> = []) {
 		super(iterable);
 		this.expiry = expiry;
 	}
@@ -61,10 +53,7 @@ export class ExpiryMap<K, V> extends Map<K, V> {
 
 export const map = new ExpiryMap<string, number>();
 
-function parseCooldown(
-	location: CooldownLocation,
-	cooldown: CooldownString
-): Cooldown {
+function parseCooldown(location: CooldownLocation, cooldown: CooldownString): Cooldown {
 	const [actions, seconds] = cooldown.split("/").map((s) => Number(s));
 
 	if (
@@ -107,10 +96,7 @@ export interface RecievedCooldown {
 type CooldownResponse = (cooldown: RecievedCooldown) => any;
 
 function add(
-	items: Array<
-		| [CooldownLocation | keyof typeof CooldownLocation, CooldownString]
-		| Cooldown
-	>,
+	items: Array<[CooldownLocation | keyof typeof CooldownLocation, CooldownString] | Cooldown>,
 	message?: CooldownResponse
 ) {
 	const raw = items.map((c) => {
@@ -149,8 +135,7 @@ function add(
 type Location = (value: CooldownString) => ReturnType<typeof add>;
 
 const locations: Record<CooldownLocation, Location> = {
-	[CooldownLocation.channel]: (value) =>
-		add([[CooldownLocation.channel, value]]),
+	[CooldownLocation.channel]: (value) => add([[CooldownLocation.channel, value]]),
 	[CooldownLocation.user]: (value) => add([[CooldownLocation.user, value]]),
 	[CooldownLocation.guild]: (value) => add([[CooldownLocation.guild, value]]),
 };

@@ -1,7 +1,7 @@
 {
-  "language": "typescript",
-  "paths": {
-    "base": "src",
-    "commands": "commands"
-  }
+	"language": "typescript",
+	"paths": {
+		"base": "src",
+		"commands": "commands"
+	}
 }

@@ -1,11 +1,5 @@
 import { eventModule, EventType } from "@sern/handler";
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	EmbedBuilder,
-	Message,
-} from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Message } from "discord.js";
 import { createRequire } from "module";
 import { FuzzyMatcher } from "../utils/FuzzyMatcher.js";
 import type { TagData, TagMessage } from "../types/index.js";
@@ -24,10 +18,7 @@ export default eventModule({
 		const { tag, confidence } = data;
 		if (confidence <= 0.7) return;
 
-		if (
-			message.author.data &&
-			(message.author.data as { inCooldown: boolean }).inCooldown
-		)
+		if (message.author.data && (message.author.data as { inCooldown: boolean }).inCooldown)
 			return message.react("🌿");
 
 		const mention = fuzz.mentionedUser;
@@ -42,17 +33,12 @@ export default eventModule({
 			.setStyle(ButtonStyle.Danger)
 			.setCustomId("@falseTrigger");
 
-		const row = new ActionRowBuilder<ButtonBuilder>().setComponents([
-			button,
-			deleteButton,
-		]);
+		const row = new ActionRowBuilder<ButtonBuilder>().setComponents([button, deleteButton]);
 
 		const embed = new EmbedBuilder()
 			.setDescription(tag.content.trim())
 			.setFooter({
-				text: `${message.author.tag} | Confidence: ${(confidence * 100).toFixed(
-					2
-				)}%`,
+				text: `${message.author.tag} | Confidence: ${(confidence * 100).toFixed(2)}%`,
 				iconURL: message.author.displayAvatarURL(),
 			})
 			.setColor("Random")

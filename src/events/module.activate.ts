@@ -1,6 +1,6 @@
 import {
-    controller,
-    EventControlPlugin,
+	controller,
+	EventControlPlugin,
 	eventModule,
 	EventType,
 	Payload,
@@ -21,12 +21,11 @@ export default eventModule({
 });
 
 function filterFailedActivation() {
-    return EventControlPlugin<EventType.Sern>(payload => {
-        if (payload.type == PayloadType.Failure) {
-            return controller.next();
-        } else {
-            return controller.stop();
-        }
-
-    })
+	return EventControlPlugin<EventType.Sern>((payload) => {
+		if (payload.type == PayloadType.Failure) {
+			return controller.next();
+		} else {
+			return controller.stop();
+		}
+	});
 }

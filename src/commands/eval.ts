@@ -16,9 +16,7 @@ export default commandModule({
 		if (code.includes("await")) {
 			const ar = code.split(";");
 			const last = ar.pop();
-			code = `(async () => {\n${ar.join(";\n")}\nreturn ${
-				last?.trim() ?? " "
-			}\n\n})();`;
+			code = `(async () => {\n${ar.join(";\n")}\nreturn ${last?.trim() ?? " "}\n\n})();`;
 		}
 		const { channel, guild, client, user, member, message: msg } = ctx;
 		if (
@@ -34,8 +32,7 @@ export default commandModule({
 		} catch (error) {
 			result = error;
 		}
-		if (result instanceof Promise)
-			result = await result.catch((e: Error) => new Error(e.message));
+		if (result instanceof Promise) result = await result.catch((e: Error) => new Error(e.message));
 		if (typeof result !== "string") {
 			result = inspect(result, {
 				depth: 0,
@@ -57,13 +54,9 @@ export default commandModule({
 				.setColor(0xcc5279)
 				.setTitle("v2 is out!")
 				.setThumbnail(client.user?.displayAvatarURL() ?? "")
-				.setImage(
-					"https://raw.githubusercontent.com/sern-handler/.github/main/banner.png"
-				)
+				.setImage("https://raw.githubusercontent.com/sern-handler/.github/main/banner.png")
 				.setAuthor({ name: "sern", url: "https://sern.dev/" })
-				.setDescription(
-					`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient!`
-				)
+				.setDescription(`__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient!`)
 				.setFooter({ text: "Supports DJS v14.7 and above" })
 				.setTimestamp();
 			const content = ping ? "@everyone" : undefined;

@@ -1,11 +1,11 @@
 # The official discord bot for our [discord](https://sern.dev/discord)
 
+Features:
 
-Features: 
 - Bofa
 - Thread support help
 - Message triggers
-- Autocomplete documentation for our [handler](https://github.com/sern-handler/handler) 
+- Autocomplete documentation for our [handler](https://github.com/sern-handler/handler)
 - Register your timezone to notify other's local time
 - Eval command
 - Hybrid commands

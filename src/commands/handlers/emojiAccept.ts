@@ -1,11 +1,6 @@
 import { ownerIDs } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
-import {
-	ActionRowBuilder,
-	ModalBuilder,
-	TextInputBuilder,
-	TextInputStyle,
-} from "discord.js";
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 export default commandModule({
 	type: CommandType.Button,
@@ -19,9 +14,7 @@ export default commandModule({
 
 		const suggestedName = ctx.message.embeds[0].fields[0].value!;
 
-		const modal = new ModalBuilder()
-			.setCustomId("emojiModal")
-			.setTitle("Emoji Creation");
+		const modal = new ModalBuilder().setCustomId("emojiModal").setTitle("Emoji Creation");
 
 		const row = new ActionRowBuilder<TextInputBuilder>().setComponents(
 			new TextInputBuilder() //

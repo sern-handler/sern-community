@@ -7,13 +7,12 @@ import * as fs from "fs";
 import { AttachmentBuilder } from "discord.js";
 
 async function ephemeral(ctx: Context, options: ReplyOptions) {
-	const resolvedOptions =
-		typeof options == "string" ? { content: options } : options;
+	const resolvedOptions = typeof options == "string" ? { content: options } : options;
 	await ctx.interaction.editReply({ ...resolvedOptions });
 }
 
 export default slashCommand({
-        description: "Fetch logs",
+	description: "Fetch logs",
 	plugins: [publish(), ownerOnly()],
 	execute: async (ctx, args) => {
 		try {
