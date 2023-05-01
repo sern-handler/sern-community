@@ -40,13 +40,7 @@ export class CommandSyncer {
 		private logger: SernLogger,
 		private client: Client,
 		private scopedGuilds: string[] = []
-	) {
-		this.sync()
-			.catch((e) =>
-				logger.error({ message: e ?? "Something went wrong with syncing" })
-			)
-			.then(() => logger.info({ message: "Commands synced successfully" }));
-	}
+	) {}
 
 	/** Returns true if a `CommandModule` is publishable */
 	private publishable(module: CommandModule): module is Publishable {
