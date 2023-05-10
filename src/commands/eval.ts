@@ -1,14 +1,14 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { EmbedBuilder } from "discord.js";
 import { inspect } from "util";
-import { Evo, Seren } from "#constants";
+import { Evo, Seren, Mina } from "#constants";
 
 export default commandModule({
 	type: CommandType.Text,
 	description: "Eval something",
 	alias: ["ev"],
 	execute: async (ctx, args) => {
-		if (![Evo, Seren].includes(ctx.user.id)) return;
+		if (![Evo, Seren, Mina].includes(ctx.user.id)) return;
 
 		let code: string[] | string = args[1];
 
