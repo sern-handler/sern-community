@@ -48,7 +48,6 @@ export default commandModule({
 		if (!result.length) {
 			return context.reply("No results found");
 		}
-
 		const embeds = result.map((res) => {
 			const comments =
 				res.node.kindString === TentacledKindString.Function
@@ -95,6 +94,9 @@ export default commandModule({
 				})
 				.setURL(res.node.sources[0].url ?? "External implementation");
 		});
+		if(embeds.length === 1) {
+		    return context.reply({ embeds });
+		}
 		const paginator = new Paginator({ embeds });
 
 		return paginator.run(context.interaction);
