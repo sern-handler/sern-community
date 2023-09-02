@@ -1,5 +1,5 @@
 import { commandModule, CommandType } from "@sern/handler";
-import type { TagMessage } from "../../types";
+import type { TagMessage } from "typings";
 
 export default commandModule({
 	type: CommandType.Button,

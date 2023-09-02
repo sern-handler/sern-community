@@ -1,7 +1,8 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { existsSync, writeFileSync } from "fs";
-import type { TagData } from "../../types";
+import type { TagData } from "typings";
 import { createRequire } from "module";
+import { TagList } from "#constants";
 const require = createRequire(import.meta.url);
 
 export default commandModule({
@@ -32,7 +33,7 @@ export default commandModule({
 			const tags = [tag];
 			writeFileSync(filePath, JSON.stringify(tags, null, 2));
 		} else {
-			const file: TagData[] = require(`${process.cwd()}/tags.json`);
+			const file: TagData[] = require(TagList);
 
 			if (file.find((t) => t.name === tagName)) {
 				return ctx.reply(`Tag __${tagName}__ already exists`);

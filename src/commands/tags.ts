@@ -7,9 +7,9 @@ import {
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
 import { createRequire } from "module";
-import { Evo, Seren } from "#constants";
+import { Evo, Seren, TagList } from "#constants";
 import { ownerOnly, publish } from "#plugins";
-import type { TagData } from "../types";
+import type { TagData } from "typings";
 import { slashCommand } from "#utils";
 const require = createRequire(import.meta.url);
 
@@ -41,7 +41,7 @@ export default slashCommand({
 							if (!existsSync(filePath)) {
 								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
-								const file: TagData[] = require(`${process.cwd()}/tags.json`);
+								const file: TagData[] = require(TagList);
 								const tags = file.map((t) => t.name);
 								return ctx.respond(
 									tags
@@ -75,7 +75,7 @@ export default slashCommand({
 							if (!existsSync(filePath)) {
 								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
-								const file: TagData[] = require(`${process.cwd()}/tags.json`);
+								const file: TagData[] = require(TagList);
 								const tags = file.map((t) => t.name);
 								return ctx.respond(
 									tags
@@ -95,7 +95,7 @@ export default slashCommand({
 		const [, options] = args;
 		const subcmd = options.getSubcommand();
 
-		const file: TagData[] = require(`${process.cwd()}/tags.json`);
+		const file: TagData[] = require(TagList);
 
 		if (subcmd === "create") {
 			const modal = new ModalBuilder().setTitle("Tag Creation").setCustomId("@sern/tag/create");
@@ -185,7 +185,7 @@ export default slashCommand({
 				return context.reply("Tag not found");
 			}
 			file.splice(file.indexOf(tagData), 1);
-			writeFileSync(`${process.cwd()}/tags.json`, JSON.stringify(file, null, 2));
+			writeFileSync(TagList, JSON.stringify(file, null, 2));
 
 			return context.reply(`Tag ${tag} deleted`);
 		}

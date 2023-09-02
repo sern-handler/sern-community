@@ -1,6 +1,6 @@
 import type { Message, User } from "discord.js";
 import { findBestMatch } from "string-similarity";
-import type { TagData } from "../types/index.js";
+import type { TagData } from "typings";
 
 export class FuzzyMatcher {
 	public constructor(private readonly message: Message, private readonly tags: TagData[]) {}

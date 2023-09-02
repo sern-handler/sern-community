@@ -1,11 +1,9 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { existsSync } from "fs";
 import { publish } from "#plugins";
-import { Paginator, slashCommand } from "#utils";
-
-import { createRequire } from "module";
-import type { TagData } from "../types/index.js";
-const require = createRequire(import.meta.url);
+import { Paginator, slashCommand, require } from "#utils";
+import { Tag, type TagData } from "typings";
+import { TagList } from "#constants";
 
 export default slashCommand({
 	description: "Send a tag",
@@ -30,12 +28,11 @@ export default slashCommand({
 					command: {
 						onEvent: [],
 						execute(ctx) {
-							const filePath = `./tags.json`;
 							const focus = ctx.options.getFocused();
-							if (!existsSync(filePath)) {
+							if (!existsSync(`./tags.json`)) {
 								return ctx.respond([{ name: "No tags found", value: "" }]);
 							} else {
-								const file: TagData[] = require(`${process.cwd()}/tags.json`);
+								const file: TagData[] = require(TagList);
 								const tags = file.map((t) => t.name);
 								return ctx.respond(
 									tags
@@ -62,7 +59,7 @@ export default slashCommand({
 		const subCmd = options.getSubcommand();
 		switch (subCmd) {
 			case "list": {
-				const file: TagData[] = require(`${process.cwd()}/tags.json`);
+				const file: TagData[] = require(TagList);
 				const embeds = file.map((tag) => {
 					const embed = new EmbedBuilder()
 						.setTitle(tag.name)
@@ -91,7 +88,7 @@ export default slashCommand({
 				const user = options.getUser("target");
 				const mention = user ? `**Tag suggestion for:** ${user}\n\n` : "";
 				const tag = options.getString("tag", true);
-				const file: TagData[] = require(`${process.cwd()}/tags.json`);
+				const file: TagData[] = require(TagList);
 				const tagData = file.find((t) => t.name === tag);
 				if (!tagData) {
 					return ctx.reply(`No tag found with name __${tag}__`);

@@ -1,7 +1,8 @@
+import { TagList } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
 import { writeFileSync } from "fs";
 import { createRequire } from "module";
-import type { TagData } from "../../types";
+import type { TagData } from "typings";
 const require = createRequire(import.meta.url);
 
 export default commandModule({
@@ -25,7 +26,7 @@ export default commandModule({
 				: [],
 		};
 		const filePath = `./tags.json`;
-		const file: TagData[] = require(`${process.cwd()}/tags.json`);
+		const file: TagData[] = require(TagList);
 		const oldTag = file.find((t) => t.name === (ctx.user.data as { tag: string }).tag)!;
 
 		const similarKeywords = file.filter(
