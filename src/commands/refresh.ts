@@ -1,13 +1,11 @@
-import { Collection, Client } from "discord.js";
-import { fetch } from "undici";
-import type { Data } from "./plugin.js";
-import { ownerOnly, publish, refreshCache } from "#plugins";
-import { Evo } from "#constants";
+import { writeFileSync } from "fs";
+import { ownerOnly, publish } from "#plugins";
+import { Evo, PluginList } from "#constants";
 import { slashCommand } from "#utils";
+import type { Plugin } from "typings";
 
 export default slashCommand({
 	plugins: [
-		refreshCache(),
 		publish({
 			dmPermission: false,
 			defaultMemberPermissions: ["Administrator"],
@@ -16,31 +14,25 @@ export default slashCommand({
 	],
 	description: "refresh plugins cache",
 	async execute(ctx) {
-		const success = await cp(ctx.client);
-		if (!success)
-			return ctx.reply({
-				content: "Fetch failed!",
-				ephemeral: true,
-			});
-		return ctx.reply({
-			content: `Refreshed Plugins! [${success.size} plugins]`,
-			ephemeral: true,
+		await ctx.interaction.deferReply({ ephemeral: true });
+		const size = await cp();
+		if (!size) return ctx.interaction.editReply({ content: "Fetch failed!" });
+		return ctx.interaction.editReply({
+			content: `Refreshed ${size} Plugins!`,
 		});
 	},
 });
 
-export async function cp(client: Client) {
-	const cache: Collection<string, Data> = new Collection();
-	const link = `https://api.github.com/repos/sern-handler/awesome-plugins/contents/TypeScript`;
+/**
+ * Downloads the plugin list from github and writes it to the cache
+ * @returns {Promise<number | null>} The number of plugins fetched
+ */
+export async function cp(): Promise<number | null> {
+	const link = `https://raw.githubusercontent.com/sern-handler/awesome-plugins/main/pluginlist.json`;
 	const resp = await fetch(link).catch(() => null);
 	if (!resp) return null;
-	const dataArray = (await resp.json()) as Data[];
-	// TODO: use octokit instead of fetch
-	for (const data of dataArray) {
-		const name = data.name.replace(".ts", "");
-		data.rawData = await (await fetch(data.download_url)).text().catch(() => "");
-		cache.set(name, data);
-	}
-	client.cache = cache;
-	return cache;
+	const dataArray = (await resp.json()) as Plugin[];
+
+	writeFileSync(PluginList, JSON.stringify(dataArray, null, 2), { flag: "w" });
+	return dataArray.length;
 }

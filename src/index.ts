@@ -3,6 +3,7 @@ import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
 import { randomStatus, SernLogger /*CommandSyncer*/ } from "#utils";
 import { Octokit } from "@octokit/rest";
+import { cp } from "./commands/refresh.js";
 
 const client = new Client({
 	intents: [
@@ -48,10 +49,11 @@ Sern.init({
 	},
 });
 
-client.once("ready", (client) => {
+client.once("ready", async (client) => {
 	randomStatus(client);
 	const [logger] = useContainer("@sern/logger");
 	logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
+	await cp();
 });
 
 await client.login();

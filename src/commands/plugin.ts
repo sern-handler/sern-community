@@ -1,7 +1,8 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { cooldown, publish } from "#plugins";
-import { parse } from "jsdoc-parse-plus";
-import { slashCommand } from "#utils";
+import { slashCommand, require, cutText } from "#utils";
+import type { Plugin } from "typings";
+import { PluginList } from "#constants";
 
 export default slashCommand({
 	description: "View sern plugins",
@@ -15,17 +16,20 @@ export default slashCommand({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
-					const { cache } = ctx.client;
-					const focus = ctx.options.getFocused();
-					if (!cache) return ctx.respond([{ name: "No plugins found", value: "" }]);
-					const data = [...cache.values()] as Data[];
+					const plugins = require(PluginList) as Plugin[];
 
-					const plugins = data.map((d) => {
-						const name = d.name.replace(".ts", "");
-						return { name, value: d.download_url };
-					});
+					const focus = ctx.options.getFocused();
+					if (!plugins.length) return ctx.respond([{ name: "No plugins found", value: "" }]);
+
+					const filtered = plugins.filter((p) =>
+						p.name.toLowerCase().includes(focus.toLowerCase())
+					);
+
 					return ctx.respond(
-						plugins.filter((p) => p.name.toLowerCase().includes(focus?.toLowerCase()))
+						filtered.map((p) => ({
+							name: p.name,
+							value: p.link,
+						}))
 					);
 				},
 			},
@@ -41,38 +45,38 @@ export default slashCommand({
 		),
 	],
 	async execute(ctx, [, options]) {
-		if (!ctx.client.cache) return ctx.reply("Plugins are uncached, contact Evo!");
+		const plugins = require(PluginList) as Plugin[];
+
+		if (!plugins.length) return ctx.reply("Plugins are uncached, contact Evo!");
 
 		const url = options.getString("plugin", true);
-		const name = ctx.client.cache.findKey((d) => d.download_url === url) as string;
+		const plugin = plugins.find((p) => p.link === url);
 
-		if (!name || !ctx.client.cache.get(name)!.rawData)
+		if (!plugin) {
 			return ctx.reply(`No plugin found at this [link](<${url}>)`);
-
-		const JSdoc = parse(ctx.client.cache.get(name)!.rawData) as A;
-		const github = `https://github.com/sern-handler/awesome-plugins/blob/main/TypeScript/${name}.ts`;
+		}
 
 		const embed = new EmbedBuilder()
 			.setColor("Random")
 			.setTimestamp()
-			.setTitle(`${name}`)
-			.setURL(github)
+			.setTitle(plugin.name)
+			.setURL(plugin.link)
 			.setFields(
 				{
 					name: "Description",
-					value: JSdoc.description.value,
+					value: plugin.description,
 				},
 				{
 					name: "Version",
-					value: JSdoc.version.value,
+					value: plugin.version,
 				},
 				{
 					name: "Author",
-					value: parseAuthor(JSdoc.author.value),
+					value: plugin.author.map(parseAuthor).join("\n"),
 				},
 				{
 					name: "Example",
-					value: (JSdoc as unknown as B).example[0].value,
+					value: plugin.example,
 				}
 			);
 
@@ -94,20 +98,3 @@ export interface Data {
 	download_url: string;
 	rawData: string;
 }
-
-interface ParsedData {
-	author: DocData;
-	description: DocData;
-	version: DocData;
-	example: DocData[];
-	requires?: DocData[];
-}
-
-interface DocData {
-	tag: string;
-	value: string;
-	raw: string;
-}
-
-type A = Record<keyof ParsedData, DocData>;
-type B = Record<keyof ParsedData, DocData[]>;

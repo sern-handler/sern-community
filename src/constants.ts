@@ -13,3 +13,6 @@ export const enum Emojis {
 	IssueClosed = "<:issue_closed:1101716515771920424>",
 	IssueNotPlanned = "<:issue_notplanned:1101719419434045540>",
 }
+
+export const PluginList = `${process.cwd()}/pluginlist.json`;
+export const TagList = `${process.cwd()}/tags.json`;

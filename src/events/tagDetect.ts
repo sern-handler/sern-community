@@ -2,9 +2,10 @@ import { eventModule, EventType } from "@sern/handler";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Message } from "discord.js";
 import { createRequire } from "module";
 import { FuzzyMatcher } from "../utils/FuzzyMatcher.js";
-import type { TagData, TagMessage } from "../types/index.js";
+import type { TagData, TagMessage } from "typings";
+import { TagList } from "#constants";
 const require = createRequire(import.meta.url);
-const file: TagData[] = require(`${process.cwd()}/tags.json`);
+const file: TagData[] = require(TagList);
 
 export default eventModule({
 	type: EventType.Discord,
