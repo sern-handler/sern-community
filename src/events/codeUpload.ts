@@ -6,6 +6,7 @@ export default eventModule({
 	type: EventType.Discord,
 	name: "messageCreate",
 	async execute(message: Message) {
+		return;
 		if (
 			!message.guild ||
 			message.webhookId ||
