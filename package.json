@@ -1,6 +1,6 @@
 {
 	"name": "sern-community",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"description": "",
 	"main": "dist/src/index.js",
 	"type": "module",
@@ -28,7 +28,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@octokit/rest": "19.0.7",
-		"@sern/handler": "2.6.2",
+		"@sern/handler": "^3.3.2",
 		"discord.js": "14.9.0",
 		"dotenv": "16.0.3",
 		"jsdoc-parse-plus": "1.3.0",

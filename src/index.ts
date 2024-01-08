@@ -1,7 +1,7 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Dependencies, Sern, single, Singleton } from "@sern/handler";
 import "dotenv/config";
-import { randomStatus, SernLogger /*CommandSyncer*/ } from "#utils";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { Sern, single, makeDependencies, Service } from "@sern/handler";
+import { SernLogger  } from "#utils";
 import { Octokit } from "@octokit/rest";
 import { cp } from "./commands/refresh.js";
 
@@ -21,39 +21,25 @@ const client = new Client({
 	},
 });
 
-export interface BotDependencies extends Dependencies {
-	"@sern/client": Singleton<Client>;
-	"@sern/logger": Singleton<SernLogger>;
-	octokit: Singleton<Octokit>;
-}
 
-export const useContainer = Sern.makeDependencies<BotDependencies>({
-	build: (root) =>
-		root
-			.add({ "@sern/client": single(() => client) })
-			.upsert({ "@sern/logger": single(() => new SernLogger("info")) })
-			.add({ process: single(() => process) })
-			.add({
-				octokit: single(() => new Octokit({ auth: process.env.GITHUB_TOKEN })),
-			}),
-	//  .add(ctx =>
-	//		({'sync' : single(() => new CommandSyncer(ctx['@sern/logger'], ctx['@sern/client'], ["941002690211766332"]))}
-	//	))
-});
+await makeDependencies({
+    build: (root) =>
+        root.add({ "@sern/client": () => client })
+            .upsert({ "@sern/logger": () => new SernLogger("info") })
+            .add({ process: () => process,
+                   octokit: () => new Octokit({ auth: process.env.GITHUB_TOKEN }) })
+    });
+
 Sern.init({
-	defaultPrefix: "sern",
-	commands: "dist/src/commands",
-	events: "dist/src/events",
-	containerConfig: {
-		get: useContainer,
-	},
+    defaultPrefix: "sern",
+    commands: "dist/src/commands",
+    events: "dist/src/events",
 });
 
 client.once("ready", async (client) => {
-	randomStatus(client);
-	const [logger] = useContainer("@sern/logger");
-	logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
-	await cp();
+    const logger = Service("@sern/logger");
+    logger.info({ message: `[✅]: Logged in as ${client.user.username}` });
+    await cp();
 });
 
-await client.login();
+await client.login(process.env.DISCORD_TOKEN);
