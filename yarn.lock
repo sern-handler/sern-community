@@ -440,14 +440,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sern/handler@npm:2.6.2":
-  version: 2.6.2
-  resolution: "@sern/handler@npm:2.6.2"
+"@sern/handler@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "@sern/handler@npm:3.3.2"
   dependencies:
+    callsites: ^3.1.0
     iti: ^0.6.0
     rxjs: ^7.8.0
-    ts-results-es: ^3.6.0
-  checksum: 3c86047f09dc0e77044371e8964977e59521966a5ad080f8459dc9d0c02027c11c4ef86245b29a9b6e0122d665e508446f3daa30a2b81e426495b30d1b5e555e
+    ts-results-es: ^4.0.0
+  checksum: a405f9f4e914245dc0c0a9091508871a2cdbb50947a71797ec4faa64ba0ec775dc8b9aa0f116c4699752520ca4b5f54b624898d7da0f53375e4534a698d0c3d4
   languageName: node
   linkType: hard
 
@@ -686,6 +687,13 @@ __metadata:
     tar: ^6.1.11
     unique-filename: ^2.0.0
   checksum: d91409e6e57d7d9a3a25e5dcc589c84e75b178ae8ea7de05cbf6b783f77a5fae938f6e8fda6f5257ed70000be27a681e1e44829251bfffe4c10216002f8f14e6
+  languageName: node
+  linkType: hard
+
+"callsites@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "callsites@npm:3.1.0"
+  checksum: 072d17b6abb459c2ba96598918b55868af677154bec7e73d222ef95a8fdb9bbf7dae96a8421085cdad8cd190d86653b5b6dc55a4484f2e5b2e27d5e0c3fc15b3
   languageName: node
   linkType: hard
 
@@ -2047,7 +2055,7 @@ __metadata:
   resolution: "sern-community@workspace:."
   dependencies:
     "@octokit/rest": 19.0.7
-    "@sern/handler": 2.6.2
+    "@sern/handler": ^3.3.2
     "@types/node": 18.16.3
     "@types/string-similarity": 4.0.0
     discord.js: 14.9.0
@@ -2351,10 +2359,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-results-es@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "ts-results-es@npm:3.6.0"
-  checksum: 28593545cad764efce2de64b09037f855c3bbd499e3f5e2683863c86abc9b4453e5aa7d651edff93d42340a2c24f8bbabcf92467fcec767e09bbeeac01e97396
+"ts-results-es@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ts-results-es@npm:4.0.0"
+  checksum: 32a7059491e36d06c5a1084fe9be8021a0beb2d94a94b0c3fa85dc3e96561bf34fb8fd60ebe661064c9fc2bafcf437b6b65f119e8d7497af7f76cda9d9a2a945
   languageName: node
   linkType: hard
 

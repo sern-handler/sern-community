@@ -1,11 +1,10 @@
 import { publish } from "#plugins";
-import { CommandType, commandModule } from "@sern/handler";
+import { CommandType, Service, commandModule } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
 import { Timestamp } from "#utils";
 import { Emojis } from "#constants";
-import { useContainer } from "../index.js";
 const prefix = (t: unknown) => (t ? "$" : "#");
-
+const octokit = Service('octokit');
 export default commandModule({
 	type: CommandType.Slash,
 	description: "Get info about a PR or issue",
@@ -20,8 +19,6 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
-					const [octokit] = useContainer("octokit");
-
 					const text = ctx.options.getFocused();
 					const org = await octokit.repos.listForOrg({
 						org: "sern-handler",
@@ -62,7 +59,6 @@ export default commandModule({
 			command: {
 				onEvent: [],
 				async execute(ctx) {
-					const [octokit] = useContainer("octokit");
 
 					const text = ctx.options.getFocused();
 					const repo = ctx.options.getString("repo");
@@ -120,7 +116,6 @@ export default commandModule({
 		},
 	],
 	async execute(ctx, [, options]) {
-		const [octokit] = useContainer("octokit");
 
 		const repo = options.getString("repo", true);
 		const number = options.getInteger("number", true);
