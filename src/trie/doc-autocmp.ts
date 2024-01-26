@@ -1,4 +1,3 @@
-import { readFile } from "fs/promises";
 import TrieSearch from "trie-search";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
