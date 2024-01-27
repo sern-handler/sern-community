@@ -30,11 +30,10 @@ export default commandModule({
         })
 
         const langCollector = langMsg.createMessageComponentCollector({
-            filter: (i) => i.user.id === ctx.user.id,
             componentType: ComponentType.StringSelect,
             time: 10000
         })
-        langCollector.on('collect', async (i) => {
+        langCollector.once('collect', async (i) => {
             const lang = i.values[0]
             langMsg.delete()
             const readingMessage = await ctx.targetMessage.reply({
