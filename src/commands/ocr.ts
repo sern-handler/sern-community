@@ -36,8 +36,8 @@ export default commandModule({
         langCollector.once('collect', async (i) => {
             const lang = i.values[0]
             langMsg.delete()
-            const readingMessage = await ctx.targetMessage.reply({
-                content: `Reading image with language ${inlineCode(lang)}...`,
+            const readingMessage = await ctx.targetMessage.channel.send({
+                content: `Reading [this image](${ctx.targetMessage.url}) with language ${inlineCode(lang)}...`,
             })
 
             const image = ctx.targetMessage.attachments.first()
@@ -51,7 +51,7 @@ export default commandModule({
             const worker = await createWorker(lang)
             const ocrData = await worker.recognize(image.proxyURL)
             await readingMessage.edit({
-                content: `Here's what I was able to read:\n${codeBlock(ocrData.data.text)}`,
+                content: `Here's what I was able to read from ${ctx.targetMessage.url}:\n${codeBlock(ocrData.data.text)}`,
             })
             await worker.terminate()
         })
