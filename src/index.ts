@@ -1,34 +1,36 @@
 import "dotenv/config";
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Sern, single, makeDependencies, Service } from "@sern/handler";
-import { SernLogger  } from "#utils";
+import { SernLogger } from "#utils";
 import { Octokit } from "@octokit/rest";
 import { cp } from "./commands/refresh.js";
 
 const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-	],
-	partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember, Partials.Channel],
-	sweepers: {
-		messages: {
-			interval: 43200,
-			lifetime: 21600,
-		},
-	},
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+    partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember, Partials.Channel],
+    sweepers: {
+        messages: {
+            interval: 43200,
+            lifetime: 21600,
+        },
+    },
 });
-
 
 await makeDependencies({
     build: (root) =>
-        root.add({ "@sern/client": () => client })
+        root
+            .add({ "@sern/client": () => client })
             .upsert({ "@sern/logger": () => new SernLogger("info") })
-            .add({ process: () => process,
-                   octokit: () => new Octokit({ auth: process.env.GITHUB_TOKEN }) })
-    });
+            .add({
+                process: () => process,
+                octokit: () => new Octokit({ auth: process.env.GITHUB_TOKEN }),
+            }),
+});
 
 Sern.init({
     defaultPrefix: "sern",

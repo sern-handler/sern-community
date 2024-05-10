@@ -1,48 +1,48 @@
 {
-	"name": "sern-community",
-	"version": "3.0.0",
-	"description": "",
-	"main": "dist/src/index.js",
-	"type": "module",
-	"author": {
-		"name": "EvolutionX-10",
-		"url": "https://github.com/EvolutionX-10"
-	},
-	"imports": {
-		"#plugins": "./dist/src/plugins/index.js",
-		"#utils": "./dist/src/utils/index.js",
-		"#constants": "./dist/src/constants.js"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "tsup && node .",
-		"dev": "tsup && node --preserve-symlinks .",
-		"watch": "tsup --watch --onSuccess \"node .\"",
-		"compile": "tsup"
-	},
-	"keywords": [
-		"typescript",
-		"sern",
-		"discord.js"
-	],
-	"license": "MIT",
-	"dependencies": {
-		"@octokit/rest": "19.0.7",
-		"@sern/handler": "^3.3.2",
-		"discord.js": "^14.14.1",
-		"dotenv": "16.0.3",
-		"jsdoc-parse-plus": "1.3.0",
-		"string-similarity": "4.0.4",
-		"tesseract.js": "^5.0.4",
-		"trie-search": "1.4.1",
-		"undici": "5.22.0",
-		"winston": "3.8.2"
-	},
-	"devDependencies": {
-		"@types/node": "18.16.3",
-		"@types/string-similarity": "4.0.0",
-		"tsup": "6.7.0",
-		"typescript": "5.0.4"
-	},
-	"packageManager": "yarn@3.5.0"
+    "name": "sern-community",
+    "version": "3.0.0",
+    "description": "",
+    "main": "dist/src/index.js",
+    "type": "module",
+    "author": {
+        "name": "EvolutionX-10",
+        "url": "https://github.com/EvolutionX-10"
+    },
+    "imports": {
+        "#plugins": "./dist/src/plugins/index.js",
+        "#utils": "./dist/src/utils/index.js",
+        "#constants": "./dist/src/constants.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "tsup && node .",
+        "dev": "tsup && node --preserve-symlinks .",
+        "watch": "tsup --watch --onSuccess \"node .\"",
+        "compile": "tsup"
+    },
+    "keywords": [
+        "typescript",
+        "sern",
+        "discord.js"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "@octokit/rest": "19.0.7",
+        "@sern/handler": "^3.3.2",
+        "discord.js": "^14.14.1",
+        "dotenv": "16.0.3",
+        "jsdoc-parse-plus": "1.3.0",
+        "string-similarity": "4.0.4",
+        "tesseract.js": "^5.0.4",
+        "trie-search": "1.4.1",
+        "undici": "5.22.0",
+        "winston": "3.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "18.16.3",
+        "@types/string-similarity": "4.0.0",
+        "tsup": "6.7.0",
+        "typescript": "5.0.4"
+    },
+    "packageManager": "yarn@3.5.0"
 }

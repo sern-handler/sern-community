@@ -1,22 +1,22 @@
 {
-	"compilerOptions": {
-		"resolveJsonModule": true,
-		"moduleResolution": "Node",
-		"target": "ESNext",
-		"module": "ESNext",
-		"outDir": "dist",
-		"strict": true,
-		"baseUrl": ".",
-		"esModuleInterop": true,
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"verbatimModuleSyntax": false,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"paths": {
-			"#plugins": ["src/plugins/index.js"],
-			"#utils": ["src/utils/index.js"],
-			"#constants": ["src/constants.js"]
-		}
-	}
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "moduleResolution": "Node",
+        "target": "ESNext",
+        "module": "ESNext",
+        "outDir": "dist",
+        "strict": true,
+        "baseUrl": ".",
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "verbatimModuleSyntax": false,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "#plugins": ["src/plugins/index.js"],
+            "#utils": ["src/utils/index.js"],
+            "#constants": ["src/constants.js"]
+        }
+    }
 }
