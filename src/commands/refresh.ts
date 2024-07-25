@@ -29,7 +29,7 @@ export async function cp(): Promise<number | null> {
     const link = `https://raw.githubusercontent.com/sern-handler/awesome-plugins/main/pluginlist.json`;
     const resp = await fetch(link).catch(() => null);
     if (!resp) return null;
-    const dataArray = (await resp.json()) as Plugin[];
+    const dataArray = await resp.json() as Plugin[];
 
     writeFileSync(PluginList, JSON.stringify(dataArray, null, 2), { flag: "w" });
     return dataArray.length;

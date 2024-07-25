@@ -60,11 +60,8 @@ export default slashCommand({
                         attachment,
                         (a) => a.size <= 256_000,
                         (a) => a.contentType?.startsWith("image/") || false,
-                        (a) =>
-                            ["image/png", "image/jpg", "image/gif"].includes(
-                                a.contentType ??
-                                    "Something that is not png or jpg when contentType is null",
-                            ),
+                        (a) => ["image/png", "image/jpg", "image/gif"].includes(
+                                a.contentType ?? "Something that is not png or jpg when contentType is null"),
                     );
                     if (!isValidAttachment) {
                         return ctx.interaction.editReply({

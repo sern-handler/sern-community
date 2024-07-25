@@ -1,4 +1,5 @@
 import "dotenv/config";
+import * as config from './config.js'
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Sern, makeDependencies, Service } from "@sern/handler";
 import { SernLogger } from "#utils";
@@ -22,9 +23,9 @@ const client = new Client({
 });
 
 await makeDependencies(root => {
-        root.add("@sern/client", client);
-        root.swap("@sern/logger", new SernLogger("info"))
-        root.add('octokit', new Octokit({ auth: process.env.GITHUB_TOKEN }))
+    root.add("@sern/client", client);
+    root.swap("@sern/logger", new SernLogger("info"))
+    root.add('octokit', new Octokit({ auth: process.env.GITHUB_TOKEN }))
 });
 
 Sern.init({

@@ -14,7 +14,7 @@ export default slashCommand({
             required: true,
             autocomplete: true,
             command: {
-                async execute(ctx, deps) {
+                async execute(ctx) {
                     const plugins = require(PluginList) as Plugin[];
 
                     const focus = ctx.options.getFocused();

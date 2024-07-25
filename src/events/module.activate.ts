@@ -1,9 +1,7 @@
 import {
-    controller,
     eventModule,
     EventType,
     Payload,
-    PayloadType,
     Service,
 } from "@sern/handler";
 

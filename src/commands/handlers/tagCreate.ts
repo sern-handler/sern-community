@@ -17,15 +17,11 @@ export default commandModule({
             name: tagName,
             content: tagContent,
             keywords: keywords
-                ? [
-                      ...new Set(
-                          keywords
+                ? [ ...new Set(keywords
                               .trim()
                               .split(",")
                               .map((c) => c.trim())
-                              .filter((c) => !!c.length),
-                      ),
-                  ]
+                              .filter((c) => !!c.length))]
                 : [],
         };
         const filePath = `./tags.json`;

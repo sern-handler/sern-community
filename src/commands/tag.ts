@@ -41,8 +41,7 @@ export default slashCommand({
                                                 ? t.toLowerCase().includes(focus.toLowerCase())
                                                 : true,
                                         )
-                                        .map((t) => ({ name: t, value: t })),
-                                );
+                                        .map((t) => ({ name: t, value: t })));
                             }
                         },
                     },
@@ -56,7 +55,7 @@ export default slashCommand({
             ],
         },
     ],
-    execute(ctx, args) {
+    execute(ctx) {
         const options = ctx.options;
         const subCmd = options.getSubcommand();
         switch (subCmd) {
@@ -74,15 +73,15 @@ export default slashCommand({
                         .setTimestamp();
                     return embed;
                 });
-                const paginator = new Paginator({ embeds }).setSelectMenuOptions(
-                    ...Array(embeds.length)
-                        .fill(null)
-                        .map((_, i) => ({
-                            label: embeds[i].data.title!,
-                            value: `${i}`,
-                            default: i === 0,
-                        })),
-                );
+                const paginator = new Paginator({ embeds })
+                    .setSelectMenuOptions(
+                        ...Array(embeds.length)
+                            .fill(null)
+                            .map((_, i) => ({
+                                label: embeds[i].data.title!,
+                                value: `${i}`,
+                                default: i === 0,
+                            })));
 
                 return paginator.run(ctx.interaction);
             }

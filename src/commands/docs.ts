@@ -19,6 +19,7 @@ function handleComments(sum: PurpleSummary) {
 }
 const docHandler = new DocHandler();
 docHandler.setup();
+
 export default commandModule({
     type: CommandType.Slash,
     description: "Query documentation",
@@ -43,7 +44,7 @@ export default commandModule({
             },
         },
     ],
-    execute: async (context, options) => {
+    execute: async (context) => {
         const option = context.options.getString("search", true);
         const result = docHandler.DocTrie.search(option);
 

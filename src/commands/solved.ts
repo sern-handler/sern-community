@@ -19,7 +19,6 @@ export default slashCommand({
                 content: "Something bad happened, Please contact Evo!",
                 ephemeral: true,
             });
-
         const memberCount = `• \`${ctx.channel.memberCount}\` member(s) participated in this post!`;
         const msgCount = `• \`${(ctx.channel.messageCount ?? 0) + 1}\` message(s) are present here`;
         const msgSent = `• \`${

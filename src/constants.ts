@@ -16,3 +16,8 @@ export const enum Emojis {
 
 export const PluginList = `${process.cwd()}/pluginlist.json`;
 export const TagList = `${process.cwd()}/tags.json`;
+
+
+export const commands = './dist/src/commands';
+export const events = './dist/src/events'
+export const defaultPrefix= "sern";

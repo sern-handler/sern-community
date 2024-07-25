@@ -17,9 +17,7 @@ export default commandModule({
         const components = [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
                 ctx.message!.components[0].components.map((c) =>
-                    new ButtonBuilder(c.data as ButtonComponentData).setDisabled(),
-                ),
-            ),
+                    new ButtonBuilder(c.data as ButtonComponentData).setDisabled())),
         ];
 
         const embed = new EmbedBuilder(ctx.message?.embeds[0]?.data) //

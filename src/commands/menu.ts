@@ -72,14 +72,11 @@ function createMenu(channel: TextChannel, role: Collection<string, Role>) {
         .setMaxValues(role.size)
         .setMinValues(0)
         .setPlaceholder("Pick some roles here!")
-        .setOptions(
-            role.map((r) => {
+        .setOptions(role.map((r) => {
                 return {
                     label: r.name,
                     value: r.id,
                 };
-            }),
-        );
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(menu);
-    return row;
+            }));
+    return new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(menu);
 }

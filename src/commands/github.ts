@@ -1,5 +1,5 @@
 import { publish } from "#plugins";
-import { CommandType, Service, commandModule } from "@sern/handler";
+import { CommandType, commandModule } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
 import { Timestamp } from "#utils";
 import { Emojis } from "#constants";
@@ -32,10 +32,8 @@ export default commandModule({
 
                     const publicRepos = topRepos
                         .filter((r) => !r.private)
-                        .map((repo) => ({
-                            name: `sern/${repo.name}`,
-                            value: repo.name,
-                        }));
+                        .map((repo) => ({ name: `sern/${repo.name}`,
+                                          value: repo.name }));
 
                     if (!text.length) {
                         return ctx.respond(publicRepos.slice(0, 25)).catch(() => null);
