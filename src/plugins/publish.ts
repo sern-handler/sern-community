@@ -25,7 +25,6 @@ import {
     controller,
     SernOptionsData,
     SlashCommand,
-    Service,
 } from "@sern/handler";
 import {
     ApplicationCommandData,

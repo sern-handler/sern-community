@@ -19,7 +19,7 @@ export default slashCommand({
             name: "channel",
             type: ApplicationCommandOptionType.Channel,
             description: "The channel to send the message to",
-            channelTypes: [ChannelType.GuildText],
+            channel_types: [ChannelType.GuildText],
             required: true,
         },
         {
@@ -35,7 +35,8 @@ export default slashCommand({
             required: true,
         },
     ],
-    async execute(ctx, [, options]) {
+    async execute(ctx) {
+        const options = ctx.options;
         const channel = options.getChannel("channel", true) as TextChannel;
         const role = new Resolver(options.getString("role", true), ctx.interaction).roles;
         const message = options.getString("message", true);

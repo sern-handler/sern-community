@@ -6,10 +6,8 @@ import type { Plugin } from "typings";
 
 export default slashCommand({
     plugins: [
-        publish({
-            dmPermission: false,
-            defaultMemberPermissions: ["Administrator"],
-        }),
+        publish({ dmPermission: false,
+                  defaultMemberPermissions: ["Administrator"], }),
         ownerOnly([Evo]),
     ],
     description: "refresh plugins cache",

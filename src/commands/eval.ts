@@ -6,11 +6,10 @@ import { Evo, Seren, Mina } from "#constants";
 export default commandModule({
     type: CommandType.Text,
     description: "Eval something",
-    alias: ["ev"],
-    execute: async (ctx, args) => {
+    execute: async (ctx) => {
         if (![Evo, Seren, Mina].includes(ctx.user.id)) return;
 
-        let code: string[] | string = args[1];
+        let code: string[] | string = ctx.options;
 
         code = code.join(" ") as string;
         if (code.includes("await")) {

@@ -1,6 +1,6 @@
 import { ownerIDs } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonComponentData, EmbedBuilder } from "discord.js";
 
 export default commandModule({
     type: CommandType.Button,
@@ -17,7 +17,7 @@ export default commandModule({
         const components = [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
                 ctx.message!.components[0].components.map((c) =>
-                    new ButtonBuilder(c.data).setDisabled(),
+                    new ButtonBuilder(c.data as ButtonComponentData).setDisabled(),
                 ),
             ),
         ];

@@ -44,7 +44,7 @@ export default commandModule({
         },
     ],
     execute: async (context, options) => {
-        const option = options[1].getString("search", true);
+        const option = context.options.getString("search", true);
         const result = docHandler.DocTrie.search(option);
 
         if (!result.length) {

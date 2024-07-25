@@ -4,7 +4,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import { Timestamp } from "#utils";
 import { Emojis } from "#constants";
 const prefix = (t: unknown) => (t ? "$" : "#");
-const octokit = Service("octokit");
+
 export default commandModule({
     type: CommandType.Slash,
     description: "Get info about a PR or issue",
@@ -18,7 +18,7 @@ export default commandModule({
             autocomplete: true,
             command: {
                 onEvent: [],
-                async execute(ctx) {
+                async execute(ctx, { deps: { octokit } }) {
                     const text = ctx.options.getFocused();
                     const org = await octokit.repos.listForOrg({
                         org: "sern-handler",
@@ -60,7 +60,7 @@ export default commandModule({
             autocomplete: true,
             command: {
                 onEvent: [],
-                async execute(ctx) {
+                async execute(ctx, { deps }) {
                     const text = ctx.options.getFocused();
                     const repo = ctx.options.getString("repo");
                     if (!repo) return ctx.respond([]);
@@ -68,7 +68,7 @@ export default commandModule({
                     let search;
 
                     if (text.length) {
-                        search = await octokit.search
+                        search = await deps.octokit.search
                             .issuesAndPullRequests({
                                 q: `repo:sern-handler/${repo} ${text} in:title`,
                             })
@@ -76,7 +76,7 @@ export default commandModule({
                     }
 
                     if (!text.length) {
-                        const issues = await octokit.issues
+                        const issues = await deps.octokit.issues
                             .listForRepo({
                                 owner: "sern-handler",
                                 repo,
@@ -120,10 +120,10 @@ export default commandModule({
             required: false,
         },
     ],
-    async execute(ctx, [, options]) {
-        const repo = options.getString("repo", true);
-        const number = options.getInteger("number", true);
-        const target = options.getUser("target");
+    async execute(ctx, { deps: { octokit }}) {
+        const repo = ctx.options.getString("repo", true);
+        const number = ctx.options.getInteger("number", true);
+        const target = ctx.options.getUser("target");
 
         const issue = await octokit.issues
             .get({

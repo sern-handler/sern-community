@@ -57,7 +57,7 @@ export default slashCommand({
         },
     ],
     execute(ctx, args) {
-        const [, options] = args;
+        const options = ctx.options;
         const subCmd = options.getSubcommand();
         switch (subCmd) {
             case "list": {

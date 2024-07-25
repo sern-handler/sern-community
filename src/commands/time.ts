@@ -49,7 +49,8 @@ export default slashCommand({
             type: ApplicationCommandOptionType.Subcommand,
         },
     ],
-    execute: async (ctx, [, options]) => {
+    execute: async (ctx) => {
+        const { options } = ctx;
         switch (options.getSubcommand()) {
             case "create": {
                 const reqData = {

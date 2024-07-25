@@ -44,15 +44,15 @@ export default slashCommand({
             ],
         },
     ],
-    execute: async (ctx, [, args]) => {
-        const command = args.getSubcommand();
+    execute: async (ctx) => {
+        const command = ctx.options.getSubcommand();
 
         await ctx.interaction.deferReply();
         switch (command) {
             case "submit": {
-                const attachment = args.getAttachment("attachment");
-                const urlString = args.getString("url");
-                const name = args.getString("name", true);
+                const attachment = ctx.options.getAttachment("attachment");
+                const urlString = ctx.options.getString("url");
+                const name = ctx.options.getString("name", true);
                 const send = sendTo("1014582281907753080", ctx.member as GuildMember, name);
 
                 if (attachment) {
