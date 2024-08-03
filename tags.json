@@ -32,7 +32,7 @@
     },
     {
         "name": "docs",
-        "content": "Please read the documentation of sern [*here*](<https://sern.dev/docs/intro>)",
+        "content": "Please read the documentation of sern [*here*](<https://sern.dev/v4/reference/getting-started/>)",
         "keywords": ["sern docs"]
     },
     {
