@@ -53,18 +53,19 @@ export default commandModule({
         }).then(embedMessage => {
             embedMessage.react("🎉")
         })
-
-        const stmt = db.prepare(`SELECT * FROM entrees`).all()
-        
-        const winnerIndex = Math.floor(Math.random() * stmt.length)
-        const winnerId = stmt[winnerIndex].user_id
-        const winner = ctx.guild?.members.cache.get(winnerId)
-        const winnerName = winner?.user.globalName
         
         if (timeUnit === 's') {
             setInterval(() => {
                 if (timeLeft !== 0) {
                     timeLeft = 0
+
+                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
+        
+                    const winnerIndex = Math.floor(Math.random() * stmt.length)
+                    const winnerId = stmt[winnerIndex].user_id
+                    const winner = ctx.guild?.members.cache.get(winnerId)
+                    const winnerName = winner?.user.globalName
+
                     embed.setFields(
                         {name: '\u200b', value: `Winner: @${winnerName}`},
                         {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
@@ -77,6 +78,14 @@ export default commandModule({
             setInterval(() => {
                 if (timeLeft !== 0) {
                     timeLeft = 0
+
+                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
+        
+                    const winnerIndex = Math.floor(Math.random() * stmt.length)
+                    const winnerId = stmt[winnerIndex].user_id
+                    const winner = ctx.guild?.members.cache.get(winnerId)
+                    const winnerName = winner?.user.globalName
+
                     embed.setFields(
                         {name: '\u200b', value: `Winner: @${winnerName}`},
                         {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
@@ -89,6 +98,14 @@ export default commandModule({
             setInterval(() => {
                 if (timeLeft !== 0) {
                     timeLeft = 0
+
+                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
+        
+                    const winnerIndex = Math.floor(Math.random() * stmt.length)
+                    const winnerId = stmt[winnerIndex].user_id
+                    const winner = ctx.guild?.members.cache.get(winnerId)
+                    const winnerName = winner?.user.globalName
+                    
                     embed.setFields(
                         {name: '\u200b', value: `Winner: @${winnerName}`},
                         {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
