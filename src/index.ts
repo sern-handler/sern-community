@@ -12,6 +12,7 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessageReactions,
     ],
     partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember, Partials.Channel],
     sweepers: {
@@ -26,6 +27,7 @@ await makeDependencies(root => {
     root.add("@sern/client", client);
     root.swap("@sern/logger", new SernLogger("info"))
     root.add('octokit', new Octokit({ auth: process.env.GITHUB_TOKEN }))
+    root.add('process', process)
 });
 
 Sern.init({
