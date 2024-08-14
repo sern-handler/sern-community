@@ -42,10 +42,9 @@ export default commandModule({
         const endTimeStamp: string = `<t:${Math.floor(endTime!.getTime() / 1000)}:f>`
 
         let embed = new EmbedBuilder()
-        .setTitle(`${item} Giveaway`)
+        .setTitle(`🥳 ${item} giveaway 🥳`)
+        .setDescription('React to enter the giveaway!')
         .addFields(
-            {name: '\u200b', value: 'React to enter the giveaway!'},
-            {name: '\u200b', value: `Time: ${timeLeft}${timeUnit}`},
             {name: '\u200b', value: `Ends at: ${endTimeStamp}`}
         )
         
@@ -55,33 +54,41 @@ export default commandModule({
         }).then(embedMessage => {
             embedMessage.react("🎉")
 
-            let interval
+            let interval = setInterval(() => {
+                let now = new Date().getTime()
+
+                let distance = endTime.getTime() - now
+
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+                if (distance >= 0) {
+                    embed.setFields(
+                        {name: '\u200b', value: `Time Left: ${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`},
+                        {name: '\u200b', value: `Ends at: ${endTimeStamp}`}
+                    )
+
+                    embedMessage.edit({embeds: [embed]})
+                }
+
+                else if (distance < 0) {
+                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
         
-            if (timeUnit === 's') {
-                interval = 1000
-            }
-            else if (timeUnit === 'm') {
-                interval = 60000
-            }
-            else if (timeUnit === 'h') {
-                interval = 3600000
-            }
+                    const winnerIndex = Math.floor(Math.random() * stmt.length)
+                    const winnerId = stmt[winnerIndex].user_id
 
-            setInterval(() => {
-                const stmt = db.prepare(`SELECT * FROM entrees`).all()
-        
-                const winnerIndex = Math.floor(Math.random() * stmt.length)
-                const winnerId = stmt[winnerIndex].user_id
-                const winner = ctx.guild?.members.cache.get(winnerId)
-                const winnerName = winner?.user.globalName
+                    embed.setDescription('\u200b')
+                    embed.setFields(
+                        {name: '\u200b', value: `Winner: <@${winnerId}>`},
+                        {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
+                    )
 
-                embed.setFields(
-                    {name: '\u200b', value: `Winner: @${winnerName}`},
-                    {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
-                )
+                    embedMessage.edit({embeds: [embed]})
 
-                embedMessage.edit({embeds: [embed]})
-            }, timeLeft * interval)
+                    clearInterval(interval)
+                }
+            }, 1000)
         })
 
         db.prepare(`DELETE FROM entrees`).run()
