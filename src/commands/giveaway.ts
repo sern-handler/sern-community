@@ -45,6 +45,7 @@ export default commandModule({
         .setTitle(`🥳 ${item} giveaway 🥳`)
         .setDescription('React to enter the giveaway!')
         .addFields(
+            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
             {name: '\u200b', value: `Ends at: ${endTimeStamp}`}
         )
         
@@ -66,6 +67,7 @@ export default commandModule({
                 if (distance >= 0) {
                     embed.setFields(
                         {name: '\u200b', value: `Time Left: ${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`},
+                        {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
                         {name: '\u200b', value: `Ends at: ${endTimeStamp}`}
                     )
 
@@ -74,19 +76,39 @@ export default commandModule({
 
                 else if (distance < 0) {
                     const stmt = db.prepare(`SELECT * FROM entrees`).all()
-        
-                    const winnerIndex = Math.floor(Math.random() * stmt.length)
-                    const winnerId = stmt[winnerIndex].user_id
 
-                    embed.setDescription('\u200b')
-                    embed.setFields(
-                        {name: '\u200b', value: `Winner: <@${winnerId}>`},
-                        {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
-                    )
+                    let winnerIndex = Math.floor(Math.random() * stmt.length)
 
-                    embedMessage.edit({embeds: [embed]})
+                    if (stmt.length > 0 && stmt[winnerIndex].user_id !== ctx.userId) {
+                        const winnerId = stmt[winnerIndex].user_id
 
-                    clearInterval(interval)
+                        embed.setDescription('\u200b')
+                        embed.setFields(
+                            {name: '\u200b', value: `Winner: <@${winnerId}>`},
+                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
+                            {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
+                        )
+
+                        embedMessage.edit({embeds: [embed]})
+
+                        clearInterval(interval)
+                    }
+                    else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
+                        winnerIndex = Math.floor(Math.random() * stmt.length)
+                        console.log(winnerIndex)
+                    }
+                    else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
+                        embed.setDescription('\u200b')
+                        embed.setFields(
+                            {name: '\u200b', value: `Not enough eligible users`},
+                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
+                            {name: '\u200b', value: `Ended at: ${endTimeStamp}`}
+                        )
+
+                        embedMessage.edit({embeds: [embed]})
+
+                        clearInterval(interval)
+                    }
                 }
             }, 1000)
         })
