@@ -36,6 +36,10 @@ export default slashCommand({
         let chance = interaction.user;
         let mark: "X" | "O" = "X";
 
-        game.HumanGame(interaction, collector, chance, mark, content, pieces, user);
+        if (user.bot) {
+            game.AIGame(interaction, collector, chance, mark, content, pieces, user);
+        } else {
+            game.HumanGame(interaction, collector, chance, mark, content, pieces, user);
+        }
     },
 });
