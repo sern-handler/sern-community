@@ -5,14 +5,13 @@
  */
 
 import type {
-    SernEmitter,
     CoreDependencies,
 } from "@sern/handler";
 import type { Client } from "discord.js";
 import type { SernLogger } from "./utils/Logger";
 import type { Octokit } from "@octokit/rest";
 declare global {
-    interface Dependencies extends Dependencies {
+    interface Dependencies extends CoreDependencies {
         "@sern/client": Client;
         "@sern/logger": SernLogger;
         octokit: Octokit;
