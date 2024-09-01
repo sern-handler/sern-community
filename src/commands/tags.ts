@@ -96,7 +96,7 @@ export default slashCommand({
         },
     ],
     execute: async (context, args) => {
-        const [, options] = args;
+        const { options } = context;
         const subcmd = options.getSubcommand();
 
         const file: TagData[] = require(TagList);

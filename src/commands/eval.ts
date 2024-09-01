@@ -6,11 +6,10 @@ import { Evo, Seren, Mina } from "#constants";
 export default commandModule({
     type: CommandType.Text,
     description: "Eval something",
-    alias: ["ev"],
-    execute: async (ctx, args) => {
+    execute: async (ctx) => {
         if (![Evo, Seren, Mina].includes(ctx.user.id)) return;
 
-        let code: string[] | string = args[1];
+        let code: string[] | string = ctx.options;
 
         code = code.join(" ") as string;
         if (code.includes("await")) {
@@ -45,27 +44,7 @@ export default commandModule({
         if ((result as string).length > 2000) {
             channel!.send("Result is too long to send");
         }
-
         ctx.channel!.send({ content: result as string });
-
-        function send(id: string, ping = false) {
-            const channel = client.channels.cache.get(id);
-            if (!channel) return;
-            const embed = new EmbedBuilder()
-                .setColor(0xcc5279)
-                .setTitle("v2 is out!")
-                .setThumbnail(client.user?.displayAvatarURL() ?? "")
-                .setImage("https://raw.githubusercontent.com/sern-handler/.github/main/banner.png")
-                .setAuthor({ name: "sern", url: "https://sern.dev/" })
-                .setDescription(
-                    `__**Quick Look:**__\n\n${text()}\n\nThank you all for being patient!`,
-                )
-                .setFooter({ text: "Supports DJS v14.7 and above" })
-                .setTimestamp();
-            const content = ping ? "@everyone" : undefined;
-            channel.isTextBased() && channel.send({ content, embeds: [embed] });
-            return "Done sir";
-        }
     },
 });
 

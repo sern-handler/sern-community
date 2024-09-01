@@ -20,10 +20,8 @@ export default slashCommand({
                     required: true,
                     autocomplete: true,
                     command: {
-                        onEvent: [],
                         execute: async (autocomplete) => {
                             const input = autocomplete.options.getFocused();
-
                             return autocomplete.respond(fuzz(input)).catch(() => null);
                         },
                     },
@@ -49,7 +47,8 @@ export default slashCommand({
             type: ApplicationCommandOptionType.Subcommand,
         },
     ],
-    execute: async (ctx, [, options]) => {
+    execute: async (ctx) => {
+        const { options } = ctx;
         switch (options.getSubcommand()) {
             case "create": {
                 const reqData = {
@@ -84,7 +83,7 @@ export default slashCommand({
                     `https://api.srizan.dev/sern/getTime?userid=${option.id}`,
                 ).catch(() => null);
 
-                const data = (await request?.json()) as APIResponse;
+                const data = await request?.json() as APIResponse;
 
                 if (!data)
                     return ctx.reply({

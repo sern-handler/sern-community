@@ -19,7 +19,7 @@ export default slashCommand({
             name: "channel",
             type: ApplicationCommandOptionType.Channel,
             description: "The channel to send the message to",
-            channelTypes: [ChannelType.GuildText],
+            channel_types: [ChannelType.GuildText],
             required: true,
         },
         {
@@ -35,7 +35,8 @@ export default slashCommand({
             required: true,
         },
     ],
-    async execute(ctx, [, options]) {
+    async execute(ctx) {
+        const options = ctx.options;
         const channel = options.getChannel("channel", true) as TextChannel;
         const role = new Resolver(options.getString("role", true), ctx.interaction).roles;
         const message = options.getString("message", true);
@@ -71,14 +72,11 @@ function createMenu(channel: TextChannel, role: Collection<string, Role>) {
         .setMaxValues(role.size)
         .setMinValues(0)
         .setPlaceholder("Pick some roles here!")
-        .setOptions(
-            role.map((r) => {
+        .setOptions(role.map((r) => {
                 return {
                     label: r.name,
                     value: r.id,
                 };
-            }),
-        );
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(menu);
-    return row;
+            }));
+    return new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(menu);
 }

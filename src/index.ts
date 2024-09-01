@@ -1,6 +1,7 @@
 import "dotenv/config";
+import * as config from './config.js'
 import { Client, GatewayIntentBits, Partials } from "discord.js";
-import { Sern, single, makeDependencies, Service } from "@sern/handler";
+import { Sern, makeDependencies, Service } from "@sern/handler";
 import { SernLogger } from "#utils";
 import { Octokit } from "@octokit/rest";
 import { cp } from "./commands/refresh.js";
@@ -11,6 +12,7 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessageReactions,
     ],
     partials: [Partials.GuildMember, Partials.Message, Partials.ThreadMember, Partials.Channel],
     sweepers: {
@@ -21,15 +23,11 @@ const client = new Client({
     },
 });
 
-await makeDependencies({
-    build: (root) =>
-        root
-            .add({ "@sern/client": () => client })
-            .upsert({ "@sern/logger": () => new SernLogger("info") })
-            .add({
-                process: () => process,
-                octokit: () => new Octokit({ auth: process.env.GITHUB_TOKEN }),
-            }),
+await makeDependencies(root => {
+    root.add("@sern/client", client);
+    root.swap("@sern/logger", new SernLogger("info"))
+    root.add('octokit', new Octokit({ auth: process.env.GITHUB_TOKEN }))
+    root.add('process', process)
 });
 
 Sern.init({

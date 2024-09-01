@@ -25,8 +25,7 @@ export default commandModule({
                 .setPlaceholder("Name of the emoji")
                 .setRequired()
                 .setStyle(TextInputStyle.Short)
-                .setValue(suggestedName),
-        );
+                .setValue(suggestedName));
         modal.setComponents(row);
 
         await ctx.showModal(modal);

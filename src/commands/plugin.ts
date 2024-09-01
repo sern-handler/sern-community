@@ -14,7 +14,6 @@ export default slashCommand({
             required: true,
             autocomplete: true,
             command: {
-                onEvent: [],
                 async execute(ctx) {
                     const plugins = require(PluginList) as Plugin[];
 
@@ -45,7 +44,8 @@ export default slashCommand({
             }),
         ),
     ],
-    async execute(ctx, [, options]) {
+    async execute(ctx) {
+        const { options } = ctx;
         const plugins = require(PluginList) as Plugin[];
 
         if (!plugins.length) return ctx.reply("Plugins are uncached, contact Evo!");
