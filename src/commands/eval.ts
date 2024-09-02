@@ -19,7 +19,7 @@ export default commandModule({
         }
         const { channel, guild, client, user, member, message: msg } = ctx;
         if (
-            ["TOKEN", "process..env", "token"].some((e) => code.includes(e)) &&
+            ["TOKEN", "process.env", "token"].some((e) => code.includes(e)) &&
             ctx.user.id !== "697795666373640213"
         )
             return ctx.message.react("❌");
