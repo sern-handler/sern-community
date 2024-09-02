@@ -18,7 +18,6 @@ export function cutText(text: string) {
     return text;
 }
 
-import { fetch } from "undici";
 
 export async function upload(code: string, name?: string) {
     const response = await fetch("https://sourceb.in/api/bins", {

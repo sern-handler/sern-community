@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { publish } from "#plugins";
-import { fetch } from "undici";
 import { readFileSync } from "fs";
 import { slashCommand } from "#utils";
 

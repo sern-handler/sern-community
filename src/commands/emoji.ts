@@ -10,7 +10,6 @@ import {
     Snowflake,
     TextChannel,
 } from "discord.js";
-import { fetch } from "undici";
 import { cooldown, publish } from "#plugins";
 import { Resolver, slashCommand } from "#utils";
 

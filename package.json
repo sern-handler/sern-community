@@ -37,7 +37,6 @@
         "string-similarity": "4.0.4",
         "tesseract.js": "^5.0.4",
         "trie-search": "1.4.1",
-        "undici": "5.22.0",
         "winston": "3.8.2"
     },
     "devDependencies": {
