@@ -6,12 +6,10 @@ import {
     TextInputStyle,
 } from "discord.js";
 import { existsSync, writeFileSync } from "fs";
-import { createRequire } from "module";
 import { Evo, Seren, TagList } from "#constants";
 import { ownerOnly, publish } from "#plugins";
 import type { TagData } from "typings";
-import { slashCommand } from "#utils";
-const require = createRequire(import.meta.url);
+import { slashCommand, require } from "#utils";
 
 export default slashCommand({
     description: "Edit tags",

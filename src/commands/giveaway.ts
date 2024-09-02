@@ -1,5 +1,5 @@
 import { commandModule, CommandType, scheduledTask } from "@sern/handler";
-import { publish } from "#plugins";
+import { ownerOnly, publish } from "#plugins";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { db } from "../utils/db.js";
 import { add, addDays, addHours, addMinutes, addSeconds } from "date-fns"
@@ -8,13 +8,13 @@ import { Timestamp } from "#utils";
 export default commandModule({
     type: CommandType.Slash,
     description: "Start a giveaway involving users who react to the embed",
-    plugins: [publish()],
+    plugins: [publish(), ownerOnly()],
     options: [
         {
-          name: "item",
-          description: "The item that will be given away",
-          type: ApplicationCommandOptionType.String,
-          required: true
+            name: "item",
+            description: "The item that will be given away",
+            type: ApplicationCommandOptionType.String,
+            required: true
         },
         {
             name: "time",
@@ -25,7 +25,7 @@ export default commandModule({
     ],
     execute: async (ctx, { deps }) => {
             const item = ctx.options.getString("item")
-            const timeLeftString = ctx.options.getString("time")
+            const timeLeftString = ctx.options.getString("time", true)
 
             let timeUnit1
             let timeLeft1
@@ -117,7 +117,8 @@ export default commandModule({
             }).then(embedMessage => {
                 embedMessage.react("🎉")
 
-                setInterval(() => {
+                //checks if author reacted to itself
+                const selfReactionInterval = setInterval(() => {
                     const userReactions = embedMessage.reactions.cache.filter(reaction => reaction.users.cache.has(ctx.userId));
             
                     for (const reaction of userReactions.values()) {
@@ -157,6 +158,7 @@ export default commandModule({
 
                         embedMessage.edit({embeds: [embed]})
                     }
+                    clearInterval(selfReactionInterval)
             }, intervalTime)
         })
 
