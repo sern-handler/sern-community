@@ -1,5 +1,4 @@
 import "dotenv/config";
-import * as config from './config.js'
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Sern, makeDependencies, Service } from "@sern/handler";
 import { SernLogger } from "#utils";
