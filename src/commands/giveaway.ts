@@ -143,6 +143,8 @@ export default commandModule({
                         )
 
                         embedMessage.edit({embeds: [embed]})
+
+                        embedMessage.reply(`Congratulations <@${winnerId}> on winning the ${item} giveaway!`)
                     }
                     else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
                         winnerIndex = Math.floor(Math.random() * stmt.length)
