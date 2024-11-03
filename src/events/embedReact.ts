@@ -6,10 +6,12 @@ export default discordEvent({
     execute: async (reaction, potentialWinners) => {
         const startTime = reaction.message.createdTimestamp
 
-        const stmt = db.prepare(`INSERT INTO entrees(timestamp, user_id) VALUES (?, ?)`)
+        if (reaction.emoji.name === '🎉') {
+            const stmt = db.prepare(`INSERT INTO entrees(timestamp, user_id) VALUES (?, ?)`)
         
-        if (potentialWinners.bot === false) {
-            stmt.run([startTime, potentialWinners.id])
+            if (potentialWinners.bot === false) {
+                stmt.run([startTime, potentialWinners.id])
+            }
         }
     }
 })
