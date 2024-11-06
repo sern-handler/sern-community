@@ -115,6 +115,9 @@ export default commandModule({
             await ctx.reply({
                 embeds: [embed],
             }).then(embedMessage => {
+                const stmt = db.prepare(`INSERT INTO giveaway_message(message_id) VALUES (?)`)
+                stmt.run(embedMessage.id)
+
                 embedMessage.react("🎉")
 
                 //checks if author reacted to itself
@@ -129,7 +132,7 @@ export default commandModule({
                 let intervalTime = endTime.getTime() - startTime.getTime()
 
                 setTimeout(() => {
-                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
+                    const stmt = db.prepare(`SELECT * FROM entries`).all()
 
                     let winnerIndex = Math.floor(Math.random() * stmt.length)
 
@@ -160,10 +163,11 @@ export default commandModule({
 
                         embedMessage.edit({embeds: [embed]})
                     }
+                    db.prepare(`DELETE FROM giveaway_message`).run()
                     clearInterval(selfReactionInterval)
             }, intervalTime)
         })
 
-        db.prepare(`DELETE FROM entrees`).run()
+        db.prepare(`DELETE FROM entries`).run()
     }
 })

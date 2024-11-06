@@ -6,8 +6,10 @@ export default discordEvent({
     execute: async (reaction, deletedEntry) => {
         const deletedId = deletedEntry.id
 
-        if (reaction.emoji.name === '🎉') {
-            const stmt = db.prepare(`DELETE FROM entrees WHERE user_id = ?`)
+        const message_id = db.prepare(`SELECT message_id FROM giveaway_message LIMIT 1`).get()
+
+        if (reaction.emoji.name === '🎉' && reaction.message.id === message_id.message_id) {
+            const stmt = db.prepare(`DELETE FROM entries WHERE user_id = ?`)
         
             stmt.run(deletedId)
         }
