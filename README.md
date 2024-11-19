@@ -14,3 +14,4 @@ Features:
 -   View our handler's [plugins](https://github.com/sern-handler/awesome-plugins)
 -   Submit and review user emojis
 -   Fetch Issues and Pull Requests from github
+-   Giveaway system
