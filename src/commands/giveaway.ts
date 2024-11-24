@@ -139,15 +139,6 @@ export default commandModule({
                     if (stmt.length > 0 && stmt[winnerIndex].user_id !== ctx.userId) {
                         const winnerId = stmt[winnerIndex].user_id
 
-                        embed.setDescription('\u200b')
-                        embed.setFields(
-                            {name: '\u200b', value: `Winner: <@${winnerId}>`},
-                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
-                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
-                        )
-
-                        embedMessage.edit({embeds: [embed]})
-
                         embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
                     }
                     else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
@@ -155,15 +146,6 @@ export default commandModule({
                             winnerIndex = Math.floor(Math.random() * stmt.length)
                         }
                         const winnerId = stmt[winnerIndex].user_id
-
-                        embed.setDescription('\u200b')
-                        embed.setFields(
-                            {name: '\u200b', value: `Winner: <@${winnerId}>`},
-                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
-                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
-                        )
-
-                        embedMessage.edit({embeds: [embed]})
 
                         embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
 
