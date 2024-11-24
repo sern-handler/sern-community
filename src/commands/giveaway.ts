@@ -115,8 +115,7 @@ export default commandModule({
             await ctx.reply({
                 embeds: [embed],
             }).then(embedMessage => {
-                const stmt = db.prepare(`INSERT INTO giveaway_message(message_id) VALUES (?)`)
-                stmt.run(embedMessage.id)
+                db.prepare(`INSERT INTO giveaway_message(message_id, host_id) VALUES (?, ?)`).run(embedMessage.id, ctx.userId)
 
                 embedMessage.react("🎉")
 
@@ -126,6 +125,7 @@ export default commandModule({
             
                     for (const reaction of userReactions.values()) {
                         reaction.users.remove(ctx.userId);
+                        ctx.interaction.followUp({content: "As the host of the giveaway, you cannot enter it.", ephemeral: true})
                     }
                 }, 1000)
 
@@ -148,10 +148,25 @@ export default commandModule({
 
                         embedMessage.edit({embeds: [embed]})
 
-                        embedMessage.reply(`Congratulations <@${winnerId}> on winning the ${item} giveaway!`)
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
                     }
                     else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
-                        winnerIndex = Math.floor(Math.random() * stmt.length)
+                        while (stmt[winnerIndex].user_id === ctx.userId) {
+                            winnerIndex = Math.floor(Math.random() * stmt.length)
+                        }
+                        const winnerId = stmt[winnerIndex].user_id
+
+                        embed.setDescription('\u200b')
+                        embed.setFields(
+                            {name: '\u200b', value: `Winner: <@${winnerId}>`},
+                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
+                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
+                        )
+
+                        embedMessage.edit({embeds: [embed]})
+
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
+
                     }
                     else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
                         embed.setDescription('\u200b')
@@ -163,11 +178,10 @@ export default commandModule({
 
                         embedMessage.edit({embeds: [embed]})
                     }
-                    db.prepare(`DELETE FROM giveaway_message`).run()
+                    db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
+                    db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
                     clearInterval(selfReactionInterval)
             }, intervalTime)
         })
-
-        db.prepare(`DELETE FROM entries`).run()
     }
 })
