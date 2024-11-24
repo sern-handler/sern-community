@@ -151,14 +151,7 @@ export default commandModule({
 
                     }
                     else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
-                        embed.setDescription('\u200b')
-                        embed.setFields(
-                            {name: '\u200b', value: `Not enough eligible users`},
-                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
-                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
-                        )
-
-                        embedMessage.edit({embeds: [embed]})
+                        embedMessage.edit({content: `Not enough eligible users`, embeds: [embed]})
                     }
                     db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
                     db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
