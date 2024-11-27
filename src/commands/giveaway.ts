@@ -132,7 +132,7 @@ export default commandModule({
                 let intervalTime = endTime.getTime() - startTime.getTime()
 
                 setTimeout(() => {
-                    const stmt = db.prepare(`SELECT * FROM entries`).all()
+                    const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(embedMessage.id)
 
                     let winnerIndex = Math.floor(Math.random() * stmt.length)
 
