@@ -151,7 +151,7 @@ export default commandModule({
 
                     }
                     else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
-                        embedMessage.edit({content: `Not enough eligible users`, embeds: [embed]})
+                        embedMessage.edit({content: `Not enough eligible users`, embeds: []})
                     }
                     db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
                     db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
