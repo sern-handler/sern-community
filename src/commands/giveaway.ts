@@ -51,54 +51,13 @@ export default commandModule({
             const hourNames = ['hours', 'hour', 'hr', 'hrs']
             const dayNames = ['days', 'day']
 
+
             endTime = add(startTime, {
-                timeUnit1: timeLeft1,
-                timeUnit2: timeLeft2
+                seconds: secondNames.includes(timeUnit1!) ? timeLeft1 : secondNames.includes(timeUnit2!) ? timeLeft2 : 0,
+                minutes: minuteNames.includes(timeUnit1!) ? timeLeft1 : minuteNames.includes(timeUnit2!) ? timeLeft2 : 0,
+                hours: hourNames.includes(timeUnit1!) ? timeLeft1 : hourNames.includes(timeUnit2!) ? timeLeft2 : 0,
+                days: dayNames.includes(timeUnit1!) ? timeLeft1 : dayNames.includes(timeUnit2!) ? timeLeft2 : 0
             })
-
-            // This if chain uses date-fns to correctly calculate the time allocated to the giveaway based on what the
-            // user types (seconds, minutes, etc.)
-
-            // if the time unit before the "and" is "seconds" or one of the other entries in the secondNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (secondNames.includes(timeUnit1!)) {
-                endTime = endTime === startTime ? addSeconds(startTime, timeLeft1) : addSeconds(endTime, timeLeft1)
-            }
-            // if the time unit after the "and" is "seconds" or one of the other entries in the secondNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (secondNames.includes(timeUnit2!)) {
-                endTime = endTime === startTime ? addSeconds(startTime, timeLeft2!) : addSeconds(endTime, timeLeft2!)
-            }
-            // if the time unit before the "and" is "minutes" or one of the other entries in the minuteNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (minuteNames.includes(timeUnit1!)) {
-                endTime = endTime === startTime ? addMinutes(startTime, timeLeft1) : addMinutes(endTime, timeLeft1)
-            }
-            // if the time unit after the "and" is "minutes" or one of the other entries in the minuteNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (minuteNames.includes(timeUnit2!)) {
-                endTime = endTime === startTime ? addMinutes(startTime, timeLeft2!) : addMinutes(endTime, timeLeft2!)
-            }
-            // if the time unit before the "and" is "hours" or one of the other entries in the hourNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (hourNames.includes(timeUnit1!)) {
-                endTime = endTime === startTime ? addHours(startTime, timeLeft1) : addHours(endTime, timeLeft1)
-            }
-            // if the time unit after the "and" is "hours" or one of the other entries in the hourNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (hourNames.includes(timeUnit2!)) {
-                endTime = endTime === startTime ? addHours(startTime, timeLeft2!) : addHours(endTime, timeLeft2!)
-            }
-            // if the time unit before the "and" is "days" or one of the other entries in the dayNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (dayNames.includes(timeUnit1!)) {
-                endTime = endTime === startTime ? addDays(startTime, timeLeft1) : addDays(endTime, timeLeft1)
-            }
-            // if the time unit after the "and" is "days" or one of the other entries in the dayNames array, add the time entered
-            // to the startTime and save that in the endTime
-            if (dayNames.includes(timeUnit2!)) {
-                endTime = endTime === startTime ? addDays(startTime, timeLeft2!) : addDays(endTime, timeLeft2!)
-            }
 
             const endTimeStamp: string = `<t:${Math.floor(endTime!.getTime() / 1000)}:f>`
             const endTimeStamp2 = new Timestamp(endTime.getTime()).timestamp
@@ -115,6 +74,8 @@ export default commandModule({
             await ctx.reply({
                 embeds: [embed],
             }).then(embedMessage => {
+                db.prepare(`INSERT INTO giveaway_message(message_id, host_id) VALUES (?, ?)`).run(embedMessage.id, ctx.userId)
+
                 embedMessage.react("🎉")
 
                 //checks if author reacted to itself
@@ -123,45 +84,38 @@ export default commandModule({
             
                     for (const reaction of userReactions.values()) {
                         reaction.users.remove(ctx.userId);
+                        ctx.interaction.followUp({content: "As the host of the giveaway, you cannot enter it.", ephemeral: true})
                     }
                 }, 1000)
 
                 let intervalTime = endTime.getTime() - startTime.getTime()
 
                 setTimeout(() => {
-                    const stmt = db.prepare(`SELECT * FROM entrees`).all()
+                    const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(embedMessage.id)
 
                     let winnerIndex = Math.floor(Math.random() * stmt.length)
 
                     if (stmt.length > 0 && stmt[winnerIndex].user_id !== ctx.userId) {
                         const winnerId = stmt[winnerIndex].user_id
 
-                        embed.setDescription('\u200b')
-                        embed.setFields(
-                            {name: '\u200b', value: `Winner: <@${winnerId}>`},
-                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
-                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
-                        )
-
-                        embedMessage.edit({embeds: [embed]})
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
                     }
                     else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
-                        winnerIndex = Math.floor(Math.random() * stmt.length)
+                        while (stmt[winnerIndex].user_id === ctx.userId) {
+                            winnerIndex = Math.floor(Math.random() * stmt.length)
+                        }
+                        const winnerId = stmt[winnerIndex].user_id
+
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway!`, embeds: []})
+
                     }
                     else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
-                        embed.setDescription('\u200b')
-                        embed.setFields(
-                            {name: '\u200b', value: `Not enough eligible users`},
-                            {name: '\u200b', value: `Hosted by: <@${ctx.userId}>`},
-                            {name: '\u200b', value: `Ended: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`}
-                        )
-
-                        embedMessage.edit({embeds: [embed]})
+                        embedMessage.edit({content: `Not enough eligible users`, embeds: []})
                     }
+                    db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
+                    db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
                     clearInterval(selfReactionInterval)
             }, intervalTime)
         })
-
-        db.prepare(`DELETE FROM entrees`).run()
     }
 })
