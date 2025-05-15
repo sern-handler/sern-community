@@ -2,7 +2,7 @@ import { commandModule, CommandType } from "@sern/handler";
 import { ownerOnly, publish } from "#plugins";
 import { ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 import { db } from "../utils/db.js";
-import { add, addDays, addHours, addMinutes, addSeconds } from "date-fns"
+import { add } from "date-fns"
 import { Timestamp } from "#utils";
 
 export default commandModule({
@@ -52,11 +52,6 @@ export default commandModule({
             const dayNames = ['days', 'day']
 
             endTime = add(startTime, {
-                timeUnit1: timeLeft1,
-                timeUnit2: timeLeft2
-            })
-
-            endTime = add(startTime, {
                 seconds: secondNames.includes(timeUnit1!) ? timeLeft1 : secondNames.includes(timeUnit2!) ? timeLeft2 : 0,
                 minutes: minuteNames.includes(timeUnit1!) ? timeLeft1 : minuteNames.includes(timeUnit2!) ? timeLeft2 : 0,
                 hours: hourNames.includes(timeUnit1!) ? timeLeft1 : hourNames.includes(timeUnit2!) ? timeLeft2 : 0,
@@ -82,11 +77,18 @@ export default commandModule({
 
                 db.prepare(`INSERT INTO giveaway_message(message_id, host_id) VALUES (?, ?)`).run(embedMessage.id, ctx.userId)
 
+                // test entries
+                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 1, 1])
+                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 2, 2])
+                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 3, 3])
+                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 4, 4])
+                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 5, 5])
+
                 embedMessage.react("🎉")
 
                 //checks if author reacted to itself
                 const selfReactionInterval = setInterval(() => {
-                    const userReactions = embedMessage.reactions.cache.filter(reaction => reaction.users.cache.has(ctx.userId));
+                    const userReactions = embedMessage.reactions.cache.filter(reaction => reaction.users.cache.has(ctx.userId))
             
                     for (const reaction of userReactions.values()) {
                         reaction.users.remove(ctx.userId);
@@ -119,12 +121,11 @@ export default commandModule({
                     }
                     else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
                         embedMessage.edit({content: `Couldn't determine a winner: Not enough eligible users. ${stmt.length} users entered`, embeds: [], components: [retryRows()]})
-                        giveawayEnded = true
                     }
-                    db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
-                    db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
 
                     if (giveawayEnded) {
+                        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
+                        db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
                         embedMessage.reactions.removeAll()
                     }
                     clearInterval(selfReactionInterval)
@@ -140,12 +141,6 @@ function retryRows() {
         style: ButtonStyle.Primary
     })
 
-    const resendGiveaway = new ButtonBuilder({
-        customId: 'resend',
-        label: 'Resend Giveaway',
-        style: ButtonStyle.Primary
-    })
-
     const discardGiveaway = new ButtonBuilder({
         customId: 'discard',
         label: 'Discard Giveaway',
@@ -153,5 +148,5 @@ function retryRows() {
     })
 
     return new ActionRowBuilder<ButtonBuilder>()
-        .addComponents(attemptReroll, resendGiveaway, discardGiveaway);
+        .addComponents(attemptReroll, discardGiveaway);
 }

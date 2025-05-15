@@ -6,13 +6,12 @@ export default commandModule({
     type: CommandType.Button,
     name: "reroll",
     async execute(ctx) {
-        // if (!ownerIDs.includes(ctx.user.id))
-        //     return ctx.reply({
-        //         ephemeral: true,
-        //         content: `You cannot reroll the giveaway because you are not one of the owners`,
-        //     }
+        if (!ownerIDs.includes(ctx.user.id))
+            return ctx.reply({
+                ephemeral: true,
+                content: `You cannot reroll the giveaway because you are not one of the owners`,
+            })
 
-        console.log(ctx.message.id)
         const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(ctx.message.id)
         
         if (stmt.length > 0) {
