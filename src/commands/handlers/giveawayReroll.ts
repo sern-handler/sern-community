@@ -13,15 +13,18 @@ export default commandModule({
             })
 
         const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(ctx.message.id)
+        let winnerIndex = Math.floor(Math.random() * stmt.length)
         
         if (stmt.length > 0) {
-            let winnerIndex = Math.floor(Math.random() * stmt.length)
+            while (stmt[winnerIndex].user_id === ctx.message.author.id) {
+                winnerIndex = Math.floor(Math.random() * stmt.length)
+            }
             const winnerId = stmt[winnerIndex].user_id
 
             await ctx.reply({content: `Congratulations <@${winnerId}> on winning the giveaway! ${stmt.length} users entered`})
         }
         else {
-            await ctx.reply({content: `You cannot reroll because no one entered the giveaway!`})
+            await ctx.reply({ephemeral: true, content: `You cannot reroll because no one entered the giveaway! Please discard the giveaway and try again!`})
         }
     },
 });

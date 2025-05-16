@@ -16,6 +16,7 @@ export default commandModule({
         db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(ctx.message.id)
 
         ctx.message.reactions.removeAll()
-        await ctx.reply({content: `Giveaway discarded!`})
+        ctx.message.delete()
+        await ctx.reply({ephemeral: true, content: `Giveaway discarded!`})
     },
 });
