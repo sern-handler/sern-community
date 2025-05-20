@@ -13,18 +13,17 @@ export default commandModule({
             })
 
         const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(ctx.message.id)
-        let winnerIndex = Math.floor(Math.random() * stmt.length)
         
-        if (stmt.length > 0) {
-            while (stmt[winnerIndex].user_id === ctx.message.author.id) {
-                winnerIndex = Math.floor(Math.random() * stmt.length)
-            }
-            const winnerId = stmt[winnerIndex].user_id
+        const eligible = stmt.filter((entry: { user_id: string; }) => entry.user_id !== ctx.message.author.id);
 
-            await ctx.reply({content: `Congratulations <@${winnerId}> on winning the giveaway! ${stmt.length} users entered`})
+        if (eligible.length === 0) {
+            throw new Error("No eligible users to select as winner.");
         }
-        else {
-            await ctx.reply({ephemeral: true, content: `You cannot reroll because no one entered the giveaway! Please discard the giveaway and try again!`})
-        }
+
+        const winnerIndex = Math.floor(Math.random() * eligible.length);
+        const winner = eligible[winnerIndex];
+        const winnerId = stmt[winnerIndex].user_id
+
+        await ctx.reply({content: `Congratulations <@${winnerId}> on winning the giveaway! ${stmt.length} users entered`})
     },
 });
