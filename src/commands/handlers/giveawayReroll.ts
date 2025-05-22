@@ -17,7 +17,7 @@ export default commandModule({
         const eligible = stmt.filter((entry: { user_id: string; }) => entry.user_id !== ctx.message.author.id && entry.user_id !== ctx.user.id)
 
         if (eligible.length === 0) {
-            await ctx.reply({ephemeral: true, content: `You cannot reroll because no one entered the giveaway! Please discard the giveaway and try again!`})
+            await ctx.reply({ephemeral: true, content: `You cannot reroll because no eligible users entered the giveaway! Please discard the giveaway and try again!`})
             return
         }
 
