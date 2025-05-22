@@ -101,26 +101,28 @@ export default commandModule({
                 setTimeout(() => {
                     const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(embedMessage.id)
 
-                    let winnerIndex = Math.floor(Math.random() * stmt.length)
+                    const eligible = stmt.filter((entry: { user_id: string; }) => entry.user_id !== embedMessage.author.id && entry.user_id !== ctx.user.id)
 
-                    if (stmt.length > 0 && stmt[winnerIndex].user_id !== ctx.userId) {
+                    let winnerIndex = Math.floor(Math.random() * eligible.length)
+
+                    if (eligible.length > 0 && eligible[winnerIndex].user_id !== ctx.userId) {
                         const winnerId = stmt[winnerIndex].user_id
 
-                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${stmt.length} users entered`, embeds: []})
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${eligible.length} users entered`, embeds: []})
                         giveawayEnded = true
                     }
-                    else if (stmt.length > 1 && stmt[winnerIndex].user_id === ctx.userId) {
-                        while (stmt[winnerIndex].user_id === ctx.userId) {
-                            winnerIndex = Math.floor(Math.random() * stmt.length)
+                    else if (eligible.length > 1 && eligible[winnerIndex].user_id === ctx.userId) {
+                        while (eligible[winnerIndex].user_id === ctx.userId) {
+                            winnerIndex = Math.floor(Math.random() * eligible.length)
                         }
-                        const winnerId = stmt[winnerIndex].user_id
+                        const winnerId = eligible[winnerIndex].user_id
 
-                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${stmt.length} users entered`, embeds: []})
+                        embedMessage.edit({content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${eligible.length} users entered`, embeds: []})
                         giveawayEnded = true
 
                     }
-                    else if ((stmt.length === 1 && stmt[winnerIndex].user_id === ctx.userId) || stmt.length === 0) {
-                        embedMessage.edit({content: `Couldn't determine a winner: Not enough eligible users. ${stmt.length} users entered`, embeds: [], components: [retryRows()]})
+                    else if ((eligible.length === 1 && eligible[winnerIndex].user_id === ctx.userId) || eligible.length === 0) {
+                        embedMessage.edit({content: `Couldn't determine a winner: Not enough eligible users. ${eligible.length} users entered`, embeds: [], components: [retryRows()]})
                     }
 
                     if (giveawayEnded) {
