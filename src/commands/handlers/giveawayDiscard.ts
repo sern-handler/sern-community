@@ -10,13 +10,13 @@ export default commandModule({
             return ctx.reply({
                 ephemeral: true,
                 content: `You cannot discard the giveaway because you are not one of the owners`,
-            })
+            });
 
-        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(ctx.message.id)
-        db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(ctx.message.id)
+        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(ctx.message.id);
+        db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(ctx.message.id);
 
-        ctx.message.reactions.removeAll()
-        ctx.message.delete()
-        await ctx.reply({ephemeral: true, content: `Giveaway discarded!`})
+        ctx.message.reactions.removeAll();
+        ctx.message.delete();
+        await ctx.reply({ ephemeral: true, content: `Giveaway discarded!` });
     },
 });
