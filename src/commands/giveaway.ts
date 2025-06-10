@@ -194,17 +194,11 @@ export default commandModule({
 });
 
 function retryRows() {
-    const attemptReroll = new ButtonBuilder({
-        customId: "reroll",
-        label: "Attempt Reroll",
-        style: ButtonStyle.Primary,
-    });
-
     const discardGiveaway = new ButtonBuilder({
         customId: "discard",
         label: "Discard Giveaway",
         style: ButtonStyle.Primary,
     });
 
-    return new ActionRowBuilder<ButtonBuilder>().addComponents(attemptReroll, discardGiveaway);
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(discardGiveaway);
 }
