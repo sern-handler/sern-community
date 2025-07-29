@@ -14,7 +14,7 @@ import { Timestamp } from "#utils";
 export default commandModule({
     type: CommandType.Slash,
     description: "Start a giveaway involving users who react to the embed",
-    plugins: [publish(), ownerOnly()],
+    plugins: [publish()],
     options: [
         {
             name: "item",
@@ -85,20 +85,19 @@ export default commandModule({
 
         let embed = new EmbedBuilder()
             .setTitle(`🥳 ${item} giveaway 🥳`)
-            .setDescription("React to enter the giveaway!")
+            .setDescription("Click the button to enter the giveaway!")
             .addFields(
-                { name: "\u200b", value: `Hosted by: <@${ctx.userId}>` },
-                {
-                    name: "\u200b",
-                    value: `Ends: ${new Timestamp(
+                { name: "\u200b", value: `Hosted by: <@${ctx.userId}>
+                Entries: 0
+                Ends: ${new Timestamp(
                         Number(endTimeStamp2)
-                    ).getRelativeTime()} (${endTimeStamp})`,
-                }
+                    ).getRelativeTime()} (${endTimeStamp})`},
             );
 
         await ctx
             .reply({
                 embeds: [embed],
+                components: [setupRows()]
             })
             .then((embedMessage) => {
                 let giveawayEnded = false;
@@ -114,23 +113,6 @@ export default commandModule({
                 // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 3, 3])
                 // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 4, 4])
                 // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 5, 5])
-
-                embedMessage.react("🎉");
-
-                //checks if author reacted to itself
-                const selfReactionInterval = setInterval(() => {
-                    const userReactions = embedMessage.reactions.cache.filter((reaction) =>
-                        reaction.users.cache.has(ctx.userId)
-                    );
-
-                    for (const reaction of userReactions.values()) {
-                        reaction.users.remove(ctx.userId);
-                        ctx.interaction.followUp({
-                            content: "As the host of the giveaway, you cannot enter it.",
-                            ephemeral: true,
-                        });
-                    }
-                }, 1000);
 
                 let intervalTime = endTime.getTime() - startTime.getTime();
 
@@ -153,6 +135,7 @@ export default commandModule({
                         embedMessage.edit({
                             content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${eligible.length} users entered`,
                             embeds: [],
+                            components: [discardRows()]
                         });
                         giveawayEnded = true;
                     } else if (
@@ -167,6 +150,7 @@ export default commandModule({
                         embedMessage.edit({
                             content: `Congratulations <@${winnerId}> on winning the ${item} giveaway! ${eligible.length} users entered`,
                             embeds: [],
+                            components: [discardRows()]
                         });
                         giveawayEnded = true;
                     } else if (
@@ -176,8 +160,9 @@ export default commandModule({
                         embedMessage.edit({
                             content: `Couldn't determine a winner: Not enough eligible users. ${eligible.length} users entered`,
                             embeds: [],
-                            components: [retryRows()],
+                            components: [discardRows()],
                         });
+                        giveawayEnded = true;
                     }
 
                     if (giveawayEnded) {
@@ -185,20 +170,33 @@ export default commandModule({
                             embedMessage.id
                         );
                         db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id);
-                        embedMessage.reactions.removeAll();
                     }
-                    clearInterval(selfReactionInterval);
                 }, intervalTime);
             });
     },
 });
 
-function retryRows() {
+function discardRows() {
     const discardGiveaway = new ButtonBuilder({
         customId: "discard",
-        label: "Discard Giveaway",
+        label: "Discard",
         style: ButtonStyle.Primary,
     });
 
     return new ActionRowBuilder<ButtonBuilder>().addComponents(discardGiveaway);
+}
+
+function setupRows() {
+    const enterGiveaway = new ButtonBuilder({
+        customId: "enter",
+        label: "Enter Giveaway",
+        style: ButtonStyle.Success
+    })
+    const leaveGiveaway = new ButtonBuilder({
+        customId: "leave",
+        label: "Leave Giveaway",
+        style: ButtonStyle.Danger
+    })
+
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(enterGiveaway, leaveGiveaway);
 }
