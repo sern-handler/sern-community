@@ -10,6 +10,7 @@ import {
 import { db } from "../utils/db.js";
 import { add } from "date-fns";
 import { Timestamp } from "#utils";
+import { ownerIDs } from "#constants";
 
 export default commandModule({
     type: CommandType.Slash,
@@ -107,6 +108,58 @@ export default commandModule({
                     ctx.userId
                 );
 
+
+                deps["@sern/client"].on("interactionCreate", async (interaction) => {
+                    if (interaction.isButton()) {
+                        if (interaction.customId === 'enter' || interaction.customId === 'leave') {
+                            const messageId = interaction.message.id;
+                            const userId = interaction.user.id;
+
+                            const host = db.prepare(`SELECT host_id FROM giveaway_message WHERE message_id = ?`).get(messageId);
+
+                            if (interaction.customId === 'enter') {
+                                // Prevent host from entering
+                                // if (host && host.host_id === userId) {
+                                //     await interaction.reply({ ephemeral: true, content: `You cannot enter the giveaway as the host!` });
+                                //     return;
+                                // }
+                                // Check if already entered
+                                const checkUser = db.prepare(`SELECT COUNT(*) as count FROM entries WHERE message_id = ? AND user_id = ?`).get(messageId, userId);
+                                if (checkUser.count === 0) {
+                                    db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run(messageId, Date.now(), userId);
+                                    await interaction.reply({ ephemeral: true, content: `Giveaway entered!` });
+                                } else {
+                                    await interaction.reply({ ephemeral: true, content: `You are already entered!` });
+                                }
+                            } else {
+                                // Leave giveaway
+                                const checkUser = db.prepare(`SELECT COUNT(*) as count FROM entries WHERE message_id = ? AND user_id = ?`).get(messageId, userId);
+                                if (checkUser.count === 1) {
+                                    db.prepare(`DELETE FROM entries WHERE message_id = ? AND user_id = ?`).run(messageId, userId);
+                                    await interaction.reply({ ephemeral: true, content: `Giveaway left` });
+                                } else {
+                                    await interaction.reply({ ephemeral: true, content: `You cannot leave a giveaway you were not entered in` });
+                                }
+                            }
+
+                            // Get updated entry count
+                            const entryCount = db.prepare(`SELECT COUNT(*) as count FROM entries WHERE message_id = ?`).get(messageId).count;
+
+                            // Edit embed
+                            const embed = EmbedBuilder.from(interaction.message.embeds[0])
+                                .spliceFields(0, 1, {
+                                    name: "\u200b",
+                                    value: `Hosted by: <@${host?.host_id ?? 'unknown'}>
+                                            Entries: ${entryCount}
+                                            Ends: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`
+                                });
+
+                            await interaction.message.edit({ embeds: [embed] });
+                        }
+                    }
+                });
+                // ...existing code...
+
                 // test entries
                 // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 1, 1])
                 // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 2, 2])
@@ -121,11 +174,11 @@ export default commandModule({
                         .prepare(`SELECT * FROM entries WHERE message_id = ?`)
                         .all(embedMessage.id);
 
-                    const eligible = stmt.filter(
+                    const eligible = stmt/*.filter(
                         (entry: { user_id: string }) =>
                             entry.user_id !== embedMessage.author.id &&
                             entry.user_id !== ctx.user.id
-                    );
+                    );*/
 
                     let winnerIndex = Math.floor(Math.random() * eligible.length);
 
