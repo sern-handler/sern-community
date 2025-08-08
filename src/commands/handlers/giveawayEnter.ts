@@ -7,8 +7,6 @@ export default commandModule({
     type: CommandType.Button,
     name: "enter",
     async execute(ctx) {
-        const startTime = ctx.message.createdTimestamp;
-
         const messages = db.prepare(`SELECT * FROM giveaway_message`).all();
 
         messages.map(async (message: { message_id: string; end_time: number, host_id: string }) => {
@@ -33,8 +31,8 @@ export default commandModule({
 
                 if (checkUser.count === 0) {
                     db.prepare(
-                        `INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`
-                    ).run([message.message_id, startTime, ctx.user.id]);
+                        `INSERT INTO entries(message_id, user_id) VALUES (?, ?)`
+                    ).run([message.message_id, ctx.user.id]);
                     await ctx.reply({ ephemeral: true, content: `Giveaway entered!` })
                 }
                 else await ctx.reply({ ephemeral: true, content: `You are already entered!` })

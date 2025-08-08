@@ -102,134 +102,22 @@ export default commandModule({
             .then((embedMessage) => {
                 let giveawayEnded = false;
 
-                db.prepare(`INSERT INTO giveaway_message(message_id, end_time, host_id) VALUES (?, ?, ?)`).run(
+                const startTimeStamp = new Timestamp(startTime.getTime()).timestamp
+
+                db.prepare(`INSERT INTO giveaway_message(message_id, start_timestamp, end_time, host_id, item) VALUES (?, ?, ?, ?, ?)`).run(
                     embedMessage.id,
+                    startTimeStamp,
                     endTime.getTime(),
-                    ctx.userId
+                    ctx.userId,
+                    item
                 );
 
-                // deps["@sern/client"].on("interactionCreate", async (interaction) => {
-                //     if (interaction.isButton()) {
-                //         if (interaction.customId === "enter" || interaction.customId === "leave") {
-                //             const messageId = interaction.message.id;
-                //             console.log(`Message ID: ${messageId}`);
-                //             const userId = interaction.user.id;
-
-                //             const host = db
-                //                 .prepare(
-                //                     `SELECT host_id FROM giveaway_message WHERE message_id = ?`
-                //                 )
-                //                 .get(messageId);
-
-                //             if (interaction.customId === "enter") {
-                //                 // Prevent host from entering
-                //                 // if (host && host.host_id === userId) {
-                //                 //     await interaction.reply({ ephemeral: true, content: `You cannot enter the giveaway as the host!` });
-                //                 //     return;
-                //                 // }
-                //                 // Check if already entered
-                //                 const checkUser = db
-                //                     .prepare(
-                //                         `SELECT COUNT(*) as count FROM entries WHERE message_id = ? AND user_id = ?`
-                //                     )
-                //                     .get(messageId, userId);
-                //                 if (checkUser.count === 0) {
-                //                     db.prepare(
-                //                         `INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`
-                //                     ).run(messageId, Date.now(), userId);
-                //                     await interaction.reply({
-                //                         ephemeral: true,
-                //                         content: `Giveaway entered!`,
-                //                     });
-                //                 } else {
-                //                     await interaction.reply({
-                //                         ephemeral: true,
-                //                         content: `You are already entered!`,
-                //                     });
-                //                 }
-                //             } else {
-                //                 // Leave giveaway
-                //                 const checkUser = db
-                //                     .prepare(
-                //                         `SELECT COUNT(*) as count FROM entries WHERE message_id = ? AND user_id = ?`
-                //                     )
-                //                     .get(messageId, userId);
-                //                 if (checkUser.count === 1) {
-                //                     db.prepare(
-                //                         `DELETE FROM entries WHERE message_id = ? AND user_id = ?`
-                //                     ).run(messageId, userId);
-                //                     await interaction.reply({
-                //                         ephemeral: true,
-                //                         content: `Giveaway left`,
-                //                     });
-                //                 } else {
-                //                     await interaction.reply({
-                //                         ephemeral: true,
-                //                         content: `You cannot leave a giveaway you were not entered in`,
-                //                     });
-                //                 }
-                //             }
-
-                //             // Get updated entry count
-                //             const entryCount = db
-                //                 .prepare(
-                //                     `SELECT COUNT(*) as count FROM entries WHERE message_id = ?`
-                //                 )
-                //                 .get(messageId).count;
-
-                //             // Edit embed
-                //             const embed = EmbedBuilder.from(
-                //                 interaction.message.embeds[0]
-                //             ).spliceFields(0, 1, {
-                //                 name: "\u200b",
-                //                 value: `Hosted by: <@${host?.host_id ?? "unknown"}>
-                //                             Entries: ${entryCount}
-                //                             Ends: ${new Timestamp(
-                //                                 Number(endTimeStamp2)
-                //                             ).getRelativeTime()} (${endTimeStamp})`,
-                //             });
-
-                //             await interaction.message.edit({ embeds: [embed] });
-                //         }
-
-                //         if (interaction.customId === "edit" || interaction.customId === "end") {
-                //             // if (!ownerIDs.includes(interaction.user.id)) {
-                //             //     await interaction.reply({ ephemeral: true, content: `You do not have permission to edit or end this giveaway!` });
-                //             //     return;
-                //             //}
-                //             if (interaction.customId === "edit") {
-                //                 // Handle editing the giveaway
-                //                 await interaction.reply({
-                //                     ephemeral: true,
-                //                     content: `Editing the giveaway is not implemented yet.`,
-                //                 });
-                //             } else if (interaction.customId === "end") {
-                //                 // Handle ending the giveaway
-                //                 if (giveawayEnded) {
-                //                     await interaction.reply({
-                //                         ephemeral: true,
-                //                         content: `This giveaway has already ended!`,
-                //                     });
-                //                     return;
-                //                 }
-                //                 giveawayEnded = true;
-                //                 clearTimeout(giveawayTimeout);
-                //                 await interaction.reply({
-                //                     ephemeral: true,
-                //                     content: `Giveaway ended by <@${interaction.user.id}>`,
-                //                 });
-                //                 endGiveaway();
-                //             }
-                //         }
-                //     }
-                // });
-
                 // test entries
-                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 1, 1])
-                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 2, 2])
-                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 3, 3])
-                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 4, 4])
-                // db.prepare(`INSERT INTO entries(message_id, timestamp, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 5, 5])
+                // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 1])
+                // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 2])
+                // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 3])
+                // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 4])
+                // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 5])
 
                 let intervalTime = endTime.getTime() - startTime.getTime();
 
@@ -238,7 +126,7 @@ export default commandModule({
                         .prepare(`SELECT * FROM entries WHERE message_id = ?`)
                         .all(embedMessage.id);
 
-                    const eligible = stmt; /*.filter(
+                    const eligible = stmt /*.filter(
                         (entry: { user_id: string }) =>
                             entry.user_id !== embedMessage.author.id &&
                             entry.user_id !== ctx.user.id
@@ -281,24 +169,20 @@ export default commandModule({
                         });
                         giveawayEnded = true;
                     }
-
-                    if (giveawayEnded) {
-                        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(
-                            embedMessage.id
-                        );
-                        db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id);
-                    }
                 }
 
-                const giveawayTimeout = setTimeout(() => {
-                    if (giveawayEnded) return;
+                setTimeout(() => {
+                    const ended = db.prepare(`SELECT ended FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id)?.ended
+                    db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
+                    db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
+                    if (giveawayEnded || ended) return;
                     endGiveaway()
                 }, intervalTime);
             });
     },
 });
 
-function discardRows() {
+export function discardRows() {
     const discardGiveaway = new ButtonBuilder({
         customId: "discard",
         label: "Discard",
@@ -308,7 +192,7 @@ function discardRows() {
     return new ActionRowBuilder<ButtonBuilder>().addComponents(discardGiveaway);
 }
 
-function setupRows() {
+export function setupRows() {
     const enterGiveaway = new ButtonBuilder({
         customId: "enter",
         label: "Enter Giveaway",
