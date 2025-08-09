@@ -28,6 +28,91 @@ export default commandModule({
             description: "The amount of time that the giveaway will be up",
             type: ApplicationCommandOptionType.String,
             required: true,
+            autocomplete: true,
+            command: {
+                async execute(ctx) {
+                    const focus = ctx.options.getFocused();
+                    const timeUnits = [
+                        "seconds", "second", "sec", "secs",
+                        "minutes", "minute", "min", "mins",
+                        "hours", "hour", "hr", "hrs",
+                        "days", "day",
+                    ];
+
+                    if (!focus) return ctx.respond([]);
+
+                    const andUnitMatch = focus.match(/and\s*(\d+)\s*(\w*)$/i);
+                    if (andUnitMatch) {
+                        const num = andUnitMatch[1];
+                        const partialUnit = andUnitMatch[2];
+                        const filtered = timeUnits.filter(unit =>
+                            unit.toLowerCase().startsWith(partialUnit.toLowerCase())
+                        );
+                        return ctx.respond(
+                            filtered.map(unit => ({
+                                name: `${focus}${unit.slice(partialUnit.length)}`,
+                                value: `${focus}${unit.slice(partialUnit.length)}`,
+                            }))
+                        );
+                    }
+
+                    const andMatch = focus.match(/and\s*(\d+)\s*$/i);
+                    if (andMatch) {
+                        const num = andMatch[1];
+                        return ctx.respond(
+                            timeUnits.map(unit => ({
+                                name: `${focus}${unit}`,
+                                value: `${focus}${unit}`,
+                            }))
+                        );
+                    }
+
+                    if (/^\d+\s*$/.test(focus)) {
+                        return ctx.respond(
+                            timeUnits.map(unit => ({
+                                name: `${focus}${unit}`,
+                                value: `${focus}${unit}`,
+                            }))
+                        );
+                    }
+
+                    const match = focus.match(/^(\d+)\s*(.*)$/);
+                    if (match) {
+                        const [, num, partialUnit] = match;
+                        const filtered = timeUnits.filter(unit =>
+                            unit.toLowerCase().startsWith(partialUnit.toLowerCase())
+                        );
+                        let suggestions = filtered.map(unit => ({
+                            name: `${num} ${unit}`,
+                            value: `${num} ${unit}`,
+                        }));
+
+                        if (filtered.length === 1 && partialUnit.length > 0 && filtered[0] === partialUnit.toLowerCase()) {
+                            suggestions.push({
+                                name: `${num} ${filtered[0]} and `,
+                                value: `${num} ${filtered[0]} and `,
+                            });
+                        } else if (filtered.length === 1 && partialUnit.length > 0 && filtered[0].startsWith(partialUnit.toLowerCase())) {
+                            suggestions.push({
+                                name: `${num} ${filtered[0]} and `,
+                                value: `${num} ${filtered[0]} and `,
+                            });
+                        }
+
+                        return ctx.respond(suggestions);
+                    }
+
+                    const filtered = timeUnits.filter(unit =>
+                        unit.toLowerCase().includes(focus.toLowerCase())
+                    );
+                    return ctx.respond(
+                        filtered.map(unit => ({
+                            name: unit,
+                            value: unit,
+                        }))
+                    );
+                }
+            }
         },
     ],
     execute: async (ctx, { deps }) => {
@@ -187,7 +272,7 @@ export default commandModule({
                         db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id);
                         clearInterval(interval);
                     }
-                }, 5000);
+                }, 1000);
             });
     },
 });
