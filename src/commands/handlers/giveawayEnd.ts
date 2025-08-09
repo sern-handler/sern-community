@@ -36,7 +36,7 @@ export default commandModule({
             .prepare(`SELECT * FROM entries WHERE message_id = ?`)
             .all(ctx.message.id);
 
-        const eligible = stmt; /*.filter(
+        const eligible = stmt /*.filter(
             (entry: { user_id: string }) =>
                 entry.user_id !== embedMessage.author.id &&
                 entry.user_id !== ctx.user.id

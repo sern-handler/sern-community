@@ -122,6 +122,9 @@ export default commandModule({
                 let intervalTime = endTime.getTime() - startTime.getTime();
 
                 function endGiveaway() {
+                    const giveawayData = db.prepare(`SELECT item FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id);
+                    const item = giveawayData?.item ?? "Unknown item";
+
                     const stmt = db
                         .prepare(`SELECT * FROM entries WHERE message_id = ?`)
                         .all(embedMessage.id);
@@ -171,13 +174,20 @@ export default commandModule({
                     }
                 }
 
-                setTimeout(() => {
-                    const ended = db.prepare(`SELECT ended FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id)?.ended
-                    db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id)
-                    db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id)
-                    if (giveawayEnded || ended) return;
-                    endGiveaway()
-                }, intervalTime);
+                let interval = setInterval(() => {
+                    const giveaway = db.prepare(`SELECT end_time, ended FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id);
+                    if (!giveaway || giveaway.ended) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    const now = Date.now();
+                    if (now >= giveaway.end_time) {
+                        endGiveaway();
+                        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id);
+                        db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id);
+                        clearInterval(interval);
+                    }
+                }, 5000);
             });
     },
 });
