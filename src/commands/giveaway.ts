@@ -49,8 +49,8 @@ export default commandModule({
                         );
                         return ctx.respond(
                             filtered.map(unit => ({
-                                name: `${focus}${unit.slice(partialUnit.length)}`,
-                                value: `${focus}${unit.slice(partialUnit.length)}`,
+                                name: `${num}${unit.slice(partialUnit.length)}`,
+                                value: `${num}${unit.slice(partialUnit.length)}`,
                             }))
                         );
                     }
@@ -60,8 +60,8 @@ export default commandModule({
                         const num = andMatch[1];
                         return ctx.respond(
                             timeUnits.map(unit => ({
-                                name: `${focus}${unit}`,
-                                value: `${focus}${unit}`,
+                                name: `${num} ${unit}`,
+                                value: `${num} ${unit}`,
                             }))
                         );
                     }
@@ -69,8 +69,8 @@ export default commandModule({
                     if (/^\d+\s*$/.test(focus)) {
                         return ctx.respond(
                             timeUnits.map(unit => ({
-                                name: `${focus}${unit}`,
-                                value: `${focus}${unit}`,
+                                name: `${focus} ${unit}`,
+                                value: `${focus} ${unit}`,
                             }))
                         );
                     }
