@@ -18,10 +18,10 @@ export default commandModule({
                         `SELECT host_id FROM giveaway_message WHERE message_id = ?`
                     )
                     .get(message.message_id);
-                // if (host && host.host_id === ctx.user.id) {
-                //     await ctx.reply({ ephemeral: true, content: `You cannot enter the giveaway as the host!` });
-                //     return;
-                // }
+                if (host && host.host_id === ctx.user.id) {
+                    await ctx.reply({ ephemeral: true, content: `You cannot enter the giveaway as the host!` });
+                    return;
+                }
                 
                 const checkUser = db
                     .prepare(

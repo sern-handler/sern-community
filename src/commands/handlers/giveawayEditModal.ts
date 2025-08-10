@@ -9,11 +9,11 @@ export default commandModule({
     type: CommandType.Modal,
     name: "giveawayEditModal",
     async execute(ctx) {
-        // if (!ownerIDs.includes(ctx.user.id))
-        //     return ctx.reply({
-        //         ephemeral: true,
-        //         content: `You cannot edit the giveaway because you are not one of the owners`,
-        //     });
+        if (!ownerIDs.includes(ctx.user.id))
+            return ctx.reply({
+                ephemeral: true,
+                content: `You cannot edit the giveaway because you are not one of the owners`,
+            });
         
         const newItem = ctx.fields.getTextInputValue('item')
         const newTime = ctx.fields.getTextInputValue('time')

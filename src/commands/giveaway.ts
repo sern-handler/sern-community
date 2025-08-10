@@ -10,12 +10,11 @@ import {
 import { db } from "../utils/db.js";
 import { add } from "date-fns";
 import { Timestamp } from "#utils";
-import { ownerIDs } from "#constants";
 
 export default commandModule({
     type: CommandType.Slash,
     description: "Start a giveaway involving users who react to the embed",
-    plugins: [publish()],
+    plugins: [publish(), ownerOnly()],
     options: [
         {
             name: "item",
@@ -214,11 +213,11 @@ export default commandModule({
                         .prepare(`SELECT * FROM entries WHERE message_id = ?`)
                         .all(embedMessage.id);
 
-                    const eligible = stmt /*.filter(
+                    const eligible = stmt.filter(
                         (entry: { user_id: string }) =>
                             entry.user_id !== embedMessage.author.id &&
                             entry.user_id !== ctx.user.id
-                    );*/
+                    );
 
                     let winnerIndex = Math.floor(Math.random() * eligible.length);
 

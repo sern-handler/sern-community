@@ -6,11 +6,11 @@ export default commandModule({
     type: CommandType.Button,
     name: "edit",
     async execute(ctx) {
-        // if (!ownerIDs.includes(ctx.user.id))
-        //     return ctx.reply({
-        //         ephemeral: true,
-        //         content: `You cannot edit the giveaway because you are not one of the owners`,
-        //     });
+        if (!ownerIDs.includes(ctx.user.id))
+            return ctx.reply({
+                ephemeral: true,
+                content: `You cannot edit the giveaway because you are not one of the owners`,
+            });
         
         const modal = new ModalBuilder()
         .setCustomId('giveawayEditModal')

@@ -7,15 +7,15 @@ export default commandModule({
     type: CommandType.Button,
     name: "end",
     async execute(ctx) {
-        // if (!ownerIDs.includes(ctx.user.id))
-        //     return ctx.reply({
-        //         ephemeral: true,
-        //         content: `You cannot end the giveaway because you are not one of the owners`,
-        //     });
+        if (!ownerIDs.includes(ctx.user.id))
+            return ctx.reply({
+                ephemeral: true,
+                content: `You cannot end the giveaway because you are not one of the owners`,
+            });
 
-            const message = db
-                .prepare(`SELECT * FROM giveaway_message WHERE message_id = ?`)
-                .get(ctx.message.id);
+        const message = db
+            .prepare(`SELECT * FROM giveaway_message WHERE message_id = ?`)
+            .get(ctx.message.id);
 
          if (Date.now() > message.end_time) {
             await ctx.reply({
@@ -36,11 +36,11 @@ export default commandModule({
             .prepare(`SELECT * FROM entries WHERE message_id = ?`)
             .all(ctx.message.id);
 
-        const eligible = stmt /*.filter(
+        const eligible = stmt.filter(
             (entry: { user_id: string }) =>
-                entry.user_id !== embedMessage.author.id &&
+                entry.user_id !== ctx.message.author.id &&
                 entry.user_id !== ctx.user.id
-        );*/
+        );
 
         let winnerIndex = Math.floor(Math.random() * eligible.length);
 
