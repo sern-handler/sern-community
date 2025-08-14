@@ -217,8 +217,6 @@ export default commandModule({
                 // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 4])
                 // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 5])
 
-                let intervalTime = endTime.getTime() - startTime.getTime();
-
                 function endGiveaway() {
                     const giveawayData = db
                         .prepare(`SELECT item FROM giveaway_message WHERE message_id = ?`)

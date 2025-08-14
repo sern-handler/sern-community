@@ -18,7 +18,7 @@
             "#utils": ["src/utils/index.js"],
             "#constants": ["src/constants.js"],
             "#db": ["src/utils/db.js"],
-            "@commands/*": ["src/commands/*"],
+            "#commands/*": ["src/commands/*"],
         }
     }
 }

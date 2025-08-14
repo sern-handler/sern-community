@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { db } from "#db";
 import { ownerIDs } from "#constants";
-import { discardRows } from "@commands/giveaway.js";
+import { discardRows } from "#commands/giveaway.js";
 
 export default commandModule({
     type: CommandType.Button,
