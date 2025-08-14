@@ -64,6 +64,11 @@ export default commandModule({
                 ? timeLeft2
                 : 0,
         });
+        if (endTime.getTime() - startTime.getTime() <= 0)
+            return ctx.reply({
+                content: "Please try again with a valid time.",
+                ephemeral: true,
+            });
 
         const endTimeStamp: string = `<t:${Math.floor(endTime!.getTime() / 1000)}:f>`;
         const endTimeStamp2 = new Timestamp(endTime.getTime()).timestamp;
