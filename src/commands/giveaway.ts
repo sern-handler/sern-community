@@ -7,7 +7,7 @@ import {
     ButtonStyle,
     EmbedBuilder,
 } from "discord.js";
-import { db } from "../utils/db.js";
+import { db } from "#db";
 import { add } from "date-fns";
 import { Timestamp } from "#utils";
 
@@ -32,10 +32,20 @@ export default commandModule({
                 async execute(ctx) {
                     const focus = ctx.options.getFocused();
                     const timeUnits = [
-                        "seconds", "second", "sec", "secs",
-                        "minutes", "minute", "min", "mins",
-                        "hours", "hour", "hr", "hrs",
-                        "days", "day",
+                        "seconds",
+                        "second",
+                        "sec",
+                        "secs",
+                        "minutes",
+                        "minute",
+                        "min",
+                        "mins",
+                        "hours",
+                        "hour",
+                        "hr",
+                        "hrs",
+                        "days",
+                        "day",
                     ];
 
                     if (!focus) return ctx.respond([]);
@@ -44,11 +54,11 @@ export default commandModule({
                     if (andUnitMatch) {
                         const num = andUnitMatch[1];
                         const partialUnit = andUnitMatch[2];
-                        const filtered = timeUnits.filter(unit =>
+                        const filtered = timeUnits.filter((unit) =>
                             unit.toLowerCase().startsWith(partialUnit.toLowerCase())
                         );
                         return ctx.respond(
-                            filtered.map(unit => ({
+                            filtered.map((unit) => ({
                                 name: `${num}${unit.slice(partialUnit.length)}`,
                                 value: `${num}${unit.slice(partialUnit.length)}`,
                             }))
@@ -59,7 +69,7 @@ export default commandModule({
                     if (andMatch) {
                         const num = andMatch[1];
                         return ctx.respond(
-                            timeUnits.map(unit => ({
+                            timeUnits.map((unit) => ({
                                 name: `${num} ${unit}`,
                                 value: `${num} ${unit}`,
                             }))
@@ -68,7 +78,7 @@ export default commandModule({
 
                     if (/^\d+\s*$/.test(focus)) {
                         return ctx.respond(
-                            timeUnits.map(unit => ({
+                            timeUnits.map((unit) => ({
                                 name: `${focus} ${unit}`,
                                 value: `${focus} ${unit}`,
                             }))
@@ -78,20 +88,28 @@ export default commandModule({
                     const match = focus.match(/^(\d+)\s*(.*)$/);
                     if (match) {
                         const [, num, partialUnit] = match;
-                        const filtered = timeUnits.filter(unit =>
+                        const filtered = timeUnits.filter((unit) =>
                             unit.toLowerCase().startsWith(partialUnit.toLowerCase())
                         );
-                        let suggestions = filtered.map(unit => ({
+                        let suggestions = filtered.map((unit) => ({
                             name: `${num} ${unit}`,
                             value: `${num} ${unit}`,
                         }));
 
-                        if (filtered.length === 1 && partialUnit.length > 0 && filtered[0] === partialUnit.toLowerCase()) {
+                        if (
+                            filtered.length === 1 &&
+                            partialUnit.length > 0 &&
+                            filtered[0] === partialUnit.toLowerCase()
+                        ) {
                             suggestions.push({
                                 name: `${num} ${filtered[0]} and `,
                                 value: `${num} ${filtered[0]} and `,
                             });
-                        } else if (filtered.length === 1 && partialUnit.length > 0 && filtered[0].startsWith(partialUnit.toLowerCase())) {
+                        } else if (
+                            filtered.length === 1 &&
+                            partialUnit.length > 0 &&
+                            filtered[0].startsWith(partialUnit.toLowerCase())
+                        ) {
                             suggestions.push({
                                 name: `${num} ${filtered[0]} and `,
                                 value: `${num} ${filtered[0]} and `,
@@ -101,17 +119,17 @@ export default commandModule({
                         return ctx.respond(suggestions);
                     }
 
-                    const filtered = timeUnits.filter(unit =>
+                    const filtered = timeUnits.filter((unit) =>
                         unit.toLowerCase().includes(focus.toLowerCase())
                     );
                     return ctx.respond(
-                        filtered.map(unit => ({
+                        filtered.map((unit) => ({
                             name: unit,
                             value: unit,
                         }))
                     );
-                }
-            }
+                },
+            },
         },
     ],
     execute: async (ctx, { deps }) => {
@@ -186,15 +204,11 @@ export default commandModule({
             .then((embedMessage) => {
                 let giveawayEnded = false;
 
-                const startTimeStamp = new Timestamp(startTime.getTime()).timestamp
+                const startTimeStamp = new Timestamp(startTime.getTime()).timestamp;
 
-                db.prepare(`INSERT INTO giveaway_message(message_id, start_timestamp, end_time, host_id, item) VALUES (?, ?, ?, ?, ?)`).run(
-                    embedMessage.id,
-                    startTimeStamp,
-                    endTime.getTime(),
-                    ctx.userId,
-                    item
-                );
+                db.prepare(
+                    `INSERT INTO giveaway_message(message_id, start_timestamp, end_time, host_id, item) VALUES (?, ?, ?, ?, ?)`
+                ).run(embedMessage.id, startTimeStamp, endTime.getTime(), ctx.userId, item);
 
                 // test entries
                 // db.prepare(`INSERT INTO entries(message_id, user_id) VALUES (?, ?, ?)`).run([embedMessage.id, 1])
@@ -206,7 +220,9 @@ export default commandModule({
                 let intervalTime = endTime.getTime() - startTime.getTime();
 
                 function endGiveaway() {
-                    const giveawayData = db.prepare(`SELECT item FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id);
+                    const giveawayData = db
+                        .prepare(`SELECT item FROM giveaway_message WHERE message_id = ?`)
+                        .get(embedMessage.id);
                     const item = giveawayData?.item ?? "Unknown item";
 
                     const stmt = db
@@ -259,7 +275,11 @@ export default commandModule({
                 }
 
                 let interval = setInterval(() => {
-                    const giveaway = db.prepare(`SELECT end_time, ended FROM giveaway_message WHERE message_id = ?`).get(embedMessage.id);
+                    const giveaway = db
+                        .prepare(
+                            `SELECT end_time, ended FROM giveaway_message WHERE message_id = ?`
+                        )
+                        .get(embedMessage.id);
                     if (!giveaway || giveaway.ended) {
                         clearInterval(interval);
                         return;
@@ -267,7 +287,9 @@ export default commandModule({
                     const now = Date.now();
                     if (now >= giveaway.end_time) {
                         endGiveaway();
-                        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(embedMessage.id);
+                        db.prepare(`DELETE FROM giveaway_message WHERE message_id = ?`).run(
+                            embedMessage.id
+                        );
                         db.prepare(`DELETE FROM entries WHERE message_id = ?`).run(embedMessage.id);
                         clearInterval(interval);
                     }

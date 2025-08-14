@@ -1,6 +1,6 @@
 import { ownerIDs } from "#constants";
 import { commandModule, CommandType } from "@sern/handler";
-import { db } from "../../utils/db.js";
+import { db } from "#db";
 
 export default commandModule({
     type: CommandType.Button,

@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { db } from "../../utils/db.js";
+import { db } from "#db";
 import { ownerIDs } from "#constants";
-import { discardRows } from "../giveaway.js";
+import { discardRows } from "@commands/giveaway.js";
 
 export default commandModule({
     type: CommandType.Button,
@@ -17,7 +17,7 @@ export default commandModule({
             .prepare(`SELECT * FROM giveaway_message WHERE message_id = ?`)
             .get(ctx.message.id);
 
-         if (Date.now() > message.end_time) {
+        if (Date.now() > message.end_time) {
             await ctx.reply({
                 ephemeral: true,
                 content: `This giveaway has already ended!`,
@@ -29,17 +29,14 @@ export default commandModule({
             content: `Giveaway ended by <@${ctx.user.id}>`,
         });
 
-        let giveawayEnded = false
-        let item = message.item
-        
-        const stmt = db
-            .prepare(`SELECT * FROM entries WHERE message_id = ?`)
-            .all(ctx.message.id);
+        let giveawayEnded = false;
+        let item = message.item;
+
+        const stmt = db.prepare(`SELECT * FROM entries WHERE message_id = ?`).all(ctx.message.id);
 
         const eligible = stmt.filter(
             (entry: { user_id: string }) =>
-                entry.user_id !== ctx.message.author.id &&
-                entry.user_id !== ctx.user.id
+                entry.user_id !== ctx.message.author.id && entry.user_id !== ctx.user.id
         );
 
         let winnerIndex = Math.floor(Math.random() * eligible.length);
@@ -53,10 +50,7 @@ export default commandModule({
                 components: [discardRows()],
             });
             giveawayEnded = true;
-        } else if (
-            eligible.length > 1 &&
-            eligible[winnerIndex].user_id === ctx.user.id
-        ) {
+        } else if (eligible.length > 1 && eligible[winnerIndex].user_id === ctx.user.id) {
             while (eligible[winnerIndex].user_id === ctx.user.id) {
                 winnerIndex = Math.floor(Math.random() * eligible.length);
             }
@@ -81,7 +75,9 @@ export default commandModule({
         }
 
         if (giveawayEnded) {
-            db.prepare(`UPDATE giveaway_message SET ended = 1 WHERE message_id = ?`).run(ctx.message.id)
+            db.prepare(`UPDATE giveaway_message SET ended = 1 WHERE message_id = ?`).run(
+                ctx.message.id
+            );
         }
     },
 });

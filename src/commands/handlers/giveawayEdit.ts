@@ -11,20 +11,18 @@ export default commandModule({
                 ephemeral: true,
                 content: `You cannot edit the giveaway because you are not one of the owners`,
             });
-        
-        const modal = new ModalBuilder()
-        .setCustomId('giveawayEditModal')
-        .setTitle('Edit Giveaway');
+
+        const modal = new ModalBuilder().setCustomId("giveawayEditModal").setTitle("Edit Giveaway");
 
         const itemInput = new TextInputBuilder()
-            .setCustomId('item')
-            .setLabel('New Giveaway Item')
+            .setCustomId("item")
+            .setLabel("New Giveaway Item")
             .setStyle(TextInputStyle.Short)
             .setRequired(false);
 
         const timeInput = new TextInputBuilder()
-            .setCustomId('time')
-            .setLabel('New Time')
+            .setCustomId("time")
+            .setLabel("New Time")
             .setStyle(TextInputStyle.Short)
             .setRequired(false);
 
