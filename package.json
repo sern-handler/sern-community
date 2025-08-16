@@ -11,7 +11,9 @@
     "imports": {
         "#plugins": "./dist/src/plugins/index.js",
         "#utils": "./dist/src/utils/index.js",
-        "#constants": "./dist/src/constants.js"
+        "#constants": "./dist/src/constants.js",
+        "#db": "./dist/src/utils/db.js",
+        "#commands/*": "./dist/src/commands/*"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
