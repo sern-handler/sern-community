@@ -8,6 +8,7 @@ export * from "./Timestamp.js";
 export * from "./pagination.js";
 export * from "./Logger.js";
 export * from "./composable/slashCommand.js";
+export * from "./giveawayFunctions.js";
 
 export const require = createRequire(import.meta.url);
 
@@ -17,7 +18,6 @@ export function cutText(text: string) {
     }
     return text;
 }
-
 
 export async function upload(code: string, name?: string) {
     const response = await fetch("https://sourceb.in/api/bins", {

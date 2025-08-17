@@ -1,7 +1,7 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ownerIDs } from "#constants";
 import { db } from "#db";
-import { Timestamp } from "#utils";
+import { parseTimeInput, Timestamp } from "#utils";
 import { add } from "date-fns";
 import { EmbedBuilder } from "discord.js";
 
@@ -17,53 +17,16 @@ export default commandModule({
 
         const newItem = ctx.fields.getTextInputValue("item");
         const newTime = ctx.fields.getTextInputValue("time");
-
-        let timeUnit1;
-        let timeLeft1;
-        let timeUnit2;
-        let timeLeft2;
-
-        const [part1, part2] = newTime?.split("and");
-        timeUnit1 = part1?.split(" ")[1];
-        timeLeft1 = Number(part1?.split(" ")[0]);
-
-        if (part2) {
-            const timeLeftStringPart2 = part2.replace(part2.substring(0, 1), "");
-            timeUnit2 = timeLeftStringPart2?.split(" ")[1];
-            timeLeft2 = Number(timeLeftStringPart2?.split(" ")[0]);
-        }
+        const parsedTime = parseTimeInput(newTime);
+        if (typeof parsedTime === "string")
+            return ctx.reply({
+                content: parsedTime,
+                ephemeral: true,
+            });
 
         const startTime = new Date();
 
-        let endTime: Date;
-
-        const secondNames = ["seconds", "second", "sec", "secs"];
-        const minuteNames = ["minutes", "minute", "min", "mins"];
-        const hourNames = ["hours", "hour", "hr", "hrs"];
-        const dayNames = ["days", "day"];
-
-        endTime = add(startTime, {
-            seconds: secondNames.includes(timeUnit1!)
-                ? timeLeft1
-                : secondNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            minutes: minuteNames.includes(timeUnit1!)
-                ? timeLeft1
-                : minuteNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            hours: hourNames.includes(timeUnit1!)
-                ? timeLeft1
-                : hourNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            days: dayNames.includes(timeUnit1!)
-                ? timeLeft1
-                : dayNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-        });
+        let endTime: Date = add(startTime, parsedTime);
         if (endTime.getTime() - startTime.getTime() <= 0)
             return ctx.reply({
                 content: "Please try again with a valid time.",
