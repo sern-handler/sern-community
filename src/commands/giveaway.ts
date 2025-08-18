@@ -1,15 +1,9 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ownerOnly, publish } from "#plugins";
-import {
-    ApplicationCommandOptionType,
-    ButtonBuilder,
-    ActionRowBuilder,
-    ButtonStyle,
-    EmbedBuilder,
-} from "discord.js";
+import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { db } from "#db";
 import { add } from "date-fns";
-import { Timestamp } from "#utils";
+import { discardRows, parseTimeInput, setupRows, Timestamp } from "#utils";
 
 export default commandModule({
     type: CommandType.Slash,
@@ -24,166 +18,28 @@ export default commandModule({
         },
         {
             name: "time",
-            description: "The amount of time that the giveaway will be up",
+            description:
+                "Time format: DD:HH:MM:SS or just minutes ('30' for 30 minutes, '1:30:00:00' for 1 day 30 minutes)",
             type: ApplicationCommandOptionType.String,
             required: true,
-            autocomplete: true,
-            command: {
-                async execute(ctx) {
-                    const focus = ctx.options.getFocused();
-                    const timeUnits = [
-                        "seconds",
-                        "second",
-                        "sec",
-                        "secs",
-                        "minutes",
-                        "minute",
-                        "min",
-                        "mins",
-                        "hours",
-                        "hour",
-                        "hr",
-                        "hrs",
-                        "days",
-                        "day",
-                    ];
-
-                    if (!focus) return ctx.respond([]);
-
-                    const andUnitMatch = focus.match(/and\s*(\d+)\s*(\w*)$/i);
-                    if (andUnitMatch) {
-                        const num = andUnitMatch[1];
-                        const partialUnit = andUnitMatch[2];
-                        const filtered = timeUnits.filter((unit) =>
-                            unit.toLowerCase().startsWith(partialUnit.toLowerCase())
-                        );
-                        return ctx.respond(
-                            filtered.map((unit) => ({
-                                name: `${num}${unit.slice(partialUnit.length)}`,
-                                value: `${num}${unit.slice(partialUnit.length)}`,
-                            }))
-                        );
-                    }
-
-                    const andMatch = focus.match(/and\s*(\d+)\s*$/i);
-                    if (andMatch) {
-                        const num = andMatch[1];
-                        return ctx.respond(
-                            timeUnits.map((unit) => ({
-                                name: `${num} ${unit}`,
-                                value: `${num} ${unit}`,
-                            }))
-                        );
-                    }
-
-                    if (/^\d+\s*$/.test(focus)) {
-                        return ctx.respond(
-                            timeUnits.map((unit) => ({
-                                name: `${focus} ${unit}`,
-                                value: `${focus} ${unit}`,
-                            }))
-                        );
-                    }
-
-                    const match = focus.match(/^(\d+)\s*(.*)$/);
-                    if (match) {
-                        const [, num, partialUnit] = match;
-                        const filtered = timeUnits.filter((unit) =>
-                            unit.toLowerCase().startsWith(partialUnit.toLowerCase())
-                        );
-                        let suggestions = filtered.map((unit) => ({
-                            name: `${num} ${unit}`,
-                            value: `${num} ${unit}`,
-                        }));
-
-                        if (
-                            filtered.length === 1 &&
-                            partialUnit.length > 0 &&
-                            filtered[0] === partialUnit.toLowerCase()
-                        ) {
-                            suggestions.push({
-                                name: `${num} ${filtered[0]} and `,
-                                value: `${num} ${filtered[0]} and `,
-                            });
-                        } else if (
-                            filtered.length === 1 &&
-                            partialUnit.length > 0 &&
-                            filtered[0].startsWith(partialUnit.toLowerCase())
-                        ) {
-                            suggestions.push({
-                                name: `${num} ${filtered[0]} and `,
-                                value: `${num} ${filtered[0]} and `,
-                            });
-                        }
-
-                        return ctx.respond(suggestions);
-                    }
-
-                    const filtered = timeUnits.filter((unit) =>
-                        unit.toLowerCase().includes(focus.toLowerCase())
-                    );
-                    return ctx.respond(
-                        filtered.map((unit) => ({
-                            name: unit,
-                            value: unit,
-                        }))
-                    );
-                },
-            },
         },
     ],
     execute: async (ctx, { deps }) => {
         const item = ctx.options.getString("item");
-        const timeLeftString = ctx.options.getString("time", true);
+        const timeInput = ctx.options.getString("time", true);
 
-        let timeUnit1;
-        let timeLeft1;
-        let timeUnit2;
-        let timeLeft2;
-
-        const [part1, part2] = timeLeftString?.split("and");
-        timeUnit1 = part1?.split(" ")[1];
-        timeLeft1 = Number(part1?.split(" ")[0]);
-
-        if (part2) {
-            const timeLeftStringPart2 = part2.replace(part2.substring(0, 1), "");
-            timeUnit2 = timeLeftStringPart2?.split(" ")[1];
-            timeLeft2 = Number(timeLeftStringPart2?.split(" ")[0]);
+        let timeComponents = parseTimeInput(timeInput);
+        if (typeof timeComponents === "string") {
+            return ctx.reply({
+                content: `❌ ${timeComponents}`,
+                ephemeral: true,
+            });
         }
 
         const startTime = new Date();
+        const endTime = add(startTime, timeComponents);
 
-        let endTime: Date;
-
-        const secondNames = ["seconds", "second", "sec", "secs"];
-        const minuteNames = ["minutes", "minute", "min", "mins"];
-        const hourNames = ["hours", "hour", "hr", "hrs"];
-        const dayNames = ["days", "day"];
-
-        endTime = add(startTime, {
-            seconds: secondNames.includes(timeUnit1!)
-                ? timeLeft1
-                : secondNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            minutes: minuteNames.includes(timeUnit1!)
-                ? timeLeft1
-                : minuteNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            hours: hourNames.includes(timeUnit1!)
-                ? timeLeft1
-                : hourNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-            days: dayNames.includes(timeUnit1!)
-                ? timeLeft1
-                : dayNames.includes(timeUnit2!)
-                ? timeLeft2
-                : 0,
-        });
-
-        const endTimeStamp: string = `<t:${Math.floor(endTime!.getTime() / 1000)}:f>`;
+        const endTimeStamp = `<t:${Math.floor(endTime.getTime() / 1000)}:f>`;
         const endTimeStamp2 = new Timestamp(endTime.getTime()).timestamp;
 
         let embed = new EmbedBuilder()
@@ -192,8 +48,8 @@ export default commandModule({
             .addFields({
                 name: "\u200b",
                 value: `Hosted by: <@${ctx.userId}>
-                Entries: 0
-                Ends: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`,
+            Entries: 0
+            Ends: ${new Timestamp(Number(endTimeStamp2)).getRelativeTime()} (${endTimeStamp})`,
             });
 
         await ctx
@@ -295,43 +151,3 @@ export default commandModule({
             });
     },
 });
-
-export function discardRows() {
-    const discardGiveaway = new ButtonBuilder({
-        customId: "discard",
-        label: "Discard",
-        style: ButtonStyle.Primary,
-    });
-
-    return new ActionRowBuilder<ButtonBuilder>().addComponents(discardGiveaway);
-}
-
-export function setupRows() {
-    const enterGiveaway = new ButtonBuilder({
-        customId: "enter",
-        label: "Enter Giveaway",
-        style: ButtonStyle.Success,
-    });
-    const leaveGiveaway = new ButtonBuilder({
-        customId: "leave",
-        label: "Leave Giveaway",
-        style: ButtonStyle.Danger,
-    });
-    const editGiveaway = new ButtonBuilder({
-        customId: "edit",
-        label: "Edit Giveaway",
-        style: ButtonStyle.Primary,
-    });
-    const endGiveaway = new ButtonBuilder({
-        customId: "end",
-        label: "End Giveaway",
-        style: ButtonStyle.Secondary,
-    });
-
-    return new ActionRowBuilder<ButtonBuilder>().addComponents(
-        enterGiveaway,
-        leaveGiveaway,
-        editGiveaway,
-        endGiveaway
-    );
-}
